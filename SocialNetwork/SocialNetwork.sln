@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.DAL", "SocialNetwork.DAL\SocialNetwork.DAL.csproj", "{63697267-2420-4FED-977B-DCEE104CD4DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.BLL", "SocialNetwork.BLL\SocialNetwork.BLL.csproj", "{B9C12D8D-F670-4242-BE20-901BC501F34B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.PresentationLayer", "SocialNetwork.PresentationLayer\SocialNetwork.PresentationLayer.csproj", "{975258A9-B1B9-4DAF-9843-D4E972C0F03D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.UnitTests", "SocialNetwork.UnitTests\SocialNetwork.UnitTests.csproj", "{16CFE431-4007-4922-964A-790872F23BA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{63697267-2420-4FED-977B-DCEE104CD4DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63697267-2420-4FED-977B-DCEE104CD4DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63697267-2420-4FED-977B-DCEE104CD4DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9C12D8D-F670-4242-BE20-901BC501F34B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9C12D8D-F670-4242-BE20-901BC501F34B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9C12D8D-F670-4242-BE20-901BC501F34B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9C12D8D-F670-4242-BE20-901BC501F34B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{975258A9-B1B9-4DAF-9843-D4E972C0F03D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{975258A9-B1B9-4DAF-9843-D4E972C0F03D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{975258A9-B1B9-4DAF-9843-D4E972C0F03D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{975258A9-B1B9-4DAF-9843-D4E972C0F03D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16CFE431-4007-4922-964A-790872F23BA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16CFE431-4007-4922-964A-790872F23BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16CFE431-4007-4922-964A-790872F23BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16CFE431-4007-4922-964A-790872F23BA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
