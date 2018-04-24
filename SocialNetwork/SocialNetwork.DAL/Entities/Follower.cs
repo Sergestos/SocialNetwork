@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork.DAL.Entities
 {
-    public class Followers
+    public class Follower
     {
         public int ID { get; set; }
         public int UserID { get; set; }

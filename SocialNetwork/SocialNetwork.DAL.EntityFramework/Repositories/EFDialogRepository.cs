@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
-namespace SocialNetwork.DAL.EntityFramework
+namespace SocialNetwork.DAL.EntityFramework.Repositories
 {
     using SocialNetwork.DAL.Entities;
     using SocialNetwork.DAL.Infastructure;

@@ -9,6 +9,7 @@ namespace SocialNetwork.DAL.Entities
     public class Content
     {
         public int ID { get; set; }
-        public string Category{ get; set; }        
+        public string Category{ get; set; }
+        public string Path { get; set; }
     }
 }

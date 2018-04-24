@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocialNetwork.DAL.Entities.Entities
+namespace SocialNetwork.DAL.Entities
 {
-    public class DialogMembers
+    public class BlackList
     {
         public int ID { get; set; }
-        public int DialogID { get; set; }
-        public int MemberID { get; set; }
+        public int UserIDBanner { get; set; }
+        public int UserIDBanned { get; set; }
     }
 }
