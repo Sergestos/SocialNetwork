@@ -40,7 +40,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLogic\BusinessModuleException.cs" />
+    <Compile Include="BusinessLogic\EntityConverters\EntityConventor.cs" />
+    <Compile Include="BusinessLogic\EntityConverters\UserConvertor.cs" />
+    <Compile Include="ModelsBLL\DialogBLL.cs" />
+    <Compile Include="ModelsBLL\PostBLL.cs" />
+    <Compile Include="ModelsBLL\UserInfoBLL.cs" />
+    <Compile Include="Modules\UserModule\IUserModule.cs" />
+    <Compile Include="Modules\UserModule\UserModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modules\AdministratorModule\" />
+    <Folder Include="Modules\AnonymousModule\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SocialNetwork.DAL\SocialNetwork.DAL.csproj">
+      <Project>{63697267-2420-4FED-977B-DCEE104CD4DF}</Project>
+      <Name>SocialNetwork.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -15,5 +15,6 @@ namespace SocialNetwork.DAL.Infastructure
         IRepository<DialogMember> DialogMembers { get; }
         IRepository<Follower> Followers { get; }
         IRepository<Content> ContentCollection { get; }
+        IRepository<BlackList> BlackLists { get; }
     }
 }

@@ -16,10 +16,15 @@ namespace SocialNetwork.DAL.EntityFramework
         public virtual DbSet<Follower> Followers { get; set; }
         public virtual DbSet<Content> ContentPaths { get; set; }
         public virtual DbSet<UserPost> UserPosts { get; set; }
+        public virtual DbSet<BlackList> BlackLists { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);            
+            base.OnModelCreating(modelBuilder);         
+            
+            /*
+             * Add something here
+             */ 
         }
     }
 }

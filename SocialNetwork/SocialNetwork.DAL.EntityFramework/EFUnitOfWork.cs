@@ -15,17 +15,17 @@ namespace SocialNetwork.DAL.EntityFramework
         private SocialNetworkModelContext context;
 
         private EFUserRepository userRepository;
-        private EFContentRepository contentRepository;        
+        private EFContentRepository contentRepository;
         private EFUserPostRepository userPostRepository;
         private EFDialogRepository dialogRepository;
         private EFFollowersFramework followersRepository;
         private EFDialogMembersRepository dialogMembersRepository;
+        private EFBlackListRepository blackListRepository;
 
         public EFUnitOfWork(string connectionString)
         {
             context = new SocialNetworkModelContext(connectionString);
         }
-
 
         public IRepository<User> Users
         {
@@ -38,7 +38,7 @@ namespace SocialNetwork.DAL.EntityFramework
         }
 
         public IRepository<Content> ContentCollection
-{
+        {
             get
             {
                 if (contentRepository == null)
@@ -84,6 +84,16 @@ namespace SocialNetwork.DAL.EntityFramework
                 if (followersRepository == null)
                     followersRepository = new EFFollowersFramework(context);
                 return followersRepository;
+            }
+        }
+
+        public IRepository<BlackList> BlackLists
+        {
+            get
+            {
+                if (blackListRepository == null)
+                    blackListRepository = new EFBlackListRepository(context);
+                return blackListRepository;
             }
         }
     }

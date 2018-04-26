@@ -24,6 +24,7 @@ namespace SocialNetwork.DAL.Entities
         public DateTime RegistrationDate { get; set; }       
         public string Role { get; set; }
         public bool IsBanned { get; set; }
+        public bool IsDeleted { get; set; }
 
         public bool IsShowInfoForAnonymousUsers { get; set; }
         public bool IsOthersCanStartChat { get; set; }

@@ -9,7 +9,7 @@ namespace SocialNetwork.DAL.Entities
     public class Follower
     {
         public int ID { get; set; }
-        public int UserID { get; set; }
-        public int UserFriendID { get; set; }
+        public int FollowedToID { get; set; }
+        public int FollowerID { get; set; }
     }
 }

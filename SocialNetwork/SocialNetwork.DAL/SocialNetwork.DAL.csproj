@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\BlackList.cs" />
     <Compile Include="Entities\Content.cs" />
     <Compile Include="Entities\Dialog.cs" />
     <Compile Include="Entities\DialogMember.cs" />
@@ -60,7 +61,7 @@
     <Compile Include="Entities\UserPost.cs" />
     <Compile Include="Infastructure\IRepository.cs" />
     <Compile Include="Infastructure\IUnitOfWork.cs" />
-    <Compile Include="Infastructure\UnitOfWork.cs" />
+    <Compile Include="Infastructure\UnitOfWorkConstructor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

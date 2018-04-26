@@ -9,10 +9,10 @@ namespace SocialNetwork.DAL.Entities
     public class UserPost
     {
         public int ID { get; set; }
-        public int CreatorID { get; set; }
-        public int PostContentSideID { get; set; }
-        public int RepostedID { get; set; }
-        public int CommentsContentSideID { get; set; }
+        public int? CreatorID { get; set; }
+        public string PostContentSidePath { get; set; }
+        public int? RepostedID { get; set; }
+        public string CommentsContentSidePath { get; set; }
 
         public int LikeCounter { get; set; }
         public int RepostCounter { get; set; }
