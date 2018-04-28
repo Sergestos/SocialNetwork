@@ -87,7 +87,13 @@ namespace SocialNetwork.BLL.Modules.UserModule
                 .Find(x => (x.FollowerID == currentUserID) && (x.FollowedToID == userID))
                 .FirstOrDefault();
             if (follower != null)
-                throw new BusinessLogicException("User can\'t subscibe twice");
+                throw new BusinessLogicException("User can\'t subscribe twice");
+
+            var bannedUser = unitOfWork.BlackLists
+                .Find(x => x.UserIDBanned == userID && x.UserIDBanner == currentUserID)
+                .FirstOrDefault();
+            if (bannedUser != null)
+                throw new BusinessLogicException("User can\'t subscribe to the user in the blacklist");
 
             unitOfWork.Followers.Add(new Follower()
             {
@@ -122,7 +128,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
         public void ChangeEmail(string newEmail)
         {
             if (newEmail.Length >= emailMaxLength)
-                throw new BusinessLogicException("Email length must be less then {emailMaxLength}");
+                throw new BusinessLogicException($"Email length must be less then {emailMaxLength}");
 
             Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
             Match match = regex.Match(newEmail);
@@ -199,19 +205,53 @@ namespace SocialNetwork.BLL.Modules.UserModule
             unitOfWork.BlackLists.Delete(bannedUser.ID);
         }
 
+        public IEnumerable<UserInfoBLL> FindUsers(Func<User, bool> predicate)
+        {
+            return unitOfWork.Users
+                .Find(predicate).Where(x => x.ID != currentUserID)
+                .Select(x => userConverter.ConvertToBLLEntity(x));
+        }
+
+        public IEnumerable<DialogBLL> GetDialogs
+        {
+            get
+            {
+                var currentUserDialogs = unitOfWork.DialogMembers.Find(x => x.MemberID == currentUserID);
+                var usersInDialogs = unitOfWork.Users
+                    .Find(x => currentUserDialogs.Any(y => y.MemberID == x.ID))
+                    .Select(x => userConverter.ConvertToBLLEntity(x));
+
+                return unitOfWork.Dialogs
+                    .Find(x => currentUserDialogs.Any(y => y.DialogID == x.ID))
+                    .Select(x => new DialogBLL()
+                    {
+                        ID = x.ID,
+                        MasterID = x.MasterID,
+                        Name = x.Name,
+                        ContentPath = x.DialogContentSidePath,
+                        DialogCreatedDate = x.DialogCreatedDate,
+                        isReadOnly = x.IsReadOnly,
+                        Members = new List<UserInfoBLL>(usersInDialogs.Where(y => currentUserDialogs.Any(z => z.MemberID == y.ID)))
+                    });                
+            }
+        }
+
+        public void SendMessage(int chatID, object Content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StartChat(int userID)
+        {
+            throw new NotImplementedException();
+        }
+
         public void ChangeItselfInfo(UserInfoBLL user)
         {
             throw new NotImplementedException();
-        }
-
-        public IEnumerable<DialogBLL> GetDialogs => throw new NotImplementedException();
+        }        
 
         public void CreatePost(PostBLL post)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<UserInfoBLL> FindUsers(Func<User, bool> predicate)
         {
             throw new NotImplementedException();
         }
@@ -234,17 +274,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
         public void RemovePost(int postID)
         {
             throw new NotImplementedException();
-        }
-
-        public void SendMessage(int chatID, object Content)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void StartChat(int userID)
-        {
-            throw new NotImplementedException();
-        }
+        }        
 
         public void DeleteAccount() => throw new NotImplementedException();
 

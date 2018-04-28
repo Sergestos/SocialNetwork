@@ -16,6 +16,7 @@ namespace SocialNetwork.DAL.Entities
         public string Locality { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime BirthDate { get; set; }
+        public Content Avatar { get; set; }
 
         public string Email { get; set; }
         public string Password { get; set; }

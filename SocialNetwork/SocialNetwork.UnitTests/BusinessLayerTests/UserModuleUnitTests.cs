@@ -168,7 +168,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
             catch (Exception ex)
             {
                 Assert.AreEqual(typeof(BusinessLogicException), ex.GetType());
-                Assert.AreEqual("User can\'t subscibe twice", ex.Message);
+                Assert.AreEqual("User can\'t subscribe twice", ex.Message);
             }
         }
 
@@ -253,6 +253,24 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
                 Assert.AreEqual("AuthorizedUser is not subscribed to the current user", ex.Message);
             }
 
+        }
+
+        [Test]
+        public void UserModule_Follow_SubscribeToTheUserInTheBlackkList_GetException()
+        {
+            IUserModule userModule = new UserModule(unitOfWork, 0);
+
+            try
+            {
+                userModule.AddToBlackList(1);
+                userModule.FollowTo(1);
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual(typeof(BusinessLogicException), ex.GetType());
+                Assert.AreEqual("User can\'t subscribe to the user in the blacklist", ex.Message);
+            
+            }            
         }
 
         [TestCase("MyNewMail@gmail.com")]
@@ -372,6 +390,140 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
                 Assert.AreEqual(typeof(BusinessLogicException), ex.GetType());
                 Assert.AreEqual("New password has to be different to the current", ex.Message);
             }
+        }
+
+        [Test]
+        public void UserModule_BlackList_AddToBlackList_Successfully()
+        {
+            int userID = 0;
+            IUserModule userModule = new UserModule(unitOfWork, userID);
+
+            userModule.AddToBlackList(1);
+            userModule.AddToBlackList(2);
+
+            Assert.NotNull(unitOfWork.BlackLists.Find(x => x.UserIDBanner == userID && x.UserIDBanned == 1).FirstOrDefault());
+            Assert.NotNull(unitOfWork.BlackLists.Find(x => x.UserIDBanner == userID && x.UserIDBanned == 2).FirstOrDefault());
+        }
+
+        [Test]
+        public void UserModule_BlackList_RemoveFromBlackList_Successfully()
+        {
+            IUserModule userModule = new UserModule(unitOfWork, 0);
+
+            userModule.AddToBlackList(1);
+            userModule.RemoveFromBlackList(1);
+
+            Assert.Null(unitOfWork.BlackLists.Find(x => x.UserIDBanner == 0 && x.UserIDBanned == 1).FirstOrDefault());
+        }
+        
+        [Test]
+        public void UserModule_BlackList_GetBlackList_GetCorrectCountOfBlockedUsers()
+        {
+            int userID = 0;
+            IUserModule userModule = new UserModule(unitOfWork, userID);
+
+            userModule.AddToBlackList(1);
+            userModule.AddToBlackList(2);
+
+            Assert.AreEqual(2, unitOfWork.BlackLists.Find(x => x.UserIDBanner == userID).Count());
+        }
+
+        [Test]
+        public void UserModule_BlackList_AddToBlackListItself_GetException()
+        {
+            int userID = 0;
+            IUserModule userModule = new UserModule(unitOfWork, userID);
+
+            try
+            {
+                userModule.AddToBlackList(userID);
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual(typeof(BusinessLogicException), ex.GetType());
+                Assert.AreEqual("User can\'t add or remove itself to the blacklist", ex.Message);
+            }
+        }
+
+        [Test]
+        public void UserModule_BlackList_AddToBlackListBlockedUser_GetException()
+        {
+            IUserModule userModule = new UserModule(unitOfWork, 0);
+
+            try
+            {
+                userModule.AddToBlackList(1);
+                userModule.AddToBlackList(1);
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual(typeof(BusinessLogicException), ex.GetType());
+                Assert.AreEqual("User has already been added to the blacklist", ex.Message);
+            }            
+        }
+
+        [Test]
+        public void UserModule_BlackList_RemoveNotBlockedUser_GetException()
+        {
+            IUserModule userModule = new UserModule(unitOfWork, 0);
+
+            try
+            {
+                userModule.RemoveFromBlackList(1);
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual(typeof(BusinessLogicException), ex.GetType());
+                Assert.AreEqual("User hasn't been added to the blacklist", ex.Message);
+            }
+        }
+
+        [Test]
+        public void UserModule_BlackList_UnfollowThisUser_Successfully()
+        {
+            int userID = 0;
+            int targetedUserID = 1;
+            IUserModule userModule = new UserModule(unitOfWork, userID);
+
+            userModule.FollowTo(targetedUserID);
+            userModule.AddToBlackList(targetedUserID);
+
+            Assert.Null(unitOfWork.Followers.Find(x => x.FollowedToID == targetedUserID && x.FollowerID == userID).FirstOrDefault());
+        }
+
+        [Test]
+        public void UserModule_BlackList_UnfollowBlockedUser_Successfully()
+        {
+            int userID = 0;
+            int targetedUserID = 1;
+            IUserModule userModule = new UserModule(unitOfWork, userID);
+
+            userModule.FollowTo(targetedUserID);
+            userModule.AddToBlackList(targetedUserID);
+
+            Assert.Null(unitOfWork.Followers.Find(x => x.FollowedToID == userID && x.FollowerID == targetedUserID).FirstOrDefault());
+        }
+
+        [Test]
+        public void UserModule_FindUsers_FindUsingPredicate_Successfully()
+        {
+            IUserModule userModule = new UserModule(unitOfWork, 0);
+
+            var users = userModule.FindUsers(x => x.Country == "Ukraine");
+
+            Assert.NotNull(users);
+            Assert.AreEqual(2, users.Count());
+        }
+
+        [Test]
+        public void UserModule_FindUsers_FindItself_GetNull()
+        {
+            int userID = 0;
+            IUserModule userModule = new UserModule(unitOfWork, userID);
+
+            var thisUser = userModule.FindUsers(x => x.ID == userID).FirstOrDefault();
+
+            Assert.Null(thisUser);
         }
     }
 }

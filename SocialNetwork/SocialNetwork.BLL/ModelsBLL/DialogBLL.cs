@@ -16,8 +16,10 @@ namespace SocialNetwork.BLL.ModelsBLL
         public DateTime DialogCreatedDate { get; set; }
 
         public User MasterID { get; set; }
-        public List<User> Members{ get; set; }
+        public List<UserInfoBLL> Members{ get; set; }
 
-        public XmlDocument Content { get; set; }
+        public string ContentPath { get; set; }
+
+        public bool isReadOnly { get; set; }
     }
 }
