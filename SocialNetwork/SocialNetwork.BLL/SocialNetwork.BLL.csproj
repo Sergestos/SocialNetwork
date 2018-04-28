@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessLogic\BusinessModuleException.cs" />
+    <Compile Include="BusinessLogic\Exceptions\BusinessModuleException.cs" />
+    <Compile Include="BusinessLogic\Exceptions\BusinessEntityNullException.cs" />
     <Compile Include="BusinessLogic\EntityConverters\EntityConventor.cs" />
     <Compile Include="BusinessLogic\EntityConverters\UserConvertor.cs" />
     <Compile Include="ModelsBLL\DialogBLL.cs" />

@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLayerTests\UserModuleUnitTests.cs" />
+    <Compile Include="FakeDataProviders\FakeBlacklistRepository.cs" />
+    <Compile Include="FakeDataProviders\FakeFollowersRepository.cs" />
     <Compile Include="FakeDataProviders\FakeUsersPostRepository.cs" />
     <Compile Include="FakeDataProviders\FakeUnitOfWork.cs" />
     <Compile Include="FakeDataProviders\FakeUserRepository.cs" />

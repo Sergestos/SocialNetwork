@@ -10,14 +10,19 @@ namespace SocialNetwork.BLL.Modules.UserModule
     using SocialNetwork.DAL.Entities;
     using SocialNetwork.DAL.Infastructure;
     using SocialNetwork.BLL.BusinessLogic;
+    using SocialNetwork.BLL.BusinessLogic.Exceptions;
     using SocialNetwork.BLL.BusinessLogic.EntityConverters;
+    using System.Text.RegularExpressions;
 
     public sealed class UserModule : IUserModule
     {
         private IUnitOfWork unitOfWork;        
-        private int authorizedUserID;
+        private int currentUserID;
 
         private UserConverter userConverter;
+
+        private const int passwordMaxLength = 32;
+        private const int emailMaxLength = 32;
 
         public UserModule(IUnitOfWork unitOfWork, int userID)
         {
@@ -26,17 +31,30 @@ namespace SocialNetwork.BLL.Modules.UserModule
             this.unitOfWork = unitOfWork;
 
             if (unitOfWork.Users.Get(userID) == null)
-                throw new BusinessModuleException("User is not found");
-            this.authorizedUserID = userID;
+                throw new BusinessEntityNullException("User is not found");
+            this.currentUserID = userID;
 
             this.userConverter = new UserConverter();
+        }
+
+        private void ValidateUserID(int userID,
+            string sameUsersIDErrorMessage = "This operation can\'t be applied to itself",
+            string userIsNorFoundErrorMessage = "User with current id is not found")
+        {
+            if (userID == currentUserID)
+                throw new BusinessLogicException(sameUsersIDErrorMessage);
+
+            var user = unitOfWork.Users.Get(userID);
+            if (user == null)
+                throw new BusinessEntityNullException(userIsNorFoundErrorMessage);
+
         }
 
         public UserInfoBLL GetItselfInfo
         {
             get
             {
-                var user = unitOfWork.Users.Get(authorizedUserID);
+                var user = unitOfWork.Users.Get(currentUserID);
                 return userConverter.ConvertToBLLEntity(user);
             }            
         }
@@ -46,7 +64,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
             get
             {
                 return unitOfWork.UserPosts
-                    .Find(x => x.ID == authorizedUserID)
+                    .Find(x => x.ID == currentUserID)
                     .Select(x=> new PostBLL()
                         {
                             ID = x.ID,
@@ -63,28 +81,30 @@ namespace SocialNetwork.BLL.Modules.UserModule
 
         public void FollowTo(int userID)
         {
-            var user = unitOfWork.Users.Get(userID);
-            if (user == null)
-                throw new BusinessModuleException("User with current id is not found");
+            ValidateUserID(userID, "User can\'t follow to the himself");
+          
+            var follower = unitOfWork.Followers
+                .Find(x => (x.FollowerID == currentUserID) && (x.FollowedToID == userID))
+                .FirstOrDefault();
+            if (follower != null)
+                throw new BusinessLogicException("User can\'t subscibe twice");
 
             unitOfWork.Followers.Add(new Follower()
             {
                 FollowedToID = userID,
-                FollowerID = authorizedUserID
+                FollowerID = currentUserID
             });
         }
 
         public void Unfollow(int userID)
         {
-            var user = unitOfWork.Users.Get(userID);
-            if (user == null)
-                throw new BusinessModuleException("User with current id is not found");
+            ValidateUserID(userID, "User can\'t unfollow from the himself");
 
             var follower = unitOfWork.Followers
-                .Find(x => (x.FollowerID == authorizedUserID) && (x.FollowedToID == userID))
+                .Find(x => (x.FollowerID == currentUserID) && (x.FollowedToID == userID))
                 .FirstOrDefault();
             if (follower == null)
-                throw new BusinessModuleException("AuthorizedUser is not subscribed to the current user");
+                throw new BusinessEntityNullException("AuthorizedUser is not subscribed to the current user");
 
             unitOfWork.Followers.Delete(follower.ID);
         }
@@ -94,31 +114,99 @@ namespace SocialNetwork.BLL.Modules.UserModule
             get
             {
                 return unitOfWork.Followers
-                    .Find(x => x.FollowedToID == authorizedUserID)
+                    .Find(x => x.FollowedToID == currentUserID)
                     .Select(x => userConverter.ConvertToBLLEntity(unitOfWork.Users.Get(x.FollowerID)));
             }
         }
 
-        public IEnumerable<DialogBLL> GetDialogs => throw new NotImplementedException();
-
-        public IEnumerable<BlackList> GetItselfBlackList => throw new NotImplementedException();
-
-        public void CreatePost(PostBLL post)
+        public void ChangeEmail(string newEmail)
         {
-            throw new NotImplementedException();
+            if (newEmail.Length >= emailMaxLength)
+                throw new BusinessLogicException("Email length must be less then {emailMaxLength}");
+
+            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            Match match = regex.Match(newEmail);
+            if (!match.Success)
+                throw new FormatException("The Email has wrong format");
+
+            var user = unitOfWork.Users.Get(currentUserID);
+            if (newEmail == user.Email)
+                throw new BusinessLogicException("New email has to be different to the current");
+            
+            user.Email = newEmail;
+            unitOfWork.Users.Update(user);
+        }
+
+        public void ChangePassword(string newPassword)
+        {
+            if (newPassword.Length >= passwordMaxLength)
+                throw new BusinessLogicException($"New Password length must be less then {passwordMaxLength}");
+
+            var user = unitOfWork.Users.Get(currentUserID);
+            if (newPassword == user.Password)
+                throw new BusinessLogicException("New password has to be different to the current");
+
+            user.Password = newPassword;
+            unitOfWork.Users.Update(user);
+        }
+
+        public IEnumerable<UserInfoBLL> GetUsersAddedToBlackList
+        {
+            get
+            {
+                return unitOfWork.BlackLists
+                    .Find(x => x.UserIDBanner == currentUserID)
+                    .Select(x => userConverter.ConvertToBLLEntity(unitOfWork.Users.Get(x.UserIDBanned)));
+            }
         }
 
         public void AddToBlackList(int userID)
         {
-            throw new NotImplementedException();
+            ValidateUserID(userID, "User can\'t add or remove itself to the blacklist");
+
+            if (unitOfWork.BlackLists.GetAll.Any(x => x.UserIDBanner == currentUserID && x.UserIDBanned == userID))
+                throw new BusinessLogicException("User has already been added to the blacklist");
+
+            var currentUserFollowed = unitOfWork.Followers
+                .Find(x => x.FollowerID == currentUserID && x.FollowedToID == userID)
+                .FirstOrDefault();
+            if (currentUserFollowed != null)
+                unitOfWork.Followers.Delete(currentUserFollowed.ID);
+
+            var badUserFollowed = unitOfWork.Followers
+                .Find(x => x.FollowerID == userID && x.FollowedToID == currentUserID)
+                .FirstOrDefault();
+            if(badUserFollowed != null)
+                unitOfWork.Followers.Delete(badUserFollowed.ID);
+
+            unitOfWork.BlackLists.Add(new BlackList()
+            {
+                UserIDBanned = userID,
+                UserIDBanner = currentUserID
+            });
         }
 
-        public void ChangeEmail(string newEmail)
+        public void RemoveFromBlackList(int userID)
+        {
+            ValidateUserID(userID, "User can\'t add or remove itself to the blacklist");
+
+            var bannedUser = unitOfWork.BlackLists
+                .Find(x => x.UserIDBanned == userID && x.UserIDBanner == currentUserID)
+                .FirstOrDefault();
+            if (bannedUser == null)
+                throw new BusinessLogicException("User hasn't been added to the blacklist");
+
+            unitOfWork.BlackLists.Delete(bannedUser.ID);
+        }
+
+        public void ChangeItselfInfo(UserInfoBLL user)
         {
             throw new NotImplementedException();
         }
 
-        public void ChangeItselfInfo(UserInfoBLL user)
+        public IEnumerable<DialogBLL> GetDialogs => throw new NotImplementedException();
+
+        public void CreatePost(PostBLL post)
         {
             throw new NotImplementedException();
         }
@@ -143,11 +231,6 @@ namespace SocialNetwork.BLL.Modules.UserModule
             throw new NotImplementedException();
         }
 
-        public void RemoveFromBlackList(int userID)
-        {
-            throw new NotImplementedException();
-        }
-
         public void RemovePost(int postID)
         {
             throw new NotImplementedException();
@@ -159,11 +242,6 @@ namespace SocialNetwork.BLL.Modules.UserModule
         }
 
         public void StartChat(int userID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ChangePassword(string password)
         {
             throw new NotImplementedException();
         }

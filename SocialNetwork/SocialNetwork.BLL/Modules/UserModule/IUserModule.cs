@@ -14,7 +14,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
         IEnumerable<PostBLL> GetItselfPosts { get; }
         IEnumerable<UserInfoBLL> GetItselfFollewers { get; }
         IEnumerable<DialogBLL> GetDialogs { get; }        
-        IEnumerable<BlackList> GetItselfBlackList { get; }
+        IEnumerable<UserInfoBLL> GetUsersAddedToBlackList { get; }
         
         IEnumerable<UserInfoBLL> FindUsers(Func<User, Boolean> predicate);
         IEnumerable<PostBLL> GetUserPost(int userID);

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocialNetwork.BLL.BusinessLogic
+namespace SocialNetwork.BLL.BusinessLogic.Exceptions
 {    
-    public class BusinessModuleException : Exception
+    public class BusinessLogicException : Exception
     {
-        public BusinessModuleException() { }
-        public BusinessModuleException(string message) : base(message) { }
-        public BusinessModuleException(string message, Exception inner) : base(message, inner) { }
+        public BusinessLogicException() { }
+        public BusinessLogicException(string message) : base(message) { }
+        public BusinessLogicException(string message, Exception inner) : base(message, inner) { }
     }
 }
