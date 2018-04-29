@@ -49,6 +49,9 @@
   <ItemGroup>
     <Compile Include="BusinessLayerTests\UserModuleUnitTests.cs" />
     <Compile Include="FakeDataProviders\FakeBlacklistRepository.cs" />
+    <Compile Include="FakeDataProviders\FakeContentPathCollectionRepository.cs" />
+    <Compile Include="FakeDataProviders\FakeDialogMembersRepository.cs" />
+    <Compile Include="FakeDataProviders\FakeDialogRepository.cs" />
     <Compile Include="FakeDataProviders\FakeFollowersRepository.cs" />
     <Compile Include="FakeDataProviders\FakeUsersPostRepository.cs" />
     <Compile Include="FakeDataProviders\FakeUnitOfWork.cs" />
