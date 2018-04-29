@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\ContentManagement\ContentWritter.cs" />
-    <Compile Include="BusinessLogic\ContentManagement\ContentDialogCreator.cs" />
+    <Compile Include="BusinessLogic\ContentManagement\FSDialogCreator.cs" />
     <Compile Include="BusinessLogic\Exceptions\BusinessAdmissionException.cs" />
     <Compile Include="BusinessLogic\Exceptions\BusinessModuleException.cs" />
     <Compile Include="BusinessLogic\Exceptions\BusinessEntityNullException.cs" />

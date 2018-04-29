@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLayerTests\ContentRecordingUniitTests.cs" />
     <Compile Include="BusinessLayerTests\UserModuleUnitTests.cs" />
     <Compile Include="FakeDataProviders\FakeBlacklistRepository.cs" />
     <Compile Include="FakeDataProviders\FakeContentPathCollectionRepository.cs" />

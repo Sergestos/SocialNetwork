@@ -11,7 +11,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
     using SocialNetwork.BLL.BusinessLogic.EntityConverters;
     using System.Text.RegularExpressions;
     using System.IO;
-    using SocialNetwork.BLL.BusinessLogic.ContentManagement;
+    using SocialNetwork.BLL.BusinessLogic.FSManagement;
 
     public sealed class UserModule : IUserModule
     {
@@ -295,7 +295,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
                     throw new BusinessAdmissionException("Selected user blocked inviting");
             }
 
-            string fullPath = DialogFileSystemCreator.Create(unitOfWork.MainContentDirectory, name, currentUserID);
+            string fullPath = FSDialogCreator.Create(unitOfWork.MainContentDirectory, name, currentUserID);
 
             var content = new Content() { Category = "Dialog", Path = fullPath };
             unitOfWork.ContentPaths.Add(content);
@@ -408,4 +408,3 @@ namespace SocialNetwork.BLL.Modules.UserModule
         public void LogOut() => throw new NotImplementedException();
     }
 }
-//string path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);

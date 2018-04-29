@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace SocialNetwork.BLL.BusinessLogic.ContentManagement
+namespace SocialNetwork.BLL.BusinessLogic.FSManagement
 {
     public sealed class DialogWritter
     {
