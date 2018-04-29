@@ -22,10 +22,16 @@ namespace SocialNetwork.DAL.EntityFramework
         private EFDialogMembersRepository dialogMembersRepository;
         private EFBlackListRepository blackListRepository;
 
-        public EFUnitOfWork(string connectionString)
+        private string contentPath;
+
+        public EFUnitOfWork(string connectionString, string contentPath)
         {
             context = new SocialNetworkModelContext(connectionString);
+
+            this.contentPath = contentPath;
         }
+
+        public string MainContentDirectory => contentPath;
 
         public IRepository<User> Users
         {
@@ -37,7 +43,7 @@ namespace SocialNetwork.DAL.EntityFramework
             }
         }
 
-        public IRepository<Content> ContentCollection
+        public IRepository<Content> ContentPaths
         {
             get
             {

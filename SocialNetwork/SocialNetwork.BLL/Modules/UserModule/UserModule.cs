@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SocialNetwork.BLL.Modules.UserModule
 {
     using SocialNetwork.BLL.ModelsBLL;
     using SocialNetwork.DAL.Entities;
     using SocialNetwork.DAL.Infastructure;
-    using SocialNetwork.BLL.BusinessLogic;
     using SocialNetwork.BLL.BusinessLogic.Exceptions;
     using SocialNetwork.BLL.BusinessLogic.EntityConverters;
     using System.Text.RegularExpressions;
+    using System.IO;
+    using SocialNetwork.BLL.BusinessLogic.ContentManagement;
 
     public sealed class UserModule : IUserModule
     {
@@ -20,9 +19,10 @@ namespace SocialNetwork.BLL.Modules.UserModule
         private int currentUserID;
 
         private UserConverter userConverter;
+        private DialogWritter dialogWritter;
 
         private const int passwordMaxLength = 32;
-        private const int emailMaxLength = 32;
+        private const int emailMaxLength = 32;        
 
         public UserModule(IUnitOfWork unitOfWork, int userID)
         {
@@ -35,9 +35,10 @@ namespace SocialNetwork.BLL.Modules.UserModule
             this.currentUserID = userID;
 
             this.userConverter = new UserConverter();
+            this.dialogWritter = new DialogWritter(unitOfWork);
         }
 
-        private void ValidateUserID(int userID,
+        private void ValidateUser(int userID,
             string sameUsersIDErrorMessage = "This operation can\'t be applied to itself",
             string userIsNorFoundErrorMessage = "User with current id is not found")
         {
@@ -49,6 +50,20 @@ namespace SocialNetwork.BLL.Modules.UserModule
                 throw new BusinessEntityNullException(userIsNorFoundErrorMessage);
 
         }
+
+        private void ValidateDialog(int dialogID)
+        {
+            var dialog = unitOfWork.Dialogs.Get(dialogID);
+            if (dialog == null)
+                throw new BusinessEntityNullException("Dialog with this ID has not found");
+
+            var dialogMember = unitOfWork.DialogMembers
+                .Find(x => x.DialogID == dialogID && x.MemberID == currentUserID)
+                .FirstOrDefault();
+            if (dialogMember == null)
+                throw new BusinessLogicException("User is not a member of this dialog");
+        }
+
 
         public UserInfoBLL GetItselfInfo
         {
@@ -81,7 +96,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
 
         public void FollowTo(int userID)
         {
-            ValidateUserID(userID, "User can\'t follow to the himself");
+            ValidateUser(userID, "User can\'t follow to the himself");
           
             var follower = unitOfWork.Followers
                 .Find(x => (x.FollowerID == currentUserID) && (x.FollowedToID == userID))
@@ -104,7 +119,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
 
         public void Unfollow(int userID)
         {
-            ValidateUserID(userID, "User can\'t unfollow from the himself");
+            ValidateUser(userID, "User can\'t unfollow from the himself");
 
             var follower = unitOfWork.Followers
                 .Find(x => (x.FollowerID == currentUserID) && (x.FollowedToID == userID))
@@ -168,7 +183,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
 
         public void AddToBlackList(int userID)
         {
-            ValidateUserID(userID, "User can\'t add or remove itself to the blacklist");
+            ValidateUser(userID, "User can\'t add or remove itself to the blacklist");
 
             if (unitOfWork.BlackLists.GetAll.Any(x => x.UserIDBanner == currentUserID && x.UserIDBanned == userID))
                 throw new BusinessLogicException("User has already been added to the blacklist");
@@ -194,7 +209,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
 
         public void RemoveFromBlackList(int userID)
         {
-            ValidateUserID(userID, "User can\'t add or remove itself to the blacklist");
+            ValidateUser(userID, "User can\'t add or remove itself to the blacklist");
 
             var bannedUser = unitOfWork.BlackLists
                 .Find(x => x.UserIDBanned == userID && x.UserIDBanner == currentUserID)
@@ -212,38 +227,155 @@ namespace SocialNetwork.BLL.Modules.UserModule
                 .Select(x => userConverter.ConvertToBLLEntity(x));
         }
 
-        public IEnumerable<DialogBLL> GetDialogs
+        public IEnumerable<ChatBLL> GetDialogs
         {
             get
             {
-                var currentUserDialogs = unitOfWork.DialogMembers.Find(x => x.MemberID == currentUserID);
-                var usersInDialogs = unitOfWork.Users
-                    .Find(x => currentUserDialogs.Any(y => y.MemberID == x.ID))
-                    .Select(x => userConverter.ConvertToBLLEntity(x));
+                // Из DialogMembers
+                var userDialogsID = unitOfWork.DialogMembers
+                    // Выбираем такие, где есть ID пользователя
+                    .Find(x => x.MemberID == currentUserID)
+                    // Селектим только ID
+                    .Select(x => x.DialogID);
 
-                return unitOfWork.Dialogs
-                    .Find(x => currentUserDialogs.Any(y => y.DialogID == x.ID))
-                    .Select(x => new DialogBLL()
+                // Из DialogMembers
+                var usersInDialogsID = unitOfWork.DialogMembers
+                    // Выбираем такие, где ID диалога совпадает с ID диалогов пользователя
+                    .Find(x => userDialogsID.Contains(x.DialogID))
+                    // Селектим ID учасников
+                    .Select(x => x.MemberID)
+                    // Убираем повторы тех, кто есть в разных диалогах
+                    .Distinct();
+
+                // из Users
+                var userEntities = unitOfWork.Users
+                    // Выбираем таких, ID которых совпадает с usersInDialogsID
+                   .Find(x => usersInDialogsID.Contains(x.ID))
+                   // Конвертируем в UserInfoBLL
+                   .Select(y => userConverter.ConvertToBLLEntity(y));
+
+
+                var dialogs = unitOfWork.Dialogs
+                    .Find(x => userDialogsID.Contains(x.ID))
+                    .Select(x => new ChatBLL()
                     {
                         ID = x.ID,
                         MasterID = x.MasterID,
                         Name = x.Name,
-                        ContentPath = x.DialogContentSidePath,
+                        ContentPath = x.DialogContentID,
                         DialogCreatedDate = x.DialogCreatedDate,
                         isReadOnly = x.IsReadOnly,
-                        Members = new List<UserInfoBLL>(usersInDialogs.Where(y => currentUserDialogs.Any(z => z.MemberID == y.ID)))
-                    });                
+                        Members = new List<UserInfoBLL>(userEntities.Where(y => userDialogsID.Contains(y.ID)))
+                    });
+
+                return null;                             
             }
         }
 
-        public void SendMessage(int chatID, object Content)
+        public void SendMessage(int dialogID, string text, IEnumerable<FileStream> content)
         {
-            throw new NotImplementedException();
+            ValidateDialog(dialogID);
+
+            var dialogPath = unitOfWork.ContentPaths.Get(
+                unitOfWork.Dialogs
+                .Find(x => x.ID == dialogID)
+                .FirstOrDefault()
+                .DialogContentID.Value).Path;
+
+            dialogWritter.WriteToDialog(dialogPath, currentUserID, text, content);
         }
 
-        public void StartChat(int userID)
+        public void StartDialog(string name, bool isReadOnly, int? userID)
         {
-            throw new NotImplementedException();
+            if (userID != null)
+            {
+                ValidateUser(userID.Value, "User can\'t add itself to the dialog");
+
+                if (!unitOfWork.Users.Get(userID.Value).IsOthersCanStartChat)
+                    throw new BusinessAdmissionException("Selected user blocked inviting");
+            }
+
+            string fullPath = DialogFileSystemCreator.Create(unitOfWork.MainContentDirectory, name, currentUserID);
+
+            var content = new Content() { Category = "Dialog", Path = fullPath };
+            unitOfWork.ContentPaths.Add(content);
+
+            var dialog = new Dialog()
+            {
+                Name = name,
+                IsReadOnly = isReadOnly,
+                MasterID = currentUserID,
+                DialogCreatedDate = DateTime.Now,
+                DialogContentID = unitOfWork.ContentPaths.Find(x => x.Path == fullPath).First().ID
+            };
+            
+            unitOfWork.Dialogs.Add(dialog);
+            unitOfWork.DialogMembers.Add(new DialogMember()
+            {
+                DialogID = dialog.ID,
+                MemberID = currentUserID
+            });
+
+            if (userID != null)
+            {
+                unitOfWork.DialogMembers.Add(new DialogMember()
+                {
+                    DialogID = dialog.ID,
+                    MemberID = currentUserID
+                });
+            }
+        }
+
+        public void AddUserToDialog(int userID, int dialogID)
+        {
+            ValidateUser(userID, "User is already in this dialog");
+            ValidateDialog(dialogID);
+
+            var dialog = unitOfWork.Dialogs.Get(dialogID);
+
+            if (dialog.MasterID != currentUserID) 
+                throw new BusinessAdmissionException("User can'\t grant others because of he is not a master");
+
+            if (!unitOfWork.Users.Get(userID).IsOthersCanStartChat)
+                throw new BusinessAdmissionException("Selected user blocked inviting");            
+
+            unitOfWork.DialogMembers.Add(new DialogMember()
+            {
+                DialogID = dialogID,
+                MemberID = userID
+            });
+        }
+
+        public void AppointNewMaster(int newMasterID, int dialogID)
+        {
+            ValidateUser(newMasterID, "User is already master of this dialog");
+            ValidateDialog(dialogID);
+
+            var dialog = unitOfWork.Dialogs.Get(dialogID);
+
+            if (dialog.MasterID != currentUserID)
+                throw new BusinessAdmissionException("User can'\t grant others because of he is not a master");
+
+            if (unitOfWork.DialogMembers.Find(x => x.MemberID == newMasterID).FirstOrDefault() == null)
+                throw new BusinessLogicException("Granting User is not a member of this dialog");
+           
+            dialog.MasterID = newMasterID;
+        }
+
+        public void LeaveFromDialog(int dialogID)
+        {            
+            ValidateDialog(dialogID);
+
+            var dialog = unitOfWork.Dialogs.Get(dialogID);
+
+            if (dialog.MasterID == currentUserID)
+                dialog.MasterID = null;
+
+            var dialogMember = unitOfWork.DialogMembers
+                .Find(x => x.MemberID == currentUserID && x.DialogID == dialogID)
+                .FirstOrDefault();
+
+            unitOfWork.DialogMembers.Delete(dialogMember.ID);
         }
 
         public void ChangeItselfInfo(UserInfoBLL user)
@@ -257,11 +389,6 @@ namespace SocialNetwork.BLL.Modules.UserModule
         }
 
         public IEnumerable<PostBLL> GetUserPost(int userID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LeaveFromChat(int chatID)
         {
             throw new NotImplementedException();
         }
@@ -281,3 +408,4 @@ namespace SocialNetwork.BLL.Modules.UserModule
         public void LogOut() => throw new NotImplementedException();
     }
 }
+//string path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);

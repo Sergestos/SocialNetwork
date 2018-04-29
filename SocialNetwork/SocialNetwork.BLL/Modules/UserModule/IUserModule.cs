@@ -1,19 +1,21 @@
-﻿using SocialNetwork.BLL.ModelsBLL;
-using SocialNetwork.DAL.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SocialNetwork.BLL.Modules.UserModule
 {
+    using SocialNetwork.BLL.ModelsBLL;
+    using SocialNetwork.DAL.Entities;
+
     public interface IUserModule
     {
         UserInfoBLL GetItselfInfo { get; }
         IEnumerable<PostBLL> GetItselfPosts { get; }
         IEnumerable<UserInfoBLL> GetItselfFollewers { get; }
-        IEnumerable<DialogBLL> GetDialogs { get; }        
+        IEnumerable<ChatBLL> GetDialogs { get; }        
         IEnumerable<UserInfoBLL> GetUsersAddedToBlackList { get; }
         
         IEnumerable<UserInfoBLL> FindUsers(Func<User, Boolean> predicate);
@@ -22,9 +24,11 @@ namespace SocialNetwork.BLL.Modules.UserModule
         void FollowTo(int userID);
         void Unfollow(int userID);
 
-        void StartChat(int userID);
-        void LeaveFromChat(int chatID);
-        void SendMessage(int chatID, object Content);
+        void StartDialog(string name, bool isReadOnly, int? userID);
+        void AddUserToDialog(int userID, int dialogID);
+        void AppointNewMaster(int newMasterID, int dialogID);
+        void LeaveFromDialog(int dialogID);
+        void SendMessage(int dialogID, string text, IEnumerable<FileStream> content);
 
         void CreatePost(PostBLL post);
         void RemovePost(int postID);

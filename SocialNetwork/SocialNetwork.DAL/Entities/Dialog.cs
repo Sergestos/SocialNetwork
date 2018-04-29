@@ -13,8 +13,8 @@ namespace SocialNetwork.DAL.Entities
         public string Name { get; set; }
         public DateTime DialogCreatedDate { get; set; }
 
-        public User MasterID { get; set; }        
-        public string DialogContentSidePath { get; set; }
+        public int? MasterID { get; set; }        
+        public int? DialogContentID { get; set; }
 
         public bool IsReadOnly { get; set; }        
     }

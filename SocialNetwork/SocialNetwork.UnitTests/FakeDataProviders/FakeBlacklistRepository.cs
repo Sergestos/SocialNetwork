@@ -1,4 +1,6 @@
-﻿using SocialNetwork.DAL.Entities;
+﻿//Ты можешь выйти на улицу и бездарно гонять мячик,а можешь сесть за комп и совершить что-то важное! (с) Картман.
+
+using SocialNetwork.DAL.Entities;
 using SocialNetwork.DAL.Infastructure;
 using System;
 using System.Collections.Generic;

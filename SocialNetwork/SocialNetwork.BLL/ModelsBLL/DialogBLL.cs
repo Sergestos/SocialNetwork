@@ -9,16 +9,16 @@ namespace SocialNetwork.BLL.ModelsBLL
     using System.Xml;
     using SocialNetwork.DAL.Entities;
 
-    public class DialogBLL
+    public class ChatBLL
     {
         public int ID { get; set; }
         public string Name { get; set; }
         public DateTime DialogCreatedDate { get; set; }
 
-        public User MasterID { get; set; }
+        public int? MasterID { get; set; }
         public List<UserInfoBLL> Members{ get; set; }
 
-        public string ContentPath { get; set; }
+        public int? ContentPath { get; set; }
 
         public bool isReadOnly { get; set; }
     }

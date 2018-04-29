@@ -52,7 +52,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
 
         [TestCase(0, true)]
         [TestCase(1, true)]
-        [TestCase(3, false)]
+        [TestCase(5, false)]
         public void UserModule_Initialization_DifferentUserID(int id, bool expected)
         {
             IUserModule userModule = null;
@@ -512,7 +512,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
             var users = userModule.FindUsers(x => x.Country == "Ukraine");
 
             Assert.NotNull(users);
-            Assert.AreEqual(2, users.Count());
+            Assert.AreEqual(3, users.Count());
         }
 
         [Test]

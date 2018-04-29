@@ -14,6 +14,7 @@ namespace SocialNetwork.UnitTests.FakeDataProviders
         private IRepository<UserPost> userPostsRepository;
         private IRepository<Follower> followersRepository;
         private IRepository<BlackList> blackListRepository;
+        private IRepository<Dialog> dialogRepository;
 
         public FakeUnitOfWork()
         {
@@ -21,15 +22,18 @@ namespace SocialNetwork.UnitTests.FakeDataProviders
             userPostsRepository = new FakeUsersPostRepository();
             followersRepository = new FakeFollowersRepository();
             blackListRepository = new FakeBlacklistRepository();
+            dialogRepository = new FakeDialogRepository();
         }
 
         public IRepository<User> Users => userRepository;
         public IRepository<UserPost> UserPosts => userPostsRepository;
         public IRepository<Follower> Followers => followersRepository;
         public IRepository<BlackList> BlackLists => blackListRepository;
+        public IRepository<Dialog> Dialogs => dialogRepository;
 
-        public IRepository<Dialog> Dialogs => throw new NotImplementedException();
         public IRepository<DialogMember> DialogMembers => throw new NotImplementedException();        
-        public IRepository<Content> ContentCollection => throw new NotImplementedException();        
+        public IRepository<Content> ContentPaths => throw new NotImplementedException();
+
+        public string MainContentDirectory => throw new NotImplementedException();
     }
 }
