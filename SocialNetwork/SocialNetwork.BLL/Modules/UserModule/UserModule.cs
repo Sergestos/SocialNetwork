@@ -9,9 +9,9 @@ namespace SocialNetwork.BLL.Modules.UserModule
     using SocialNetwork.DAL.Infastructure;
     using SocialNetwork.BLL.BusinessLogic.Exceptions;
     using SocialNetwork.BLL.BusinessLogic.EntityConverters;
+    using SocialNetwork.BLL.BusinessLogic.ContentManagement;
     using System.Text.RegularExpressions;
-    using System.IO;
-    using SocialNetwork.BLL.BusinessLogic.FSManagement;
+    using System.IO;    
 
     public sealed class UserModule : IUserModule
     {
@@ -19,7 +19,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
         private int currentUserID;
 
         private UserConverter userConverter;
-        private DialogWritter dialogWritter;
+        private ContentFileManager fileManager;
 
         private const int passwordMaxLength = 32;
         private const int emailMaxLength = 32;        
@@ -35,7 +35,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
             this.currentUserID = userID;
 
             this.userConverter = new UserConverter();
-            this.dialogWritter = new DialogWritter(unitOfWork);
+            this.fileManager = new ContentFileManager(unitOfWork);
         }
 
         private void ValidateUser(int userID,
@@ -282,7 +282,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
                 .FirstOrDefault()
                 .DialogContentID.Value).Path;
 
-            dialogWritter.WriteToDialog(dialogPath, currentUserID, text, content);
+            fileManager.WriteToDialog(dialogPath, currentUserID, text, content);
         }
 
         public void StartDialog(string name, bool isReadOnly, int? userID)
@@ -295,7 +295,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
                     throw new BusinessAdmissionException("Selected user blocked inviting");
             }
 
-            string fullPath = FSDialogCreator.Create(unitOfWork.MainContentDirectory, name, currentUserID);
+            string fullPath = fileManager.Create(name, currentUserID);
 
             var content = new Content() { Category = "Dialog", Path = fullPath };
             unitOfWork.ContentPaths.Add(content);

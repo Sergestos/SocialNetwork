@@ -40,13 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessLogic\ContentManagement\ContentWritter.cs" />
-    <Compile Include="BusinessLogic\ContentManagement\FSDialogCreator.cs" />
+    <Compile Include="BusinessLogic\ContentManagement\ContentFileManager.cs" />
     <Compile Include="BusinessLogic\Exceptions\BusinessAdmissionException.cs" />
     <Compile Include="BusinessLogic\Exceptions\BusinessModuleException.cs" />
     <Compile Include="BusinessLogic\Exceptions\BusinessEntityNullException.cs" />
     <Compile Include="BusinessLogic\EntityConverters\EntityConventor.cs" />
     <Compile Include="BusinessLogic\EntityConverters\UserConvertor.cs" />
+    <Compile Include="BusinessLogic\Exceptions\BusinessWrongRootException.cs" />
     <Compile Include="ModelsBLL\DialogBLL.cs" />
     <Compile Include="ModelsBLL\PostBLL.cs" />
     <Compile Include="ModelsBLL\UserInfoBLL.cs" />

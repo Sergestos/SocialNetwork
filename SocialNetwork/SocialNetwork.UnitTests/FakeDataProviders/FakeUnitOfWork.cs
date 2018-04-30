@@ -10,6 +10,8 @@ namespace SocialNetwork.UnitTests.FakeDataProviders
 {
     internal sealed class FakeUnitOfWork : IUnitOfWork
     {
+        private string contentPath;
+
         private IRepository<User> userRepository;
         private IRepository<UserPost> userPostsRepository;
         private IRepository<Follower> followersRepository;
@@ -18,7 +20,7 @@ namespace SocialNetwork.UnitTests.FakeDataProviders
         private IRepository<DialogMember> dialogMemberRepository;
         private IRepository<Content> contentPathsRepository;
 
-        public FakeUnitOfWork()
+        public FakeUnitOfWork(string contentPath = null)
         {
             userRepository = new FakeUserRepository();
             userPostsRepository = new FakeUsersPostRepository();
@@ -27,6 +29,8 @@ namespace SocialNetwork.UnitTests.FakeDataProviders
             dialogRepository = new FakeDialogRepository();
             dialogMemberRepository = new FakeDialogMembersRepository();
             contentPathsRepository = new FakeContentPathCollectionRepository();
+
+            this.contentPath = contentPath;
         }
 
         public IRepository<User> Users => userRepository;
@@ -37,6 +41,6 @@ namespace SocialNetwork.UnitTests.FakeDataProviders
         public IRepository<DialogMember> DialogMembers => dialogMemberRepository;        
         public IRepository<Content> ContentPaths => contentPathsRepository;
 
-        public string MainContentDirectory { get; set; }
+        public string MainContentDirectory => contentPath;
     }
 }
