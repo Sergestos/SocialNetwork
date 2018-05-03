@@ -51,17 +51,17 @@ namespace SocialNetwork.BLL.BusinessLogic.ContentManagement
             {
                 foreach (var item in contentStream)
                 {
-                    string contentFullName = GetContentName(userID);
-                    using (var fileWritter = new StreamWriter(contentFullName))
+                    string contentFullPathName = GetContentName(userID);
+                    using (var fileWritter = new StreamWriter(contentFullPathName))
                     {
                         var bytes = new byte[item.Length];
                         item.Read(bytes, 0, (int)item.Length);
                         fileWritter.Write(bytes);
                     }
 
-                    unitOfWork.ContentPaths.Add(new Content() { Category = "DialogContent", Path = contentFullName });
+                    unitOfWork.ContentPaths.Add(new Content() { Category = "DialogContent", Path = contentFullPathName });
 
-                    message.Add(new XElement("contentID", unitOfWork.ContentPaths.Find(x => x.Path == contentFullName).First().ID));
+                    message.Add(new XElement("contentID", unitOfWork.ContentPaths.Find(x => x.Path == contentFullPathName).First().ID));
                 }
             }
 

@@ -44,19 +44,20 @@
     <Compile Include="BusinessLogic\Exceptions\BusinessAdmissionException.cs" />
     <Compile Include="BusinessLogic\Exceptions\BusinessModuleException.cs" />
     <Compile Include="BusinessLogic\Exceptions\BusinessEntityNullException.cs" />
-    <Compile Include="BusinessLogic\EntityConverters\EntityConventor.cs" />
+    <Compile Include="BusinessLogic\EntityConverters\IEntityConventor.cs" />
     <Compile Include="BusinessLogic\EntityConverters\UserConvertor.cs" />
     <Compile Include="BusinessLogic\Exceptions\BusinessWrongRootException.cs" />
     <Compile Include="ModelsBLL\DialogBLL.cs" />
     <Compile Include="ModelsBLL\PostBLL.cs" />
     <Compile Include="ModelsBLL\UserInfoBLL.cs" />
+    <Compile Include="Modules\AnonymousModule\AnonymousModule.cs" />
+    <Compile Include="Modules\AnonymousModule\IAnonymoysModule.cs" />
     <Compile Include="Modules\UserModule\IUserModule.cs" />
     <Compile Include="Modules\UserModule\UserModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modules\AdministratorModule\" />
-    <Folder Include="Modules\AnonymousModule\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SocialNetwork.DAL\SocialNetwork.DAL.csproj">

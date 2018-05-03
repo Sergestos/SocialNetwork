@@ -1,0 +1,31 @@
+﻿@model SocialNetwork.PresentationLayer.Models.LoginUserModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="panel-body">
+    <div>
+        @using (Html.BeginForm())
+        {
+            <div class="alert alert-warning">
+                @Html.ValidationSummary()
+            </div>
+
+            <div class="panel-group">
+                <label>Email</label>
+                <p>@Html.TextBoxFor(x => x.Email)</p>
+            </div>
+
+            <div class="panel-group">
+                <label>Password</label>
+                <p>@Html.PasswordFor(x => x.Password)</p>
+            </div>
+
+            <div class="panel-group">                
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+

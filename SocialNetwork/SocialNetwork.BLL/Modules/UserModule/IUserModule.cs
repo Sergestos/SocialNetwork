@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork.BLL.Modules.UserModule
 {
-    using SocialNetwork.BLL.ModelsBLL;
+    using SocialNetwork.BLL.Models;
     using SocialNetwork.DAL.Entities;
 
     public interface IUserModule
@@ -15,7 +15,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
         UserInfoBLL GetItselfInfo { get; }
         IEnumerable<PostBLL> GetItselfPosts { get; }
         IEnumerable<UserInfoBLL> GetItselfFollewers { get; }
-        IEnumerable<ChatBLL> GetDialogs { get; }        
+        IEnumerable<DialogBLL> GetDialogs { get; }        
         IEnumerable<UserInfoBLL> GetUsersAddedToBlackList { get; }
         
         IEnumerable<UserInfoBLL> FindUsers(Func<User, Boolean> predicate);

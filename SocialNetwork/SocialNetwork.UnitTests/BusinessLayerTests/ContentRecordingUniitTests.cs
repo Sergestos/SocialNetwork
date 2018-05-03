@@ -14,7 +14,8 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
     using System.IO;
 
     [TestFixture]
-    [Category("ContentManager")]
+    [Category("ContentManager Integrated tests")]
+    [Ignore("Tests use an outer depends so has to be used only when necessary")]
     public class ContentFileManagerUnitTests
     {
         private string fakeDialogFilePath = @"F:\Social Network\TestRecordsRepositoty\_FakeDialog.xml";
@@ -26,7 +27,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [SetUp]
         public void SetUp()
         {
-            unitOfWork = new FakeDataProviders.FakeUnitOfWork(projectPath);
+            unitOfWork = new FakeUnitOfWork(projectPath);
         }
 
         [TearDown]

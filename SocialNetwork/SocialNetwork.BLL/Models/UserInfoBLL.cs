@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocialNetwork.BLL.ModelsBLL
+namespace SocialNetwork.BLL.Models
 {
     public class UserInfoBLL
     {
         public int ID { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
         public string FirstName { get; set; }
         public string SurName { get; set; }
         public string Country { get; set; }

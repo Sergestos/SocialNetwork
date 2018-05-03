@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocialNetwork.BLL.ModelsBLL
+namespace SocialNetwork.BLL.Models
 {
     public class PostBLL
     {

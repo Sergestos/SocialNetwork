@@ -6,17 +6,18 @@ using System.Web.Mvc;
 
 namespace SocialNetwork.PresentationLayer.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
-        // GET: Home
+        [Authorize]
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public ActionResult Upload(HttpPostedFileBase content)
-        {            
-            return null;
+            string result = "Вы не авторизованы";
+            if (User.Identity.IsAuthenticated)
+            {
+                result = "Ваш логин: " + User.Identity.Name;
+            }
+            return View(result);
         }
     }
 }

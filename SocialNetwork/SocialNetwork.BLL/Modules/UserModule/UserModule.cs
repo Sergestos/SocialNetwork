@@ -4,9 +4,10 @@ using System.Linq;
 
 namespace SocialNetwork.BLL.Modules.UserModule
 {
-    using SocialNetwork.BLL.ModelsBLL;
+    using SocialNetwork.BLL.Models;
     using SocialNetwork.DAL.Entities;
     using SocialNetwork.DAL.Infastructure;
+    using SocialNetwork.BLL.DataProvider;
     using SocialNetwork.BLL.BusinessLogic.Exceptions;
     using SocialNetwork.BLL.BusinessLogic.EntityConverters;
     using SocialNetwork.BLL.BusinessLogic.ContentManagement;
@@ -24,11 +25,11 @@ namespace SocialNetwork.BLL.Modules.UserModule
         private const int passwordMaxLength = 32;
         private const int emailMaxLength = 32;        
 
-        public UserModule(IUnitOfWork unitOfWork, int userID)
+        public UserModule(IUnitOfWorkFactory unitOfWorkFactory, int userID)
         {
             if (unitOfWork == null)
-                throw new ArgumentNullException("UnitOfWork instance is null", default(Exception));
-            this.unitOfWork = unitOfWork;
+                throw new ArgumentNullException("unitOfWorkFactory instance is null", default(Exception));
+            this.unitOfWork = unitOfWorkFactory.Create();
 
             if (unitOfWork.Users.Get(userID) == null)
                 throw new BusinessEntityNullException("User is not found");
@@ -227,7 +228,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
                 .Select(x => userConverter.ConvertToBLLEntity(x));
         }
 
-        public IEnumerable<ChatBLL> GetDialogs
+        public IEnumerable<DialogBLL> GetDialogs
         {
             get
             {
@@ -257,7 +258,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
 
                 var dialogs = unitOfWork.Dialogs
                     .Find(x => userDialogsID.Contains(x.ID))
-                    .Select(x => new ChatBLL()
+                    .Select(x => new DialogBLL()
                     {
                         ID = x.ID,
                         MasterID = x.MasterID,

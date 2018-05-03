@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SocialNetwork.UnitTests.BusinessLayerTests
 {
     using NUnit.Framework;
-    using SocialNetwork.BLL.ModelsBLL;
+    using SocialNetwork.BLL.Models;
     using SocialNetwork.BLL.BusinessLogic;    
     using SocialNetwork.BLL.Modules.UserModule;
     using SocialNetwork.BLL.BusinessLogic.Exceptions;

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocialNetwork.BLL.ModelsBLL
+namespace SocialNetwork.BLL.Models
 {
     using System.Xml;
     using SocialNetwork.DAL.Entities;
 
-    public class ChatBLL
+    public class DialogBLL
     {
         public int ID { get; set; }
         public string Name { get; set; }

@@ -59,6 +59,7 @@
     <Compile Include="Entities\Follower.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserPost.cs" />
+    <Compile Include="Infastructure\IContentFileManager.cs" />
     <Compile Include="Infastructure\IRepository.cs" />
     <Compile Include="Infastructure\IUnitOfWork.cs" />
     <Compile Include="Infastructure\UnitOfWorkConstructor.cs" />
