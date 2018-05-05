@@ -10,8 +10,8 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
     using SocialNetwork.BLL.BusinessLogic.Exceptions;
     using SocialNetwork.BLL.BusinessLogic.ContentManagement;
     using SocialNetwork.DAL.Infastructure;
-    using SocialNetwork.UnitTests.FakeDataProviders;
     using System.IO;
+    using SocialNetwork.BLL.DataProvider;
 
     [TestFixture]
     [Category("ContentManager Integrated tests")]
@@ -20,14 +20,17 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
     {
         private string fakeDialogFilePath = @"F:\Social Network\TestRecordsRepositoty\_FakeDialog.xml";
         private string fakeContentPath = @"D:\Screenshots\WoWScrnShot_070417_060208.jpg";
-        private string projectPath = @"F:\Social Network\TestRecordsRepositoty\";
-        private IUnitOfWork unitOfWork;
+        private string projectPath = @"F:\Social Network\TestRecordsRepositoty\";        
         private FileStream stream;
+
+        private IUnitOfWorkFactory factory;
+        private IUnitOfWork unitOfWork;        
 
         [SetUp]
         public void SetUp()
         {
-            unitOfWork = new FakeUnitOfWork(projectPath);
+            factory = new FakeUnitOfWorkFactory(projectPath);
+            unitOfWork = factory.Create();
         }
 
         [TearDown]
@@ -56,7 +59,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         {            
             try
             {
-                ContentFileManager fileManager = new ContentFileManager(new FakeUnitOfWork("W:\\WrongDirectory"));
+                ContentFileManager fileManager = new ContentFileManager(new FakeUnitOfWorkFactory("W:\\WrongDirectory").Create());
 
                 fileManager.Create("name", 0);
             }

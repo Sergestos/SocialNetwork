@@ -49,14 +49,6 @@
   <ItemGroup>
     <Compile Include="BusinessLayerTests\ContentRecordingUniitTests.cs" />
     <Compile Include="BusinessLayerTests\UserModuleUnitTests.cs" />
-    <Compile Include="FakeDataProviders\FakeBlacklistRepository.cs" />
-    <Compile Include="FakeDataProviders\FakeContentPathCollectionRepository.cs" />
-    <Compile Include="FakeDataProviders\FakeDialogMembersRepository.cs" />
-    <Compile Include="FakeDataProviders\FakeDialogRepository.cs" />
-    <Compile Include="FakeDataProviders\FakeFollowersRepository.cs" />
-    <Compile Include="FakeDataProviders\FakeUsersPostRepository.cs" />
-    <Compile Include="FakeDataProviders\FakeUnitOfWork.cs" />
-    <Compile Include="FakeDataProviders\FakeUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +61,10 @@
     <ProjectReference Include="..\SocialNetwork.BLL\SocialNetwork.BLL.csproj">
       <Project>{B9C12D8D-F670-4242-BE20-901BC501F34B}</Project>
       <Name>SocialNetwork.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SocialNetwork.DAL.FakeDataProvider\SocialNetwork.DAL.FakeDataProvider.csproj">
+      <Project>{396efdc9-e88f-4e0d-b9e5-8962148a3373}</Project>
+      <Name>SocialNetwork.DAL.FakeDataProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\SocialNetwork.DAL\SocialNetwork.DAL.csproj">
       <Project>{63697267-2420-4FED-977B-DCEE104CD4DF}</Project>

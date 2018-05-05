@@ -27,8 +27,8 @@ namespace SocialNetwork.BLL.Modules.UserModule
 
         public UserModule(IUnitOfWorkFactory unitOfWorkFactory, int userID)
         {
-            if (unitOfWork == null)
-                throw new ArgumentNullException("unitOfWorkFactory instance is null", default(Exception));
+            if (unitOfWorkFactory == null)
+                throw new ArgumentNullException("UnitOfWorkFactory instance is null", default(Exception));
             this.unitOfWork = unitOfWorkFactory.Create();
 
             if (unitOfWork.Users.Get(userID) == null)

@@ -12,12 +12,11 @@ namespace SocialNetwork.PresentationLayer.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            string result = "Вы не авторизованы";
             if (User.Identity.IsAuthenticated)
             {
-                result = "Ваш логин: " + User.Identity.Name;
+                ViewBag.result = "Ваш логин: " + User.Identity.Name;
             }
-            return View(result);
+            return View();
         }
     }
 }

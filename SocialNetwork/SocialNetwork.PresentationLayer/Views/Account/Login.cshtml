@@ -8,9 +8,14 @@
     <div>
         @using (Html.BeginForm())
         {
-            <div class="alert alert-warning">
-                @Html.ValidationSummary()
-            </div>
+            @Html.AntiForgeryToken()
+
+            if (ViewBag.IsAnyError != null)
+            {
+                <div class="alert alert-warning">
+                    @Html.ValidationSummary()
+                </div>
+            }
 
             <div class="panel-group">
                 <label>Email</label>
@@ -24,6 +29,7 @@
 
             <div class="panel-group">                
                 <input type="submit" value="Login" class="btn btn-primary" />
+                <input type="button" value="Registration" onclick="location.href='@Url.Action("Registration", "Account")'" class="btn btn-primary"/>
             </div>
         }
     </div>

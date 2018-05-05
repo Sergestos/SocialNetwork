@@ -23,8 +23,14 @@ namespace SocialNetwork.BLL.BusinessLogic.EntityConverters
                 Country = originalEntity.Country,
                 BirthDate = originalEntity.BirthDate,
                 Locality = originalEntity.Locality,
-                PhoneNumber = originalEntity.PhoneNumber                
+                PhoneNumber = originalEntity.PhoneNumber,
+                Gender = originalEntity.Gender
             };
+        }
+
+        public User ConvertToOriginalEntity(UserInfoBLL bllEntity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using SocialNetwork.BLL.DataProvider;
 using SocialNetwork.BLL.Modules.AnonymousModule;
+using SocialNetwork.PresentationLayer.Infastructure;
 using SocialNetwork.PresentationLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,10 @@ namespace SocialNetwork.PresentationLayer.Controllers
 
         public AccountController()
         {
-            module = new AnonymousModule(new EFUnitOfWorkFactory("string1", "string2"));
+            module = new AnonymousModule(MockResolver.GetUnitOfWorkFactory());
         }
 
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
@@ -29,33 +31,68 @@ namespace SocialNetwork.PresentationLayer.Controllers
         public ActionResult Login(LoginUserModel model)
         {
             if (ModelState.IsValid)
-            {               
-                if (user != null)
+            {                
+                if (module.GetAllUsers.FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password) != null) 
                 {
                     FormsAuthentication.SetAuthCookie(model.Email, true);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Home", "User");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Пользователя с таким логином и паролем нет");
-                }
+                    ModelState.AddModelError("", "Email or Password are incorrect");
+                }              
             }
 
+            ViewBag.IsAnyError = true;
             return View(model);
         }
 
+        [HttpGet]
         public ActionResult Registration()
         {
             return View();
         }
 
-        public ActionResult Registration(RegistrationUserModel user)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Registration(RegistrationUserModel model)
         {
-            return View();
-        }        
+            if (ModelState.IsValid)
+            {
+                var users = module.GetAllUsers.ToList();
+                if (module.GetAllUsers.FirstOrDefault(x => x.Email == model.Email) == null)
+                {
+                    module.Registrate(new BLL.Models.UserInfoBLL()
+                    {
+                        Email = model.Email,
+                        FirstName = model.Name,
+                        SurName = model.Surname,
+                        Gender = model.Gender,
+                        Password = model.Password,
+                        PhoneNumber = model.PhoneNumber,
+                        Country = model.Country,
+                        Locality = model.Location,
+                        //BirthDate = model.BirthDayDate,
+                    });
+
+                    return RedirectToAction("Login", "Account");
+                }
+                else
+                {                    
+                    ModelState.AddModelError("EmailIsExist", "User with this email is already exist");
+                }                
+            }
+            else
+            {
+                ModelState.AddModelError("ValidationError", "Validation Error");
+            }
+
+            return View(model);
+        }
 
         public RedirectResult Logout()
         {
+            FormsAuthentication.SignOut();
             return Redirect("/Account/Login");
         }
     }

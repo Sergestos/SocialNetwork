@@ -10,5 +10,6 @@ namespace SocialNetwork.BLL.Modules.AnonymousModule
     public interface IAnonymoysModule
     {
         IEnumerable<UserInfoBLL> GetAllUsers { get; }
+        void Registrate(UserInfoBLL user);
     }
 }

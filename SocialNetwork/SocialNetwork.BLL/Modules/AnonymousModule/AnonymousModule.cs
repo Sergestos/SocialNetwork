@@ -7,6 +7,7 @@ using SocialNetwork.BLL.Models;
 using SocialNetwork.DAL.Infastructure;
 using SocialNetwork.BLL.BusinessLogic.EntityConverters;
 using SocialNetwork.BLL.DataProvider;
+using SocialNetwork.DAL.Entities;
 
 namespace SocialNetwork.BLL.Modules.AnonymousModule
 {
@@ -17,7 +18,7 @@ namespace SocialNetwork.BLL.Modules.AnonymousModule
 
         public AnonymousModule(IUnitOfWorkFactory unitOfWorkFactory)
         {
-            if (unitOfWork == null)
+            if (unitOfWorkFactory == null)
                 throw new BusinessLogic.Exceptions.BusinessEntityNullException("UnitOfWork is not initialized");
             this.unitOfWork = unitOfWorkFactory.Create();
 
@@ -26,5 +27,30 @@ namespace SocialNetwork.BLL.Modules.AnonymousModule
 
         public IEnumerable<UserInfoBLL> GetAllUsers =>
              unitOfWork.Users.GetAll.Select(x => converter.ConvertToBLLEntity(x));
+
+        public void Registrate(UserInfoBLL user)
+        {
+            unitOfWork.Users.Add(new User()
+            {
+                FirstName = user.FirstName,
+                SurName = user.SurName,
+                Email = user.Email,
+                Password = user.Password,
+                Country = user.Country,
+                Locality = user.Locality,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                BirthDate = user.BirthDate,
+                IsBanned = false,
+                IsDeleted = false,
+                IsOthersCanStartChat = true,
+                IsShowInfoForAnonymousUsers = true,
+                IsOthersCanComment = true,
+                LastTimeOnlineDate = DateTime.Now,
+                RegistrationDate = DateTime.Now,
+                Role = "User"
+                // Avatar Content ID
+            });            
+        }
     }
 }

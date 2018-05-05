@@ -16,6 +16,7 @@ namespace SocialNetwork.BLL.Models
         public string Country { get; set; }
         public string Locality { get; set; }
         public string PhoneNumber { get; set; }
+        public string Gender { get; set; }
         public DateTime BirthDate { get; set; }
     }
 }

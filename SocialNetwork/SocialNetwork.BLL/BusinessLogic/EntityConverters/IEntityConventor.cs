@@ -19,5 +19,12 @@ namespace SocialNetwork.BLL.BusinessLogic.EntityConverters
         /// <param name="originalEntity"></param>
         /// <returns>Converted BLL entity</returns>
         T ConvertToBLLEntity(Y originalEntity);
+
+        /// <summary>
+        /// Converts BLL entity to the Original entity
+        /// </summary>
+        /// <param name="BLL Entiry"></param>
+        /// <returns>Converted Original entity</returns>
+        Y ConvertToOriginalEntity(T bllEntity);
     }
 }

@@ -10,8 +10,12 @@ namespace SocialNetwork.PresentationLayer.Controllers
     public class UserController : Controller
     {
         [Authorize]
-        public ActionResult Index()
+        public ActionResult Home()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.result = "Ваш логин: " + User.Identity.Name;
+            }
             return View();
         }
     }

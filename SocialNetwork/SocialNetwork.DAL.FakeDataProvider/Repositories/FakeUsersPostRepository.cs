@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocialNetwork.UnitTests.FakeDataProviders
+namespace SocialNetwork.FakeDataProviders
 {
     internal sealed class FakeUsersPostRepository : IRepository<UserPost>
     {

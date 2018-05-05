@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocialNetwork.UnitTests.FakeDataProviders
+namespace SocialNetwork.FakeDataProviders
 {
     using SocialNetwork.DAL.Entities;
     using SocialNetwork.DAL.Infastructure;

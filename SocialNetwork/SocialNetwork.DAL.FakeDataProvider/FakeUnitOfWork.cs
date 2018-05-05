@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using SocialNetwork.DAL.Entities;
 
-namespace SocialNetwork.UnitTests.FakeDataProviders
+namespace SocialNetwork.FakeDataProviders
 {
-    internal sealed class FakeUnitOfWork : IUnitOfWork
+    public sealed class FakeUnitOfWork : IUnitOfWork
     {
         private string contentPath;
 

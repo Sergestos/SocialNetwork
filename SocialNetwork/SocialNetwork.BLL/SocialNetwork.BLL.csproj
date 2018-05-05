@@ -32,6 +32,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,9 +49,12 @@
     <Compile Include="BusinessLogic\EntityConverters\IEntityConventor.cs" />
     <Compile Include="BusinessLogic\EntityConverters\UserConvertor.cs" />
     <Compile Include="BusinessLogic\Exceptions\BusinessWrongRootException.cs" />
-    <Compile Include="ModelsBLL\DialogBLL.cs" />
-    <Compile Include="ModelsBLL\PostBLL.cs" />
-    <Compile Include="ModelsBLL\UserInfoBLL.cs" />
+    <Compile Include="DataProvider\EFUnitOfWorkFactory.cs" />
+    <Compile Include="DataProvider\FakeUnitOfWorkFactory.cs" />
+    <Compile Include="DataProvider\IUnitOfWorkFactory.cs" />
+    <Compile Include="Models\DialogBLL.cs" />
+    <Compile Include="Models\PostBLL.cs" />
+    <Compile Include="Models\UserInfoBLL.cs" />
     <Compile Include="Modules\AnonymousModule\AnonymousModule.cs" />
     <Compile Include="Modules\AnonymousModule\IAnonymoysModule.cs" />
     <Compile Include="Modules\UserModule\IUserModule.cs" />
@@ -60,6 +65,14 @@
     <Folder Include="Modules\AdministratorModule\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SocialNetwork.DAL.EntityFramework\SocialNetwork.DAL.EntityFramework.csproj">
+      <Project>{4cfdb35b-ce95-4da6-9ef1-3189a4b3c2cb}</Project>
+      <Name>SocialNetwork.DAL.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SocialNetwork.DAL.FakeDataProvider\SocialNetwork.DAL.FakeDataProvider.csproj">
+      <Project>{396efdc9-e88f-4e0d-b9e5-8962148a3373}</Project>
+      <Name>SocialNetwork.DAL.FakeDataProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SocialNetwork.DAL\SocialNetwork.DAL.csproj">
       <Project>{63697267-2420-4FED-977B-DCEE104CD4DF}</Project>
       <Name>SocialNetwork.DAL</Name>

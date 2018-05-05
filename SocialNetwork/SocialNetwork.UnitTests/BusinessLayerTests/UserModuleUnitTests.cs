@@ -12,24 +12,35 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
     using SocialNetwork.BLL.Modules.UserModule;
     using SocialNetwork.BLL.BusinessLogic.Exceptions;
     using SocialNetwork.DAL.Infastructure;
-    using SocialNetwork.UnitTests.FakeDataProviders;    
+    using SocialNetwork.FakeDataProviders;
+    using SocialNetwork.BLL.DataProvider;
+    using System.Reflection;
 
     [TestFixture]
     [Category("UserModule")]
     public class UserModuleUnitTests
     {
+        private IUnitOfWorkFactory factory;
         private IUnitOfWork unitOfWork;
 
         [SetUp]
         public void SetUp()
         {
-            unitOfWork = new FakeUnitOfWork();
+            factory = new FakeUnitOfWorkFactory(string.Empty);
+        }
+
+        private IUnitOfWork GetInstanceField(IUserModule instance)
+        {
+            BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                | BindingFlags.Static;
+            FieldInfo field = typeof(IUnitOfWork).GetField("unitOfWork", bindFlags);
+            return field.GetValue(instance) as IUnitOfWork;
         }
 
         [Test]
         public void UserModule_Initialization_UnitOfWorkNotNullRef()
         {
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             Assert.NotNull(userModule);
         }
@@ -46,20 +57,20 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
             catch (Exception ex)
             {
                 Assert.AreEqual(typeof(ArgumentNullException), ex.GetType());
-                Assert.AreEqual("UnitOfWork instance is null", ex.Message);
+                Assert.AreEqual("UnitOfWorkFactory instance is null", ex.Message);
             }            
         }
 
         [TestCase(0, true)]
         [TestCase(1, true)]
         [TestCase(5, false)]
-        public void UserModule_Initialization_DifferentUserID(int id, bool expected)
+        public void UserModule_Initialization_ExistingOrNotExising(int id, bool expected)
         {
             IUserModule userModule = null;
 
             try
             {
-                userModule = new UserModule(unitOfWork, id);
+                userModule = new UserModule(factory, id);
             }
             catch { }            
             
@@ -74,7 +85,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
 
             try
             {
-                userModule = new UserModule(unitOfWork, userID);
+                userModule = new UserModule(factory, userID);
             }
             catch (Exception ex)
             {
@@ -87,9 +98,9 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         public void UserModule_GetItselfInfo_GetCorrectUserFromUnitOfWork()
         {
             int userID = 0;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
-            var userFromUnitOfWorkID = unitOfWork.Users.Get(userID).ID;
+            var userFromUnitOfWorkID = GetInstanceField(userModule).Users.Get(userID).ID;
             var userFromUserModuleID = userModule.GetItselfInfo.ID;
 
             Assert.AreEqual(userFromUnitOfWorkID, userFromUserModuleID);
@@ -101,7 +112,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [TestCase(2)]
         public void UserModule_GetItselfPosts_GetPosts(int userID)
         {
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             var postsFromModele = userModule.GetItselfPosts.Select(x => x.ID);
             var postFromUnit = unitOfWork.UserPosts.Find(x => x.ID == userID).Select(x => x.ID);
@@ -116,21 +127,21 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [TestCase(2, 1)]
         public void UserModule_Follow_FollowToTheOneUser(int followerID, int followedToID)
         {
-            IUserModule userModule = new UserModule(unitOfWork, followerID);
+            IUserModule userModule = new UserModule(factory, followerID);
 
             userModule.FollowTo(followedToID);
             var follower = unitOfWork.Followers.Find(x => x.FollowerID == followerID).FirstOrDefault();
 
-            Assert.NotNull(followerID);
+            Assert.NotNull(follower);
             Assert.AreEqual(follower.FollowedToID, followedToID);
         }
 
         [TestCase(0, 1, 2)]
         public void UserModule_Follow_GetItselfFollowers(int userID, int firstSubscriberID, int secondSubscriberID)
         {
-            IUserModule mainUserSubscriberModule = new UserModule(unitOfWork, userID);
-            IUserModule firstSubscriberModule = new UserModule(unitOfWork, firstSubscriberID);
-            IUserModule secondSubscriberModule = new UserModule(unitOfWork, secondSubscriberID);            
+            IUserModule mainUserSubscriberModule = new UserModule(factory, userID);
+            IUserModule firstSubscriberModule = new UserModule(factory, firstSubscriberID);
+            IUserModule secondSubscriberModule = new UserModule(factory, secondSubscriberID);            
 
             firstSubscriberModule.FollowTo(userID);
             secondSubscriberModule.FollowTo(userID);
@@ -144,7 +155,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [TestCase(0, 1)]
         public void UserModule_Follow_UnfollowSuccessfully(int userSubscriberID, int userTaret)
         {
-            IUserModule userModule = new UserModule(unitOfWork, userSubscriberID);
+            IUserModule userModule = new UserModule(factory, userSubscriberID);
 
             userModule.FollowTo(userTaret);
             userModule.Unfollow(userTaret);
@@ -158,7 +169,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [Test]
         public void UserModule_Follow_TryToFolloewTwice_GetException()
         {
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             try
             {
@@ -176,7 +187,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         public void UserModule_Follow_FollowToHimself_GetException()
         {
             int userID = 0;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             try
             {
@@ -193,7 +204,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         public void UserModule_Follow_UnfollowFromHimself_GetException()
         {
             int userID = 0;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             try
             {
@@ -209,7 +220,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [Test]
         public void UserModule_Follow_FollowToTheNonExistingUser()
         {            
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             try
             {
@@ -225,7 +236,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [Test]
         public void UserModule_Follow_UnfollowFromTheNonExistingUser()
         {
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             try
             {
@@ -241,7 +252,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [Test]
         public void UserModule_Follow_UnfollowFromUserWhichWasNotFollowed_GetException()
         {
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             try
             {
@@ -258,7 +269,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [Test]
         public void UserModule_Follow_SubscribeToTheUserInTheBlackkList_GetException()
         {
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             try
             {
@@ -279,7 +290,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         public void UserModule_ChangeEmail_ChangesAppliedSuccessfully(string newEmail)
         {
             int userID = 0;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             var oldPassword = unitOfWork.Users.Get(userID).Email;
             userModule.ChangeEmail(newEmail);
@@ -299,7 +310,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [TestCase("ma*il@.com")]
         public void UserModule_ChangeEmail_BadEmailFormat_GetException(string email)
         {
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             try
             {
@@ -315,7 +326,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [TestCase("TooLongNewEmailThatThrowsException@longmailservice.longextenson")]
         public void UserModule_ChangeEmail_TooLongEMail_GetException(string newEmail)
         {
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             try
             {
@@ -332,7 +343,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         public void UserModule_ChangeEmail_EmailIsTheSame_GetException()
         {
             int userID = 0;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             try
             {
@@ -350,7 +361,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         public void UserModule_ChangePassword_ChangesAppliedSuccesfully(string password)
         {
             int userID = 0;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             userModule.ChangePassword(password);
             var passwordAfterChanges = unitOfWork.Users.Get(userID).Password;
@@ -361,7 +372,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [TestCase("TooLongPasswordSoItThrowsBusinessLogicExceptionSoBeReady")]
         public void UserModule_ChangePassword_TooLongEMail_GetException(string password)
         {
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             try
             {
@@ -378,11 +389,11 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         public void UserModule_ChangePassword_TheSamePassword_GetException()
         {
             int userID = 0;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             try
             {
-                var oldPassword = unitOfWork.Users.Get(userID).Password;
+                var oldPassword = GetInstanceField(userModule).Users.Get(userID).Password;
                 userModule.ChangePassword(oldPassword);
             }
             catch (Exception ex)
@@ -396,7 +407,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         public void UserModule_BlackList_AddToBlackList_Successfully()
         {
             int userID = 0;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             userModule.AddToBlackList(1);
             userModule.AddToBlackList(2);
@@ -408,7 +419,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [Test]
         public void UserModule_BlackList_RemoveFromBlackList_Successfully()
         {
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             userModule.AddToBlackList(1);
             userModule.RemoveFromBlackList(1);
@@ -420,7 +431,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         public void UserModule_BlackList_GetBlackList_GetCorrectCountOfBlockedUsers()
         {
             int userID = 0;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             userModule.AddToBlackList(1);
             userModule.AddToBlackList(2);
@@ -432,7 +443,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         public void UserModule_BlackList_AddToBlackListItself_GetException()
         {
             int userID = 0;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             try
             {
@@ -448,7 +459,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [Test]
         public void UserModule_BlackList_AddToBlackListBlockedUser_GetException()
         {
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             try
             {
@@ -465,7 +476,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [Test]
         public void UserModule_BlackList_RemoveNotBlockedUser_GetException()
         {
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             try
             {
@@ -483,7 +494,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         {
             int userID = 0;
             int targetedUserID = 1;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             userModule.FollowTo(targetedUserID);
             userModule.AddToBlackList(targetedUserID);
@@ -496,7 +507,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         {
             int userID = 0;
             int targetedUserID = 1;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             userModule.FollowTo(targetedUserID);
             userModule.AddToBlackList(targetedUserID);
@@ -507,7 +518,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         [Test]
         public void UserModule_FindUsers_FindUsingPredicate_Successfully()
         {
-            IUserModule userModule = new UserModule(unitOfWork, 0);
+            IUserModule userModule = new UserModule(factory, 0);
 
             var users = userModule.FindUsers(x => x.Country == "Ukraine");
 
@@ -519,7 +530,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         public void UserModule_FindUsers_FindItself_GetNull()
         {
             int userID = 0;
-            IUserModule userModule = new UserModule(unitOfWork, userID);
+            IUserModule userModule = new UserModule(factory, userID);
 
             var thisUser = userModule.FindUsers(x => x.ID == userID).FirstOrDefault();
 
