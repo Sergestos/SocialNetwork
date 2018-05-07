@@ -15,7 +15,7 @@ namespace SocialNetwork.DAL.Infastructure
         IRepository<DialogMember> DialogMembers { get; }
         IRepository<Follower> Followers { get; }        
         IRepository<BlackList> BlackLists { get; }
-        IRepository<Content> ContentPaths { get; }
+        IRepository<Content> Content { get; }
         string MainContentDirectory { get; }
     }
 }

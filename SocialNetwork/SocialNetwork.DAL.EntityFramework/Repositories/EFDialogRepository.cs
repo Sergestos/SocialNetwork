@@ -38,11 +38,13 @@ namespace SocialNetwork.DAL.EntityFramework.Repositories
         public void Add(Dialog item)
         {
             context.Dialogs.Add(item);
+            context.SaveChanges();
         }
 
         public void Update(Dialog item)
         {
             context.Entry(item).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -50,6 +52,7 @@ namespace SocialNetwork.DAL.EntityFramework.Repositories
             var dialog = context.Dialogs.Find(id);
             if (dialog != null)
                 context.Dialogs.Remove(dialog);
+            context.SaveChanges();
         }
     }
 }

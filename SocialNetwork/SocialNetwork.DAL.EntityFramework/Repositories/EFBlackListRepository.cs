@@ -39,11 +39,13 @@ namespace SocialNetwork.DAL.EntityFramework.Repositories
         public void Add(BlackList item)
         {
             context.BlackLists.Add(item);
+            context.SaveChanges();
         }
 
         public void Update(BlackList item)
         {
             context.Entry(item).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -51,6 +53,7 @@ namespace SocialNetwork.DAL.EntityFramework.Repositories
             var blackList = context.BlackLists.Find(id);
             if (blackList != null)
                 context.BlackLists.Remove(blackList);
+            context.SaveChanges();
         }
     }
 }

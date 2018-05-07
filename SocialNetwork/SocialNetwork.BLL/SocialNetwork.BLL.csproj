@@ -52,6 +52,7 @@
     <Compile Include="DataProvider\EFUnitOfWorkFactory.cs" />
     <Compile Include="DataProvider\FakeUnitOfWorkFactory.cs" />
     <Compile Include="DataProvider\IUnitOfWorkFactory.cs" />
+    <Compile Include="Models\ContentBLL.cs" />
     <Compile Include="Models\DialogBLL.cs" />
     <Compile Include="Models\PostBLL.cs" />
     <Compile Include="Models\UserInfoBLL.cs" />

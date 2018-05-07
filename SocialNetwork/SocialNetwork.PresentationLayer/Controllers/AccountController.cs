@@ -1,10 +1,13 @@
 ﻿using SocialNetwork.BLL.DataProvider;
 using SocialNetwork.BLL.Modules.AnonymousModule;
+using SocialNetwork.BLL.Modules.UserModule;
 using SocialNetwork.PresentationLayer.Infastructure;
 using SocialNetwork.PresentationLayer.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -23,18 +26,25 @@ namespace SocialNetwork.PresentationLayer.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+                return RedirectToAction("Home", "User");
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginUserModel model)
-        {
+        {            
             if (ModelState.IsValid)
-            {                
-                if (module.GetAllUsers.FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password) != null) 
+            {
+                var users = module.GetAllUsers;
+
+                if (users.FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password) != null) 
                 {
                     FormsAuthentication.SetAuthCookie(model.Email, true);
+                    HttpContext.Response.Cookies.Add(new HttpCookie("id", users.First(x => x.Email == model.Email).ID.ToString()));
+
                     return RedirectToAction("Home", "User");
                 }
                 else
@@ -59,22 +69,23 @@ namespace SocialNetwork.PresentationLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-                var users = module.GetAllUsers.ToList();
                 if (module.GetAllUsers.FirstOrDefault(x => x.Email == model.Email) == null)
                 {
-                    module.Registrate(new BLL.Models.UserInfoBLL()
+                    var newUser = new BLL.Models.UserInfoBLL()
                     {
                         Email = model.Email,
                         FirstName = model.Name,
                         SurName = model.Surname,
-                        Gender = model.Gender,
+                        Gender = model.Gender ?? "Unknown",
                         Password = model.Password,
-                        PhoneNumber = model.PhoneNumber,
-                        Country = model.Country,
-                        Locality = model.Location,
-                        //BirthDate = model.BirthDayDate,
-                    });
+                        PhoneNumber = model.PhoneNumber ?? "-",
+                        Country = model.Country ?? "-",
+                        Locality = model.Location ?? "-",
+                        BirthDate = model.BirthDayDate,
+                    };
 
+                    module.Registrate(newUser, model.Avatar.InputStream, Path.GetExtension(model.Avatar.FileName));
+                    
                     return RedirectToAction("Login", "Account");
                 }
                 else
@@ -90,10 +101,12 @@ namespace SocialNetwork.PresentationLayer.Controllers
             return View(model);
         }
 
-        public RedirectResult Logout()
+        [HttpGet]
+        public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            return Redirect("/Account/Login");
+
+            return RedirectToAction("Login", "Account");
         }
     }
 }

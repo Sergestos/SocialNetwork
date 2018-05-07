@@ -35,7 +35,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
                 throw new BusinessEntityNullException("User is not found");
             this.currentUserID = userID;
 
-            this.userConverter = new UserConverter();
+            this.userConverter = new UserConverter(unitOfWork);
             this.fileManager = new ContentFileManager(unitOfWork);
         }
 
@@ -277,13 +277,13 @@ namespace SocialNetwork.BLL.Modules.UserModule
         {
             ValidateDialog(dialogID);
 
-            var dialogPath = unitOfWork.ContentPaths.Get(
+            var dialogPath = unitOfWork.Content.Get(
                 unitOfWork.Dialogs
                 .Find(x => x.ID == dialogID)
                 .FirstOrDefault()
                 .DialogContentID.Value).Path;
 
-            fileManager.WriteToDialog(dialogPath, currentUserID, text, content);
+            fileManager.WriteDialog(dialogPath, currentUserID, text, content);
         }
 
         public void StartDialog(string name, bool isReadOnly, int? userID)
@@ -296,10 +296,10 @@ namespace SocialNetwork.BLL.Modules.UserModule
                     throw new BusinessAdmissionException("Selected user blocked inviting");
             }
 
-            string fullPath = fileManager.Create(name, currentUserID);
+            fileManager.CreateDialog(name, currentUserID, out string fullPath);
 
             var content = new Content() { Category = "Dialog", Path = fullPath };
-            unitOfWork.ContentPaths.Add(content);
+            unitOfWork.Content.Add(content);
 
             var dialog = new Dialog()
             {
@@ -307,7 +307,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
                 IsReadOnly = isReadOnly,
                 MasterID = currentUserID,
                 DialogCreatedDate = DateTime.Now,
-                DialogContentID = unitOfWork.ContentPaths.Find(x => x.Path == fullPath).First().ID
+                DialogContentID = unitOfWork.Content.Find(x => x.Path == fullPath).First().ID
             };
             
             unitOfWork.Dialogs.Add(dialog);

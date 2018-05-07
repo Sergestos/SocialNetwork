@@ -39,11 +39,13 @@ namespace SocialNetwork.DAL.EntityFramework.Repositories
         public void Add(Content item)
         {
             context.ContentPaths.Add(item);
+            context.SaveChanges();
         }
 
         public void Update(Content item)
         {
             context.Entry(item).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -51,6 +53,7 @@ namespace SocialNetwork.DAL.EntityFramework.Repositories
             var content = context.ContentPaths.Find(id);
             if (content != null)
                 context.ContentPaths.Remove(content);
+            context.SaveChanges();
         }
     }
 }

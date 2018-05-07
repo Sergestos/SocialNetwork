@@ -1,11 +1,23 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model SocialNetwork.BLL.Models.UserInfoBLL
+
+@{
+    ViewBag.Title = "Home";
 }
 
 <div>
-    <p>Index</p>
-    @if(ViewBag.result != null)
-    {
-    <p>@ViewBag.result</p>
-    }
+    <div>Greetings, @Model.FirstName</div>
+    <div>
+        @if (Model.Content != null && ViewBag.AvatarPath != null)
+        {   
+            <div class="item">
+                <img src="@Url.Action("GetAvatar", "User", new { @ownerID = Model.Content.ID})" width="220" height="220"/>
+            </div>
+            @*<img src="@Url.Content(ViewBag.AvatarPath)" />*@
+        }
+        @if (Model.Content == null)
+        {
+            <img src="~/Content/NoAvatarUserContent_200x200_v1.png" width="220" height="220"/>
+        }
+    </div>
 </div>
+

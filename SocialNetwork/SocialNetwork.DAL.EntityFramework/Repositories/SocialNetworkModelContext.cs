@@ -8,9 +8,9 @@ namespace SocialNetwork.DAL.EntityFramework
     public class SocialNetworkModelContext : DbContext
     {
         // connetion string "name=SocialNetworkModel"
-        public SocialNetworkModelContext(string connectionString) : base("SocialNetworkModel")
+        public SocialNetworkModelContext(string connectionString) : base(connectionString)
         {
-            //Database.SetInitializer<SocialNetworkModelContext>(new DropCreateDatabaseIfModelChanges<SocialNetworkModelContext>());
+            Database.SetInitializer<SocialNetworkModelContext>(new DropCreateDatabaseIfModelChanges<SocialNetworkModelContext>());
         }
 
         public virtual DbSet<User> Users { get; set; }
@@ -30,7 +30,6 @@ namespace SocialNetwork.DAL.EntityFramework
             modelBuilder.Entity<User>().Property(x => x.BirthDate).HasColumnType("datetime2");
             modelBuilder.Entity<User>().Property(x => x.RegistrationDate).HasColumnType("datetime2");
             modelBuilder.Entity<User>().Property(x => x.LastTimeOnlineDate).HasColumnType("datetime2");
-
 
             modelBuilder.Entity<Dialog>().HasKey(x => x.ID);
             modelBuilder.Entity<Dialog>().Property(x => x.Name).IsRequired();

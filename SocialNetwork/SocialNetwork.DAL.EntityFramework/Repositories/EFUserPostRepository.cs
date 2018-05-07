@@ -38,11 +38,13 @@ namespace SocialNetwork.DAL.EntityFramework.Repositories
         public void Add(UserPost item)
         {
             context.UserPosts.Add(item);
+            context.SaveChanges();
         }
 
         public void Update(UserPost item)
         {
             context.Entry(item).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -50,6 +52,7 @@ namespace SocialNetwork.DAL.EntityFramework.Repositories
             var userPost = context.UserPosts.Find(id);
             if (userPost != null)
                 context.UserPosts.Remove(userPost);
+            context.SaveChanges();
         }
     }
 }

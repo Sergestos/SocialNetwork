@@ -16,8 +16,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Social Network", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("Logout", "Logout", "Account", new { area = ""}, new { @class = "navbar-brand" })
+                @if(User.Identity.IsAuthenticated)
+                {
+                    <div>
+                        @Html.ActionLink("My Page", "Home", "User", new { area = "" }, new { @class = "navbar-brand" })
+                        @Html.ActionLink("Posts", "Logout", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                        @Html.ActionLink("Dialogs", "Logout", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                        @Html.ActionLink("Logout", "Logout", "Account", new { area = "" }, new { @class = "navbar-brand" })                           
+                    </div>
+                }
+                @if(!User.Identity.IsAuthenticated) 
+                {
+                    <div>
+                        @Html.ActionLink("Social Network", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                    </div>                    
+                }                                
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">

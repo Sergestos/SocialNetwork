@@ -25,6 +25,11 @@ namespace SocialNetwork.PresentationLayer.Models
         public string Country { get; set; }
         public string PhoneNumber { get; set; }
 
-        //public DateTime BirthDayDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}")]
+        [DataType(DataType.Date)]
+        public DateTime BirthDayDate { get; set; }
+
+        [Required, Microsoft.Web.Mvc.FileExtensions(Extensions = "jpg,png",ErrorMessage = "Specify a CSV file. (Comma-separated values)")]
+        public HttpPostedFileBase Avatar { get; set; }
     }
 }

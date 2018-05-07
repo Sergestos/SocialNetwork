@@ -43,7 +43,7 @@ namespace SocialNetwork.DAL.EntityFramework
             }
         }
 
-        public IRepository<Content> ContentPaths
+        public IRepository<Content> Content
         {
             get
             {

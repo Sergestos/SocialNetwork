@@ -1,4 +1,5 @@
-﻿using SocialNetwork.DAL.Entities;
+﻿using SocialNetwork.BLL.DataProvider;
+using SocialNetwork.DAL.Entities;
 using SocialNetwork.DAL.Infastructure;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,21 @@ using System.Xml.Linq;
 
 namespace SocialNetwork.BLL.BusinessLogic.ContentManagement
 {
-    public sealed class ContentFileManager
+    public sealed class ContentFileManager : IContentFileManager
     {
         private IUnitOfWork unitOfWork;
 
-        public ContentFileManager(IUnitOfWork unitOfWork)
+        internal ContentFileManager(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
 
-        public string Create(string name, int masterID)
+        public ContentFileManager(IUnitOfWorkFactory unitOfWorkFactory)
+        {
+            this.unitOfWork = unitOfWorkFactory.Create();
+        }
+
+        public void CreateDialog(string name, int masterID, out string path)
         {
             if (!new DirectoryInfo(unitOfWork.MainContentDirectory).Exists)
                 throw new BusinessLogic.Exceptions.BusinessWrongRootException("This directory is not exist");
@@ -33,12 +39,12 @@ namespace SocialNetwork.BLL.BusinessLogic.ContentManagement
             rootElement.Add(attr_masterID);
 
             xml.Add(rootElement);
-            xml.Save(fullpath);            
+            xml.Save(fullpath);
 
-            return fullpath;
+            path = fullpath;
         }
 
-        public void WriteToDialog(string dialogFullPath, int userID, string text, IEnumerable<FileStream> contentStream)
+        public void WriteDialog(string dialogFullPath, int userID, string text, IEnumerable<FileStream> contentStream)
         {
             XDocument xdoc = XDocument.Load(dialogFullPath);
 
@@ -59,9 +65,9 @@ namespace SocialNetwork.BLL.BusinessLogic.ContentManagement
                         fileWritter.Write(bytes);
                     }
 
-                    unitOfWork.ContentPaths.Add(new Content() { Category = "DialogContent", Path = contentFullPathName });
+                    unitOfWork.Content.Add(new Content() { Category = "DialogContent", Path = contentFullPathName });
 
-                    message.Add(new XElement("contentID", unitOfWork.ContentPaths.Find(x => x.Path == contentFullPathName).First().ID));
+                    message.Add(new XElement("contentID", unitOfWork.Content.Find(x => x.Path == contentFullPathName).First().ID));
                 }
             }
 
@@ -69,9 +75,31 @@ namespace SocialNetwork.BLL.BusinessLogic.ContentManagement
             xdoc.Save(dialogFullPath);
         }
 
+        public void UploadFile(Stream file, out string savedPath)
+        {
+            savedPath = GetContentName();
+
+            using (var fileStream = File.Create(savedPath))
+            {
+                file.Seek(0, SeekOrigin.Begin);
+                file.CopyTo(fileStream);
+            }
+        }
+        
+        public Byte[] GetFile(string fullPath)
+        {
+            return File.ReadAllBytes(fullPath);
+        }
+
         private string GetLongFormattedTime()
         {
             return string.Format("{0:s}", DateTime.Now).Replace('-', ':');
+        }
+
+        private string GetContentName()
+        {
+            return string.Concat(unitOfWork.MainContentDirectory, "Content",
+                "__hc", RemoveChars(GetLongFormattedTime(), ':'));
         }
 
         private string GetContentName(int userID)

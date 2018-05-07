@@ -46,7 +46,7 @@ namespace SocialNetwork.DAL.Infastructure
         public IRepository<Dialog> Dialogs             => dialogRepository        ?? throw nullRefException;
         public IRepository<DialogMember> DialogMembers => dialogMembersRepository ?? throw nullRefException;
         public IRepository<Follower> Followers         => followersRepository     ?? throw nullRefException;
-        public IRepository<Content> ContentPaths  => contentRepository       ?? throw nullRefException;
+        public IRepository<Content> Content  => contentRepository       ?? throw nullRefException;
         public IRepository<BlackList> BlackLists       => blackListRepository     ?? throw nullRefException;        
 
         private NullReferenceException nullRefException = new NullReferenceException("Repository has not been initialized");

@@ -38,11 +38,13 @@ namespace SocialNetwork.DAL.EntityFramework.Repositories
         public void Add(Follower item)
         {
             context.Followers.Add(item);
+            context.SaveChanges();
         }
 
         public void Update(Follower item)
         {
             context.Entry(item).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -50,6 +52,7 @@ namespace SocialNetwork.DAL.EntityFramework.Repositories
             var follower = context.Followers.Find(id);
             if (follower != null)
                 context.Followers.Remove(follower);
+            context.SaveChanges();
         }
     }
 }

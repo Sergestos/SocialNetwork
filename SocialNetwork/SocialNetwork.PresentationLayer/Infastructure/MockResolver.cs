@@ -12,8 +12,8 @@ namespace SocialNetwork.PresentationLayer.Infastructure
 
         static MockResolver()
         {
-            //factory = new FakeUnitOfWorkFactory("string1");
-            factory = new EFUnitOfWorkFactory("SocialNetworkModel", @"F:\Social Network\TestRecordsRepositoty");
+            //factory = new FakeUnitOfWorkFactory(@"F:\Social Network\TestRecordsRepositoty\");
+            factory = new EFUnitOfWorkFactory("SocialNetworkModel", @"F:\Social Network\TestRecordsRepositoty\");
         }
 
         public static IUnitOfWorkFactory GetUnitOfWorkFactory()

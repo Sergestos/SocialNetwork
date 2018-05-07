@@ -8,13 +8,15 @@ using SocialNetwork.DAL.Infastructure;
 using SocialNetwork.BLL.BusinessLogic.EntityConverters;
 using SocialNetwork.BLL.DataProvider;
 using SocialNetwork.DAL.Entities;
+using System.IO;
+using SocialNetwork.BLL.BusinessLogic.ContentManagement;
 
 namespace SocialNetwork.BLL.Modules.AnonymousModule
 {
     public sealed class AnonymousModule : IAnonymoysModule
     {
         private IUnitOfWork unitOfWork;
-        private UserConverter converter;
+        private UserConverter converter;        
 
         public AnonymousModule(IUnitOfWorkFactory unitOfWorkFactory)
         {
@@ -22,35 +24,25 @@ namespace SocialNetwork.BLL.Modules.AnonymousModule
                 throw new BusinessLogic.Exceptions.BusinessEntityNullException("UnitOfWork is not initialized");
             this.unitOfWork = unitOfWorkFactory.Create();
 
-            this.converter = new UserConverter();
+            this.converter = new UserConverter(unitOfWork);
         }
 
         public IEnumerable<UserInfoBLL> GetAllUsers =>
              unitOfWork.Users.GetAll.Select(x => converter.ConvertToBLLEntity(x));
 
-        public void Registrate(UserInfoBLL user)
+        public void Registrate(UserInfoBLL user, Stream stream, string fileExtension = ".jpg")
         {
-            unitOfWork.Users.Add(new User()
+            IContentFileManager fileManager = new ContentFileManager(unitOfWork);
+            fileManager.UploadFile(stream, out string savedPath);
+
+            unitOfWork.Content.Add(new Content()
             {
-                FirstName = user.FirstName,
-                SurName = user.SurName,
-                Email = user.Email,
-                Password = user.Password,
-                Country = user.Country,
-                Locality = user.Locality,
-                PhoneNumber = user.PhoneNumber,
-                Gender = user.Gender,
-                BirthDate = user.BirthDate,
-                IsBanned = false,
-                IsDeleted = false,
-                IsOthersCanStartChat = true,
-                IsShowInfoForAnonymousUsers = true,
-                IsOthersCanComment = true,
-                LastTimeOnlineDate = DateTime.Now,
-                RegistrationDate = DateTime.Now,
-                Role = "User"
-                // Avatar Content ID
-            });            
+                Category = "Avatar",
+                Path = savedPath,
+                Extension = fileExtension
+            });
+
+            unitOfWork.Users.Add(converter.ConvertToOriginalEntity(user, unitOfWork.Content.Find(x => x.Path == savedPath).FirstOrDefault().ID));
         }
     }
 }

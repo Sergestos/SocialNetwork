@@ -39,7 +39,7 @@ namespace SocialNetwork.FakeDataProviders
         public IRepository<BlackList> BlackLists => blackListRepository;
         public IRepository<Dialog> Dialogs => dialogRepository;
         public IRepository<DialogMember> DialogMembers => dialogMemberRepository;        
-        public IRepository<Content> ContentPaths => contentPathsRepository;
+        public IRepository<Content> Content => contentPathsRepository;
 
         public string MainContentDirectory => contentPath;
     }
