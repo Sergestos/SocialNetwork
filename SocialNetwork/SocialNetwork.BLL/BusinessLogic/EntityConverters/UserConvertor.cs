@@ -33,7 +33,10 @@ namespace SocialNetwork.BLL.BusinessLogic.EntityConverters
                 BirthDate = originalEntity.BirthDate,
                 Locality = originalEntity.Locality,
                 PhoneNumber = originalEntity.PhoneNumber,
-                Gender = originalEntity.Gender,                
+                Gender = originalEntity.Gender,         
+                IsOthersCanComment = originalEntity.IsOthersCanComment,
+                IsOthersCanStartDialog = originalEntity.IsOthersCanStartChat,
+                IsShowInfoForAnonymousUsers = originalEntity.IsShowInfoForAnonymousUsers
             };
 
             if (content != null)
@@ -69,9 +72,9 @@ namespace SocialNetwork.BLL.BusinessLogic.EntityConverters
                 BirthDate = bllEntity.BirthDate,
                 IsBanned = false,
                 IsDeleted = false,
-                IsOthersCanStartChat = true,
-                IsShowInfoForAnonymousUsers = true,
-                IsOthersCanComment = true,
+                IsOthersCanStartChat = bllEntity.IsOthersCanStartDialog,
+                IsShowInfoForAnonymousUsers = bllEntity.IsShowInfoForAnonymousUsers,
+                IsOthersCanComment = bllEntity.IsOthersCanComment,
                 LastTimeOnlineDate = DateTime.Now,
                 RegistrationDate = DateTime.Now,
                 Role = "User",

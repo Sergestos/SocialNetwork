@@ -156,29 +156,58 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infastructure\ApplicationConstants.cs" />
+    <Compile Include="Infastructure\EntityConverters\EntityConverter.cs" />
+    <Compile Include="Infastructure\ApplicationHelper.cs" />
     <Compile Include="Infastructure\MockResolver.cs" />
+    <Compile Include="Models\DialogInfo.cs" />
+    <Compile Include="Models\DialogPreview.cs" />
+    <Compile Include="Models\DialogMessage.cs" />
+    <Compile Include="Models\DialogView.cs" />
     <Compile Include="Models\LoginUserModel.cs" />
     <Compile Include="Models\RegistrationUserModel.cs" />
+    <Compile Include="Models\SettingViewModel.cs" />
+    <Compile Include="Models\UserView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Icons\cancel.png" />
+    <Content Include="Content\Icons\chat %281%29.png" />
+    <Content Include="Content\Icons\chat.png" />
+    <Content Include="Content\Icons\house_24.png" />
+    <Content Include="Content\Icons\locked %281%29.png" />
+    <Content Include="Content\Icons\locked.png" />
+    <Content Include="Content\Icons\logout.png" />
+    <Content Include="Content\Icons\magnifying-glass.png" />
+    <Content Include="Content\Icons\newspaper %281%29.png" />
+    <Content Include="Content\Icons\newspaper.png" />
+    <Content Include="Content\Icons\settings.png" />
+    <Content Include="Content\Icons\unlocked.png" />
+    <Content Include="Content\Icons\user32.png" />
+    <Content Include="Content\Icons\user64.png" />
+    <Content Include="Content\Icons\users %281%29.png" />
+    <Content Include="Content\Icons\users.png" />
     <Content Include="Content\no-image-found.jpg" />
     <Content Include="Content\NoAvatarUserContent_200x200_v1.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\AppScripts\DialogScripts.js" />
+    <Content Include="Scripts\AppScripts\PaggingScript.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\AppScripts\UserPageScripts.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -193,13 +222,31 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Registration.cshtml" />
     <Content Include="Views\User\Home.cshtml" />
+    <Content Include="Views\User\Search.cshtml" />
+    <Content Include="Views\User\UserPage.cshtml" />
+    <Content Include="Views\User\MyFollowers.cshtml" />
+    <Content Include="Views\User\FollowedUsers.cshtml" />
+    <Content Include="Views\User\BlockedUsers.cshtml" />
+    <Content Include="App_Code\Helper.cshtml" />
+    <Content Include="Views\User\CreateDialog.cshtml" />
+    <Content Include="Views\User\DialogPreviews.cshtml" />
+    <Content Include="Views\User\Dialog.cshtml" />
+    <Content Include="Views\User\DialogInfoMasterView.cshtml" />
+    <Content Include="Views\User\DialogInfoView.cshtml" />
+    <Content Include="Views\User\Setting.cshtml" />
+    <Content Include="Views\User\ChangePersonalInfo.cshtml" />
+    <Content Include="Views\User\ChangePassword.cshtml" />
+    <Content Include="Views\User\ChangePrivacy.cshtml" />
+    <Content Include="Views\User\ErrorMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,82 @@
+﻿@model List<string>
+
+@{
+    ViewBag.Title = "ChangePrivacy";
+}
+
+<div class="setting-privacy">
+    @using (Ajax.BeginForm("ChangePrivacy", "User", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "setting-main" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div>
+            @if (ViewBag.Result != null && ViewBag.Result == "Success")
+            {
+                <h3 style="color: forestgreen; margin-bottom: 30px;">
+                    @ViewBag.Result
+                </h3>
+            }
+            else
+            {
+                <h3 style="margin-bottom: 30px;">Privacy Setting</h3>
+            }
+        </div>
+
+        <div class="setting-privacy-radio">
+            <p>Can Others Comment</p>
+            <input type="radio" id="radio-IsOthersCanComment-true"
+                   name="IsOthersCanComment" value="true" class=".radio-inline">
+            <label for="radio-IsOthersCanComment-true">True</label>
+
+            <input type="radio" id="radio-IsOthersCanComment-false"
+                   name="IsOthersCanComment" value="false" class=".radio-inline">
+            <label for="radio-IsOthersCanComment-false">False</label>
+            <hr />
+        </div>
+        <div class="setting-privacy-radio">
+            <p>Can Others Start Dialog</p>
+            <input type="radio" id="radio-IsOthersCanStartDialog-true"
+                   name="IsOthersCanStartDialog" value="true" class=".radio-inline">
+            <label for="radio-IsOthersCanStartDialog-true">True</label>
+
+            <input type="radio" id="radio-IsOthersCanStartDialog-false"
+                   name="IsOthersCanStartDialog" value="false" class=".radio-inline" checked>
+            <label for="radio-IsOthersCanStartDialog-false">False</label>
+            <hr />
+        </div>
+        <div class="setting-privacy-radio">
+            <p>Can Anonymous Users Read Info</p>
+            <input type="radio" id="radio-IsShowInfoForAnonymousUsers-true"
+                   name="IsShowInfoForAnonymousUsers" value="true" class=".radio-inline">
+            <label for="radio-IsShowInfoForAnonymousUsers-true">True</label>
+
+            <input type="radio" id="radio-IsShowInfoForAnonymousUsers-false"
+                   name="IsShowInfoForAnonymousUsers" value="false" class=".radio-inline" checked>
+            <label for="radio-IsShowInfoForAnonymousUsers-false">False</label>
+            <hr />
+        </div>
+        <input type="submit" value="Change" class="btn btn-default" style="margin-bottom: 20px;"/>
+    }    
+</div>
+
+<script type="text/javascript">
+    if ('@Model[0]' == 'true') {
+        $('#radio-IsOthersCanComment-true').attr('checked', true);
+    }
+    else {
+        $('#radio-IsOthersCanComment-false').attr('checked', true);
+    }
+    if ('@Model[1]' == 'true') {
+        $('#radio-IsOthersCanStartDialog-true').attr('checked', true);
+    }
+    else {
+        $('#radio-IsOthersCanStartDialog-false').attr('checked', true);
+    }
+    if ('@Model[2]' == 'true') {
+        $('#radio-IsShowInfoForAnonymousUsers-true').attr('checked', true);
+    }
+    else {
+        $('#radio-IsShowInfoForAnonymousUsers-false').attr('checked', true);
+    }
+</script>
+

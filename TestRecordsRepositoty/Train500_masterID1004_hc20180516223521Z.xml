@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dialog firstMasterID="1004">
+  <message userID="1004" sent_at="2018:05:16T22:35:26">
+    <text>hello</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:35:26">
+    <text>hello</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:35:36">
+    <text>gg111111111</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:35:36">
+    <text>gg111111111</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:35:36">
+    <text>gg111111111</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:35:36">
+    <text>gg111111111</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:41:03">
+    <text></text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:41:03">
+    <text></text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:41:03">
+    <text></text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:41:08">
+    <text></text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:41:08">
+    <text></text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:41:08">
+    <text></text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:41:09">
+    <text></text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:41:09">
+    <text></text>
+  </message>
+</dialog>

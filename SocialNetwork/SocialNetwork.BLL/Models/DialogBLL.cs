@@ -18,7 +18,7 @@ namespace SocialNetwork.BLL.Models
         public int? MasterID { get; set; }
         public List<UserInfoBLL> Members{ get; set; }
 
-        public int? ContentPath { get; set; }
+        public int? ContentID { get; set; }
 
         public bool isReadOnly { get; set; }
     }

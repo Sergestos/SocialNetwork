@@ -1,0 +1,10 @@
+﻿@model IEnumerable<SocialNetwork.PresentationLayer.Models.UserView>
+
+@{
+    ViewBag.Title = "Search";
+}
+
+<div class="search-result">
+    @Helper.DisplayListOfUsers("Search", "/User/Search", Model, ViewBag.Page ?? 0, ViewBag.IsLastPage ?? false)
+</div>
+

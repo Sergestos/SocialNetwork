@@ -12,18 +12,18 @@ namespace SocialNetwork.BLL.Modules.UserModule
     using SocialNetwork.BLL.BusinessLogic.EntityConverters;
     using SocialNetwork.BLL.BusinessLogic.ContentManagement;
     using System.Text.RegularExpressions;
-    using System.IO;    
+    using System.IO;
 
     public sealed class UserModule : IUserModule
     {
-        private IUnitOfWork unitOfWork;        
+        private IUnitOfWork unitOfWork;
         private int currentUserID;
 
         private UserConverter userConverter;
         private ContentFileManager fileManager;
 
         private const int passwordMaxLength = 32;
-        private const int emailMaxLength = 32;        
+        private const int emailMaxLength = 32;
 
         public UserModule(IUnitOfWorkFactory unitOfWorkFactory, int userID)
         {
@@ -66,39 +66,39 @@ namespace SocialNetwork.BLL.Modules.UserModule
         }
 
 
-        public UserInfoBLL GetItselfInfo
+        public UserInfoBLL GetMyInfo
         {
             get
             {
                 var user = unitOfWork.Users.Get(currentUserID);
                 return userConverter.ConvertToBLLEntity(user);
-            }            
+            }
         }
 
-        public IEnumerable<PostBLL> GetItselfPosts
+        public IEnumerable<PostBLL> GetMyPosts
         {
             get
             {
                 return unitOfWork.UserPosts
                     .Find(x => x.ID == currentUserID)
-                    .Select(x=> new PostBLL()
-                        {
-                            ID = x.ID,
-                            LikeCounter = x.LikeCounter,
-                            RepostCounter = x.RepostCounter,                            
-                            CreatorID = x.CreatorID,
-                            PostContentPath = x.PostContentSidePath,
-                            RepostedID = x.RepostedID,
-                            CommentsContentSidePath = x.CommentsContentSidePath,
-                            PostCreatedDate = x.PostCreatedDate
-                        });
+                    .Select(x => new PostBLL()
+                    {
+                        ID = x.ID,
+                        LikeCounter = x.LikeCounter,
+                        RepostCounter = x.RepostCounter,
+                        CreatorID = x.CreatorID,
+                        PostContentPath = x.PostContentSidePath,
+                        RepostedID = x.RepostedID,
+                        CommentsContentSidePath = x.CommentsContentSidePath,
+                        PostCreatedDate = x.PostCreatedDate
+                    });
             }
         }
 
-        public void FollowTo(int userID)
+        public void Follow(int userID)
         {
-            ValidateUser(userID, "User can\'t follow to the himself");
-          
+            ValidateUser(userID, "User can\'t follow to the itself");
+
             var follower = unitOfWork.Followers
                 .Find(x => (x.FollowerID == currentUserID) && (x.FollowedToID == userID))
                 .FirstOrDefault();
@@ -131,7 +131,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
             unitOfWork.Followers.Delete(follower.ID);
         }
 
-        public IEnumerable<UserInfoBLL> GetItselfFollewers
+        public IEnumerable<UserInfoBLL> GetMyFollewers
         {
             get
             {
@@ -154,7 +154,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
             var user = unitOfWork.Users.Get(currentUserID);
             if (newEmail == user.Email)
                 throw new BusinessLogicException("New email has to be different to the current");
-            
+
             user.Email = newEmail;
             unitOfWork.Users.Update(user);
         }
@@ -198,7 +198,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
             var badUserFollowed = unitOfWork.Followers
                 .Find(x => x.FollowerID == userID && x.FollowedToID == currentUserID)
                 .FirstOrDefault();
-            if(badUserFollowed != null)
+            if (badUserFollowed != null)
                 unitOfWork.Followers.Delete(badUserFollowed.ID);
 
             unitOfWork.BlackLists.Add(new BlackList()
@@ -250,7 +250,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
 
                 // из Users
                 var userEntities = unitOfWork.Users
-                    // Выбираем таких, ID которых совпадает с usersInDialogsID
+                   // Выбираем таких, ID которых совпадает с usersInDialogsID
                    .Find(x => usersInDialogsID.Contains(x.ID))
                    // Конвертируем в UserInfoBLL
                    .Select(y => userConverter.ConvertToBLLEntity(y));
@@ -263,17 +263,45 @@ namespace SocialNetwork.BLL.Modules.UserModule
                         ID = x.ID,
                         MasterID = x.MasterID,
                         Name = x.Name,
-                        ContentPath = x.DialogContentID,
+                        ContentID = x.DialogContentID,
                         DialogCreatedDate = x.DialogCreatedDate,
                         isReadOnly = x.IsReadOnly,
                         Members = new List<UserInfoBLL>(userEntities.Where(y => userDialogsID.Contains(y.ID)))
                     });
 
-                return null;                             
+                return dialogs;
             }
         }
 
-        public void SendMessage(int dialogID, string text, IEnumerable<FileStream> content)
+        public IEnumerable<UserInfoBLL> GetUsersIFollowing
+        {
+            get
+            {
+                return unitOfWork.Followers
+                    .Find(x => x.FollowerID == currentUserID)
+                    .Select(x => userConverter.ConvertToBLLEntity(unitOfWork.Users.Get(x.FollowedToID)));
+            }
+        }
+
+        public IEnumerable<UserInfoBLL> GetUsersAddedMeToBlackList
+        {
+            get
+            {
+                return unitOfWork.BlackLists
+                    .Find(x => x.UserIDBanned == currentUserID)
+                    .Select(x => userConverter.ConvertToBLLEntity(unitOfWork.Users.Get(x.UserIDBanner)));
+            }
+        }
+
+        public IEnumerable<UserInfoBLL> GetAllUsers
+        {
+            get
+            {
+                return unitOfWork.Users.GetAll.Select(x => userConverter.ConvertToBLLEntity(x));
+            }
+        }
+
+        public void SendMessage(int dialogID, string text, IEnumerable<Stream> content)
         {
             ValidateDialog(dialogID);
 
@@ -322,9 +350,47 @@ namespace SocialNetwork.BLL.Modules.UserModule
                 unitOfWork.DialogMembers.Add(new DialogMember()
                 {
                     DialogID = dialog.ID,
-                    MemberID = currentUserID
+                    MemberID = userID.Value
                 });
             }
+        }
+
+        public DialogBLL GetDialog(int dialogID)
+        {
+            ValidateDialog(dialogID);
+
+            var dialog = unitOfWork.Dialogs.Get(dialogID);            
+
+            var members = unitOfWork.DialogMembers.GetAll
+                .Where(x => x.DialogID == dialogID)
+                .Select(x => userConverter.ConvertToBLLEntity(unitOfWork.Users.Get(x.MemberID)));
+
+            return new DialogBLL()
+            {
+                ID = dialog.ID,
+                ContentID = dialog.DialogContentID,
+                isReadOnly = dialog.IsReadOnly,
+                MasterID = dialog.MasterID,
+                Name = dialog.Name,
+                DialogCreatedDate = dialog.DialogCreatedDate,
+                Members = members.ToList()
+            };
+        }
+
+        public ContentBLL GetContent(int contentID)
+        {
+            var content = unitOfWork.Content.Get(contentID);
+
+            if (content == null)
+                throw new BusinessEntityNullException("Content is not found");
+
+            return new ContentBLL()
+            {
+                ID = content.ID,
+                Categoty = content.Category,
+                Extension = content.Extension,
+                Path = content.Path
+            };
         }
 
         public void AddUserToDialog(int userID, int dialogID)
@@ -361,6 +427,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
                 throw new BusinessLogicException("Granting User is not a member of this dialog");
            
             dialog.MasterID = newMasterID;
+            unitOfWork.Dialogs.Update(dialog);
         }
 
         public void LeaveFromDialog(int dialogID)
@@ -379,10 +446,62 @@ namespace SocialNetwork.BLL.Modules.UserModule
             unitOfWork.DialogMembers.Delete(dialogMember.ID);
         }
 
-        public void ChangeItselfInfo(UserInfoBLL user)
+        public void RemoveFromDialog(int userID, int dialogID)
         {
-            throw new NotImplementedException();
-        }        
+            ValidateUser(userID);
+            ValidateDialog(dialogID);
+
+            if (unitOfWork.Dialogs.Get(dialogID).MasterID != currentUserID)
+                throw new BusinessAdmissionException("Current user is not the master of this dialog");
+
+            var dialogMember = unitOfWork.DialogMembers.GetAll
+                .Where(x => x.DialogID == dialogID && x.MemberID == userID)
+                .FirstOrDefault();
+
+            if (dialogMember == null)
+                throw new BusinessEntityNullException("This user is not the member of this dialog");
+
+            unitOfWork.DialogMembers.Delete(dialogMember.ID);
+        }
+
+        public void ChangeDialogSetting(int dialogID, string name, bool IsReadOnly)
+        {
+            ValidateDialog(dialogID);         
+
+            var dialog = unitOfWork.Dialogs.Get(dialogID);
+
+            if (dialog.MasterID != currentUserID)
+                throw new BusinessAdmissionException("Only master can change dailog setting");
+
+            dialog.Name = name;
+            dialog.IsReadOnly = IsReadOnly;
+
+            unitOfWork.Dialogs.Update(dialog);
+        }
+
+        public void ChangeItselfInfo(UserInfoBLL user)
+        {            
+            var targetedUser = unitOfWork.Users.Get(currentUserID);            
+            targetedUser.SurName = user.SurName;
+            targetedUser.FirstName = user.FirstName;
+            targetedUser.Gender = user.Gender;
+            targetedUser.Email = user.Email;
+            targetedUser.Country = user.Country;
+            targetedUser.Locality = user.Locality;
+            targetedUser.PhoneNumber = user.PhoneNumber;
+
+            unitOfWork.Users.Update(targetedUser);
+        }   
+        
+        public void ChangePrivacy(bool IsOthersCanComment, bool IsOthersCanStartDialog, bool IsShowInfoForAnonymousUsers)
+        {
+            var targetedUser = unitOfWork.Users.Get(currentUserID);
+            targetedUser.IsOthersCanComment = IsOthersCanComment;
+            targetedUser.IsOthersCanStartChat = IsOthersCanStartDialog;
+            targetedUser.IsShowInfoForAnonymousUsers = IsShowInfoForAnonymousUsers;
+
+            unitOfWork.Users.Update(targetedUser);
+        }
 
         public void CreatePost(PostBLL post)
         {

@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "CreateDialog";
+}
+
+<div class="createDialog">
+    @using (Html.BeginForm("CreateDialog", "User", null, FormMethod.Post))
+    {
+        <div>
+            <p>
+                Dialog name
+                <input type="text" name="name" class="form-control" style="width: 500px"/>
+            </p>            
+        </div>
+        <div>
+            Is read only?
+            <input type="radio" id="createDialog-isReadOnly-true"
+                    name="isReadOnly" value="true" class=".radio-inline" checked>
+            <label for="createDialog-isReadOnly-true">True</label>
+            <input type="radio" id="createDialog-isReadOnly-false"
+                    name="isReadOnly" value="false">
+            <label for="createDialog-isReadOnly-false">False</label>
+        </div>      
+        <div>
+            @if (ViewBag.Companion != null)
+            {
+                <input type="hidden" name="companion" value="@ViewBag.Companion" />
+            }
+        </div>        
+        <input type="submit" value="Create" class="btn btn-default" style="margin-top: 15px;"/>
+    }
+    <div>
+        
+    </div>
+</div>

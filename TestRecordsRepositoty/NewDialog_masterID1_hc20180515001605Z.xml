@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dialog firstMasterID="1">
+  <message userID="1" sent_at="2018:05:16T22:30:17">
+    <text>1</text>
+  </message>
+  <message userID="1" sent_at="2018:05:16T22:30:17">
+    <text>1</text>
+  </message>
+  <message userID="1" sent_at="2018:05:16T22:30:17">
+    <text>1</text>
+  </message>
+  <message userID="1" sent_at="2018:05:16T22:30:23">
+    <text>222</text>
+  </message>
+  <message userID="1" sent_at="2018:05:16T22:30:23">
+    <text>222</text>
+  </message>
+  <message userID="1" sent_at="2018:05:16T22:30:23">
+    <text>222</text>
+  </message>
+  <message userID="1" sent_at="2018:05:17T23:55:35">
+    <text>nrw messagwe</text>
+    <contentID>1066</contentID>
+    <contentID>1066</contentID>
+  </message>
+</dialog>

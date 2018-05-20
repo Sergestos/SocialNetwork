@@ -1,0 +1,64 @@
+﻿@helper DisplayListOfUsers(string PageName, string FilterActionName, IEnumerable<SocialNetwork.PresentationLayer.Models.UserView> users, int currentPage, bool IsLastPage) {
+    <script type="text/javascript">
+        window.onload = function () {
+            InitilizePagging(@currentPage, ("@IsLastPage").toLowerCase() == 'true');
+        }
+    </script>
+
+    <div class="search-filter">                    
+        <form action="@FilterActionName" method="get" id="form">
+            <h3 class="search-filter-pageName" >@PageName</h3>            
+            <input type="hidden" name="page" value="0" />
+            <div class="search-filter-radio">
+                <input type="radio" id="search-filter-radio-inAsc"
+                       name="order" value="asc" class=".radio-inline" checked>
+                <label for="search-filter-radio-inAsc">In ascending</label>
+                <input type="radio" id="search-filter-radio-inDesc"
+                       name="order" value="desc">
+                <label for="search-filter-radio-inDesc">In descending</label>
+            </div>  
+            <div class="search-filter-combobox">
+                <div class="form-group">
+                    <select class="form-control" style="width: 200px" onchange="this.form.submit()" name="filter" id="search-filter-select">
+                        <option value="FirstName">Choose one to sort</option>
+                        <option value="FirstName">First Name</option>
+                        <option value="SurName">Surname</option>
+                        <option value="Age">Age</option>
+                        <option value="Location">Location</option>
+                        <option value="Country">Country</option>
+                    </select>
+                </div>            
+            </div>                      
+        </form>        
+    </div>    
+    <div>
+        @foreach (var item in users)
+        {
+            <input type="hidden" name="id" value="@item.ID" />
+            <div class="userList-result-group">
+                <div class="userList-result-avatar">
+                    <img class="avatar-image" src="/User/GetAvatar?ownerID=@item.ID" width="90" height="90" />
+                </div>
+                <div class="userList-result-info">
+                    <a href="/User/UserPage?id=@item.ID" style="font-size: 20px;"> @item.FirstName @item.SurName</a>
+                    <p>@item.Locality @item.Country</p>
+                </div>
+                <div class="userList-result-actions">
+                </div>
+            </div>
+        }
+        @if (users.Count() % 2 != 0)
+        {
+            <div class="userList-result-group">
+                <p class="userList-result-fakeItem">User block</p>
+            </div>
+        }
+    </div>
+    <div>
+        <div class="pagging">
+                <input type="button" onclick="GoToPage(0)" value="First Page" class="btn btn-primary" style="width: 130px;" id="pagging-firstPage"/>
+                <input type="button" onclick="GoToPage(@currentPage - 1)" value="Previous Page" class="btn btn-primary" style="width: 130px;" id="pagging-previousPage"/>
+                <input type="button" onclick="GoToPage(@currentPage + 1)" value="Next Page" class="btn btn-primary" style="width: 130px;" id="pagging-nextPage"/>
+        </div>       
+    </div>
+}

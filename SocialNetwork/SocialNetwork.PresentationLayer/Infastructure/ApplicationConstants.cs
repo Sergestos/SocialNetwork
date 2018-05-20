@@ -9,5 +9,7 @@ namespace SocialNetwork.PresentationLayer.Infastructure
     {
         public const string ImageIsNotFountDefaultImagePath = @"F:\Social Network\SocialNetwork\SocialNetwork.PresentationLayer\Content\no-image-found.jpg";
         public const string ImageIsNotFountDefaultImageMimeType = "jpeg";
+
+        public const int QuantityOfUsersPerPage = 20;
     }
 }

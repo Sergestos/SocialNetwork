@@ -1,0 +1,27 @@
+﻿@model SocialNetwork.PresentationLayer.Models.DialogInfo
+
+<div class="dialogInfo">
+    <div>
+        
+    </div>
+    <div class="dialogInfo-users">
+        <button onclick="location.href='@Url.Action("DialogPreviews")'" type="button" class="btn btn-default" id="dialogInfo-users-ButtonBack">Return to dialog</button>
+        @foreach (var item in Model.UsersInDialog)
+        {
+            <div class="dialogInfo-users-UserInfo">
+                <div>
+                    @if (Model.MasterID == item.ID)
+                    {
+                        <p>@Html.ActionLink(item.FirstName + " " + item.SurName, "UserPage", "User", new { @id = item.ID }, null) (Dialog Master)</p>
+                    }
+                    else
+                    {
+                        <p>@Html.ActionLink(item.FirstName + " " + item.SurName, "UserPage", "User", new { @id = item.ID }, null)</p>
+                    }                    
+                    <hr />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

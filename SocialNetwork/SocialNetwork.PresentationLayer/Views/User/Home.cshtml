@@ -1,23 +1,34 @@
-﻿@model SocialNetwork.BLL.Models.UserInfoBLL
+﻿@model SocialNetwork.PresentationLayer.Models.UserView
 
 @{
     ViewBag.Title = "Home";
 }
 
-<div>
-    <div>Greetings, @Model.FirstName</div>
-    <div>
-        @if (Model.Content != null && ViewBag.AvatarPath != null)
-        {   
-            <div class="item">
-                <img src="@Url.Action("GetAvatar", "User", new { @ownerID = Model.Content.ID})" width="220" height="220"/>
-            </div>
-            @*<img src="@Url.Content(ViewBag.AvatarPath)" />*@
-        }
-        @if (Model.Content == null)
+<div class="home">    
+    <div class="home-avatar">
+        @if (Model.AvatarID != 0)
         {
-            <img src="~/Content/NoAvatarUserContent_200x200_v1.png" width="220" height="220"/>
+            <div class="item">
+                <img class="avatar-image" src="@Url.Action("GetAvatar", "User", new { @ownerID = Model.ID})" width="220" height="220" />
+            </div>
+        }
+        @if (Model.AvatarID == 0)
+        {
+            <img src="~/Content/NoAvatarUserContent_200x200_v1.png" width="220" height="220" />
         }
     </div>
+    <div class="home-info" style="font-size: 15px">
+        <h2>
+            @Model.FirstName @Model.SurName
+        </h2>        
+        <p>Phone: @Model.PhoneNumber</p>
+        <p>Email: @Model.Email</p>
+        <p>Years: @Model.Age</p>
+        <p>Gender: @Model.Gender</p>
+        <p>Country: @Model.Country</p>
+        <p>Location: @Model.Locality</p>        
+        <p>My Identifier: #@Model.ID</p>
+    </div>
+    <div style="margin-bottom: 30px"></div>
 </div>
 

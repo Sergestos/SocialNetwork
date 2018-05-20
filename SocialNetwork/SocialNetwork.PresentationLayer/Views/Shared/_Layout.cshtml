@@ -6,49 +6,89 @@
     <title>@ViewBag.Title - Social Network</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-</head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @if(User.Identity.IsAuthenticated)
-                {
-                    <div>
-                        @Html.ActionLink("My Page", "Home", "User", new { area = "" }, new { @class = "navbar-brand" })
-                        @Html.ActionLink("Posts", "Logout", "Account", new { area = "" }, new { @class = "navbar-brand" })
-                        @Html.ActionLink("Dialogs", "Logout", "Account", new { area = "" }, new { @class = "navbar-brand" })
-                        @Html.ActionLink("Logout", "Logout", "Account", new { area = "" }, new { @class = "navbar-brand" })                           
-                    </div>
-                }
-                @if(!User.Identity.IsAuthenticated) 
-                {
-                    <div>
-                        @Html.ActionLink("Social Network", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
-                    </div>                    
-                }                                
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Social Network</p>
-        </footer>
-    </div>
-
+    @Scripts.Render("~/scripts/jquery-1.10.2.js")
+    @Scripts.Render("~/Scripts/jquery-1.10.2.min.js");    
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.js")
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />   
+    <link href="~/Content/bootstrap.css?v=@DateTime.Now.Millisecond" rel="stylesheet" />
+    <script src="~/Scripts/AppScripts/UserPageScripts.js"></script>
+    <script src="~/Scripts/AppScripts/PaggingScript.js"></script>
+    <script src="~/Scripts/AppScripts/DialogScripts.js"></script>
+</head>
+<body>
+    <div class="body-header">
+        @if (User.Identity.IsAuthenticated)
+        {            
+            @Html.ActionLink("My Page", "Home", "User", new { area = "" }, new { @class = "body-header-area-item", @id = "body-header-mypage" })
+            <img src="~/Content/Icons/user32.png" id="body-header-image" />
+            @Html.ActionLink("Help", "Home", "User", new { area = "" }, new { @class = "body-header-area-item", @id = "body-header-help" })
+            @Html.ActionLink("Logout", "Logout", "Account", new { area = "" }, new { @class = "body-header-area-item", @id = "body-header-logout" })
+        }
+        @if (!User.Identity.IsAuthenticated)
+        {
+             @Html.ActionLink("Social Network", "Login", "Account", new { area = "", @id="body-header-siteLogo" })
+        }
+    </div>   
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="body-sidebar">
+            <div class="body-sidebar-area">
+                <p>
+                    <img src="~/Content/Icons/house_24.png" />
+                    @Html.ActionLink("My page", "Home", "User", new { @class = "body-sidebar-item" })
+                </p>
+                <p>
+                    <img src="~/Content/Icons/chat.png" />
+                    @Html.ActionLink("Dialogs", "DialogPreviews", "User", new { @class = "body-sidebar-item" })
+                </p>
+                <p>
+                    <img src="~/Content/Icons/newspaper (1).png" />
+                    @Html.ActionLink("Feed", "Home", "User", new { @class = "body-sidebar-item" })
+                </p>
+                <p>
+                    <img src="~/Content/Icons/users (1).png" />
+                    @Html.ActionLink("My Followers", "MyFollowers", "User", new { @class = "body-sidebar-item" })
+                </p>
+                <p>
+                    <img src="~/Content/Icons/users.png" />
+                    @Html.ActionLink("My Subscribes", "FollowedUsers", "User", new { @class = "body-sidebar-item" })
+                </p>
+                <p>
+                    <img src="~/Content/Icons/locked (1).png" />
+                    @Html.ActionLink("Black List", "BlockedUsers", "User", new { @class = "body-sidebar-item" })
+                </p>
+                <p>
+                    <img src="~/Content/Icons/magnifying-glass.png" />
+                    @Html.ActionLink("Search", "Search", "User", new { @class = "body-sidebar-item" })
+                </p>
+                <p>
+                    <img src="~/Content/Icons/settings.png" />
+                    @Html.ActionLink("Setting", "Setting", "User", new { @class = "body-sidebar-item" })
+                </p>
+                <p>
+                    <img src="~/Content/Icons/logout.png" />
+                    @Html.ActionLink("Exit", "Logout", "Account", null, new { @class = "body-sidebar-item" })
+                </p>
+            </div>
+        </div>
+    }  
+    <div class="body-content">
+        <div class="body-content">
+            @RenderBody()
+            <footer class="footer">
+                <p>&copy; @DateTime.Now.Year - Social Network</p>
+            </footer>
+        </div>
+    </div>
+
+    
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    @*<script src="~/Scripts/AppScripts/MyFollowersPageScripts.js"></script>*@   
+    @RenderSection("scripts", required: false)   
 </body>
 </html>

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dialog firstMasterID="3">
+  <message userID="3" sent_at="2018:05:16T23:04:49">
+    <text>hi</text>
+    <contentID>1031</contentID>
+  </message>
+  <message userID="3" sent_at="2018:05:16T23:12:06">
+    <text>iiiii</text>
+    <contentID>1032</contentID>
+  </message>
+  <message userID="3" sent_at="2018:05:16T23:24:09">
+    <text>4</text>
+  </message>
+  <message userID="3" sent_at="2018:05:16T23:24:14">
+    <text></text>
+  </message>
+  <message userID="3" sent_at="2018:05:16T23:24:20">
+    <text>hello</text>
+  </message>
+  <message userID="3" sent_at="2018:05:16T23:35:24">
+    <text>7777</text>
+  </message>
+  <message userID="3" sent_at="2018:05:16T23:36:02">
+    <text>huuuuu</text>
+    <contentID>1033</contentID>
+  </message>
+  <message userID="3" sent_at="2018:05:16T23:39:20">
+    <text>jjjj</text>
+  </message>
+  <message userID="3" sent_at="2018:05:16T23:44:16">
+    <text>ddd</text>
+  </message>
+  <message userID="3" sent_at="2018:05:16T23:44:16">
+    <text>ddd</text>
+  </message>
+  <message userID="3" sent_at="2018:05:16T23:44:24">
+    <text>111</text>
+  </message>
+  <message userID="3" sent_at="2018:05:16T23:44:24">
+    <text>111</text>
+  </message>
+</dialog>

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -44,7 +45,7 @@ namespace SocialNetwork.BLL.BusinessLogic.ContentManagement
             path = fullpath;
         }
 
-        public void WriteDialog(string dialogFullPath, int userID, string text, IEnumerable<FileStream> contentStream)
+        public void WriteDialog(string dialogFullPath, int userID, string text, IEnumerable<Stream> contentStream)
         {
             XDocument xdoc = XDocument.Load(dialogFullPath);
 
@@ -53,23 +54,39 @@ namespace SocialNetwork.BLL.BusinessLogic.ContentManagement
             message.Add(new XAttribute("sent_at", GetLongFormattedTime()));
             message.Add(new XElement("text", text));
 
+            List<XElement> contentElement = new List<XElement>();
+
             if (contentStream != null)
             {
                 foreach (var item in contentStream)
                 {
                     string contentFullPathName = GetContentName(userID);
-                    using (var fileWritter = new StreamWriter(contentFullPathName))
+                    //using (var fileWritter = new StreamWriter(contentFullPathName))
+                    //{
+                    //    var bytes = new byte[item.Length];
+                    //    item.Read(bytes, 0, (int)item.Length);
+                    //    fileWritter.Write(bytes);
+                    //}
+                    using (var fileStream = File.Create(contentFullPathName))
                     {
-                        var bytes = new byte[item.Length];
-                        item.Read(bytes, 0, (int)item.Length);
-                        fileWritter.Write(bytes);
+                        item.Seek(0, SeekOrigin.Begin);
+                        item.CopyTo(fileStream);
+                        item.Flush();
+                        item.Close();
+
+                        // kostul'
+                        fileStream.Flush();
+                        fileStream.Close();
                     }
 
-                    unitOfWork.Content.Add(new Content() { Category = "DialogContent", Path = contentFullPathName });
+                    unitOfWork.Content.Add(new Content() { Category = "DialogContent", Path = contentFullPathName, Extension = ".jpg" });
 
-                    message.Add(new XElement("contentID", unitOfWork.Content.Find(x => x.Path == contentFullPathName).First().ID));
+                    contentElement.Add(new XElement("contentID", unitOfWork.Content.Find(x => x.Path == contentFullPathName).First().ID));
                 }
             }
+
+            foreach (var item in contentElement)
+                message.Add(item);
 
             xdoc.Root.Add(message);
             xdoc.Save(dialogFullPath);

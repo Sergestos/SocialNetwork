@@ -1,0 +1,57 @@
+﻿@model SocialNetwork.PresentationLayer.Models.UserView
+
+@{
+    ViewBag.Title = Model.FirstName + " " + Model.SurName;
+}
+
+<script type="text/javascript">
+    window.onload = function () {
+        InitializeStates(
+            ("@ViewBag.IsAnotherUserIsFollowedByMe").toLowerCase() == 'true',
+            ("@Model.IsCanStartDialog").toLowerCase() == 'true',
+            ("@ViewBag.IsIBlockedThisUser").toLowerCase() == 'true');
+    }
+</script>
+
+<div class="home">
+    <div class="home-avatar">
+        @if (Model.AvatarID != 0)
+        {
+            <div class="item">
+                <img class="avatar-image" src="@Url.Action("GetAvatar", "User", new { @ownerID = Model.ID })" width="220" height="220" />
+            </div>
+        }
+        @if (Model.AvatarID == 0)
+        {
+            <img src="~/Content/NoAvatarUserContent_200x200_v1.png" width="220" height="220" />
+        }
+    </div>
+    <div class="home-info">
+        <h2>
+            @Model.FirstName @Model.SurName
+        </h2>
+        <p>Phone: @Model.PhoneNumber</p>
+        <p>Email: @Model.Email</p>
+        <p>Years: @Model.Age</p>
+        <p>Gender: @Model.Gender</p>
+        <p>Country: @Model.Country</p>
+        <p>Location: @Model.Locality</p>
+    </div>
+    <div class="userPage-actions">
+        <div class="userPage-actions-button">
+            <input type="button" value="Start Dialog" class="btn btn-primary" id="buttonStartDialog" onclick="StartDialog(@Model.ID)" style="width: 150px" />
+        </div>
+
+        <div class="userPage-actions-button">
+            <input type="button" value="Add to dialog" class="btn btn-primary" id="buttonAddToDialog" style="width: 150px" />   
+        </div>
+
+        <div class="userPage-actions-button">
+            <input type="button" class="btn btn-primary" id="buttonFollow" onClick="Following(@Model.ID)" style="width: 150px"/>
+        </div>
+
+        <div class="userPage-actions-button">
+            <input type="button" class="btn btn-primary" id="buttonBlacklist" onClick="Blocking(@Model.ID)" style="width: 150px"/>
+        </div>        
+    </div>
+</div>

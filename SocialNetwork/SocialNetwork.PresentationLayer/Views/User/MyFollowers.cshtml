@@ -1,0 +1,25 @@
+﻿@model IEnumerable<SocialNetwork.PresentationLayer.Models.UserView>
+
+@{
+    ViewBag.Title = "MyFollowers";
+}
+
+<div class="myfollowers-group">
+    @*@foreach(var item in Model)
+    {
+        <div class="myfollowers-user">
+            @Html.ActionLink(item.FirstName + " " + item.SurName, "AnotherUserPage", "User", new { @id = item.ID, @class = "myfollowers-user-name" } );
+            <div class="myfollowers-user-name-button">
+                <input type="button" value="@ViewBag.IsAnotherUserIsFollowedByMe" class="btn btn-primary" id="buttonFollow" onClick="Following(@item.ID)" style="width: 150px" />
+            </div>   
+        </div>
+    }*@
+    @if (Model.Count() == 0)
+    {
+        <p style="font-size: 16px;">Nobody subscribed to you. Sad</p>
+    }
+    else
+    {
+        @Helper.DisplayListOfUsers("My Followers", "/User/MyFollowers", Model, ViewBag.Page ?? 0, ViewBag.IsLastPage ?? false)    
+    }
+</div>

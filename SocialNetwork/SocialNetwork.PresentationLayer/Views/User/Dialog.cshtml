@@ -1,0 +1,48 @@
+﻿@model SocialNetwork.PresentationLayer.Models.DialogView
+
+<div class="dialog-main-header">
+    <p>
+        @Html.ActionLink(Model.Name, "DialogInfo", "User", new { @dialogID = Model.DialogID }, null), @Model.QuantityOfMembers Memeber(s)
+        @Html.ActionLink("leave", "LeaveFromDialog", new { @dialogID = Model.DialogID })
+    </p>
+    <div id="dialog-main-header-horizontalLineUp"></div>
+</div>
+<div id="dialog-main-content">
+    @foreach(var item in Model.Messages.Reverse())
+    {
+        <div class="dialog-main-content-message">
+            <div class="dialog-main-content-message-senderName">@Html.ActionLink(item.SenderName, "UserPage", "User", new { @id = item.SenderID }, null)</div>
+            <div style="font-style: italic;">at @item.SendDate</div>
+            <div class="dialog-main-content-message-Content">@item.Message</div>
+            @foreach(var content in item.ContentsID)
+            {
+                <div>
+                    <a href="/User/GetDialogContent?contentID=@content">
+                        <img class="dialog-main-content-message-content-image" src="/User/GetDialogContent?contentID=@content" />
+                    </a>
+                </div>
+            }
+        </div>        
+    }
+</div>
+<div class="dialog-main-tabfield">
+    <div id="dialog-main-header-horizontalLineDown"></div>
+    @if (ViewBag.IsCanSendMessage != null && ViewBag.IsCanSendMessage == true)
+    {   
+        using (Ajax.BeginForm("AddMessageToDialog", "User", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "dialog-main" }, new { enctype = "multipart/form-data" }))
+        {
+            <input type="submit" value="Send" disabled id="dialog-main-tabfield-send" class="btn btn-primary" />
+            <input type="hidden" name="dialogID" value="@Model.DialogID" />
+            <input type="text" name="message" placeholder="Tab new message here" id="dialog-main-tabfield-text" onchange="IsTextEmpty()" class="form-control" />
+        }
+        <div class="dialog-main-tabfield-input">
+            <input type="file" name="upload" id="fileInput1" accept=".jpg, .jpeg, .png" onchange="IsFileChoosen()" />
+        </div>   
+    }
+    else
+    {
+        <div class="dialog-main-tabfield-isReadOnly">
+            <p>This dialog is read only</p>
+        </div>     
+    }
+</div>

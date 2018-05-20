@@ -20,5 +20,8 @@ namespace SocialNetwork.BLL.Models
         public string Gender { get; set; }
         public ContentBLL Content { get; set; }
         public DateTime BirthDate { get; set; }
+        public bool IsShowInfoForAnonymousUsers { get; set; }
+        public bool IsOthersCanStartDialog { get; set; }
+        public bool IsOthersCanComment { get; set; }
     }
 }

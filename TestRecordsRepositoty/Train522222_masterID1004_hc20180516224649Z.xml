@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dialog firstMasterID="1004">
+  <message userID="1004" sent_at="2018:05:16T22:46:54">
+    <text>s</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:46:54">
+    <text>s</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:47:39">
+    <text>`</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:47:40">
+    <text>`</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:47:40">
+    <text>`</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:47:40">
+    <text>`</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:47:40">
+    <text>`</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:47:57">
+    <text>3</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:47:57">
+    <text>3</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:16T22:47:57">
+    <text>3</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:17T22:32:57">
+    <text>222</text>
+    <contentID>1049</contentID>
+    <contentID>1050</contentID>
+  </message>
+  <message userID="1004" sent_at="2018:05:17T23:53:15">
+    <text>new message</text>
+    <contentID>1064</contentID>
+    <contentID>1065</contentID>
+  </message>
+  <message userID="1004" sent_at="2018:05:20T02:53:10">
+    <text>hi</text>
+  </message>
+</dialog>

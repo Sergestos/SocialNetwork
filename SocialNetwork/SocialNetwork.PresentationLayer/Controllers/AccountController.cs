@@ -44,6 +44,7 @@ namespace SocialNetwork.PresentationLayer.Controllers
                 {
                     FormsAuthentication.SetAuthCookie(model.Email, true);
                     HttpContext.Response.Cookies.Add(new HttpCookie("id", users.First(x => x.Email == model.Email).ID.ToString()));
+                    HttpContext.Response.Cookies.Add(new HttpCookie("lastDialogId", "none"));
 
                     return RedirectToAction("Home", "User");
                 }
@@ -82,6 +83,9 @@ namespace SocialNetwork.PresentationLayer.Controllers
                         Country = model.Country ?? "-",
                         Locality = model.Location ?? "-",
                         BirthDate = model.BirthDayDate,
+                        IsOthersCanComment = true,
+                        IsOthersCanStartDialog = true,
+                        IsShowInfoForAnonymousUsers = true
                     };
 
                     module.Registrate(newUser, model.Avatar.InputStream, Path.GetExtension(model.Avatar.FileName));
@@ -105,6 +109,20 @@ namespace SocialNetwork.PresentationLayer.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
+
+            if (Request.Cookies["id"] != null)
+            {
+                var c = new HttpCookie("id");
+                c.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(c);
+            }
+
+            if (Request.Cookies["lastDialogId"] != null)
+            {
+                var c = new HttpCookie("lastDialogId");
+                c.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(c);
+            }
 
             return RedirectToAction("Login", "Account");
         }

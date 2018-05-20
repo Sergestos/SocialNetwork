@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dialog firstMasterID="1002">
+  <message userID="1002" sent_at="2018:05:18T00:12:59">
+    <text>new file</text>
+    <contentID>1083</contentID>
+  </message>
+  <message userID="1002" sent_at="2018:05:18T00:22:17">
+    <text>files</text>
+    <contentID>1072</contentID>
+    <contentID>1084</contentID>
+  </message>
+  <message userID="1002" sent_at="2018:05:18T00:26:04">
+    <text>new file</text>
+    <contentID>1086</contentID>
+  </message>
+  <message userID="1002" sent_at="2018:05:18T00:35:04">
+    <text></text>
+    <contentID>1087</contentID>
+  </message>
+  <message userID="1002" sent_at="2018:05:18T00:38:03">
+    <text>Long text with file Long text with file Long text with file Long text with file Long text with file Long text with file Long text with file Long text with file Long text with file</text>
+    <contentID>1088</contentID>
+  </message>
+  <message userID="1002" sent_at="2018:05:18T11:41:46">
+    <text>hey</text>
+  </message>
+  <message userID="1004" sent_at="2018:05:19T23:28:29">
+    <text>hey</text>
+  </message>
+</dialog>

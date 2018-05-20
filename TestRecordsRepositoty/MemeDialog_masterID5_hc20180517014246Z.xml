@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dialog firstMasterID="5">
+  <message userID="5" sent_at="2018:05:17T01:42:57">
+    <text>Hello</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T01:43:20">
+    <text>Hi</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:43:32">
+    <text>how are you</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:43:43">
+    <text>test text</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:43:47">
+    <text>test texttest text</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:43:52">
+    <text>test text</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:43:54">
+    <text>test text</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:43:59">
+    <text>hello</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:02">
+    <text>hi</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:05">
+    <text>1</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:17">
+    <text>how are you</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:19">
+    <text>hello</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:35">
+    <text>vertical scroll bar testing...</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:38">
+    <text>vertical scroll bar testing...</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:41">
+    <text>vertical scroll bar testing...</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:43">
+    <text>vertical scroll bar testing...</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:45">
+    <text>vertical scroll bar testing...</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:47">
+    <text>vertical scroll bar testing...</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:48">
+    <text>vertical scroll bar testing...</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:50">
+    <text>vertical scroll bar testing...</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:52">
+    <text>vertical scroll bar testing...</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:54">
+    <text>vertical scroll bar testing...</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:55">
+    <text>vertical scroll bar testing...</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:44:57">
+    <text>vertical scroll bar testing...</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:45:03">
+    <text>hi</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:45:08">
+    <text>hello</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T13:46:56">
+    <text>how are you</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:08:11">
+    <text>Large text Large text  Large text  Large text  Large text  Large text  Large text  Large text  Large text  Large text  Large text  Large text  Large text  Large text </text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:14:42">
+    <text>hi</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:15:13">
+    <text>how are you</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:19:18">
+    <text>hello</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:19:27">
+    <text>hi</text>
+    <contentID>1038</contentID>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:38:30">
+    <text>hey</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:38:45">
+    <text>hi</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:39:58">
+    <text>test7464</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:42:24">
+    <text>hi</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:43:58">
+    <text>hey</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:44:10">
+    <text>)</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:46:04">
+    <text>hey</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T14:47:07">
+    <text>hi</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T21:02:35">
+    <text>hi</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T21:54:11">
+    <text>hey</text>
+    <contentID>1039</contentID>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T22:06:20">
+    <text>hello</text>
+    <contentID>1040</contentID>
+    <contentID>1040</contentID>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T22:39:12">
+    <text>hey</text>
+    <contentID>1053</contentID>
+    <contentID>1053</contentID>
+    <contentID>1053</contentID>
+    <contentID>1053</contentID>
+    <contentID>1053</contentID>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T23:32:39">
+    <text>hello</text>
+    <contentID>1060</contentID>
+    <contentID>1060</contentID>
+  </message>
+</dialog>

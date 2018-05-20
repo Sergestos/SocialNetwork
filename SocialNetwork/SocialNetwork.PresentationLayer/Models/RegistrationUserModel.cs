@@ -20,16 +20,19 @@ namespace SocialNetwork.PresentationLayer.Models
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
-        public string Gender { get; set; }
-        public string Location { get; set; }
-        public string Country { get; set; }
+        [Display(Name = "Phone")]
         public string PhoneNumber { get; set; }
 
+        public string Gender { get; set; }
+        public string Location { get; set; }
+        public string Country { get; set; }        
+
+        [Display(Name = "Birthday")]
         [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}")]
         [DataType(DataType.Date)]
         public DateTime BirthDayDate { get; set; }
 
-        [Required, Microsoft.Web.Mvc.FileExtensions(Extensions = "jpg,png",ErrorMessage = "Specify a CSV file. (Comma-separated values)")]
+        [Required, Microsoft.Web.Mvc.FileExtensions(Extensions = "jpg,png",ErrorMessage = "Specify file")]
         public HttpPostedFileBase Avatar { get; set; }
     }
 }

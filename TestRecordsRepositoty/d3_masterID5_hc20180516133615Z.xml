@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dialog firstMasterID="5">
+  <message userID="5" sent_at="2018:05:16T13:36:25">
+    <text />
+    <contentID>1022</contentID>
+  </message>
+  <message userID="5" sent_at="2018:05:16T23:51:21">
+    <text>hi</text>
+  </message>
+  <message userID="5" sent_at="2018:05:16T23:51:32">
+    <text>what is your name</text>
+  </message>
+  <message userID="5" sent_at="2018:05:16T23:51:32">
+    <text>what is your name</text>
+  </message>
+  <message userID="5" sent_at="2018:05:16T23:59:04">
+    <text>i am menri</text>
+  </message>
+  <message userID="5" sent_at="2018:05:16T23:59:44">
+    <text>kkkk</text>
+  </message>
+  <message userID="5" sent_at="2018:05:17T00:00:30">
+    <text>I hope there are no more bugs with multiyply sibmit</text>
+  </message>
+  <message userID="5" sent_at="2018:05:17T00:00:30">
+    <text>I hope there are no more bugs with multiyply sibmit</text>
+  </message>
+  <message userID="5" sent_at="2018:05:17T00:00:30">
+    <text>I hope there are no more bugs with multiyply sibmit</text>
+  </message>
+  <message userID="5" sent_at="2018:05:17T00:00:39">
+    <text>(((</text>
+  </message>
+  <message userID="5" sent_at="2018:05:17T00:00:39">
+    <text>(((</text>
+  </message>
+  <message userID="5" sent_at="2018:05:17T00:00:39">
+    <text>(((</text>
+  </message>
+</dialog>

@@ -101,7 +101,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
             IUserModule userModule = new UserModule(factory, userID);
 
             var userFromUnitOfWorkID = GetInstanceField(userModule).Users.Get(userID).ID;
-            var userFromUserModuleID = userModule.GetItselfInfo.ID;
+            var userFromUserModuleID = userModule.GetMyInfo.ID;
 
             Assert.AreEqual(userFromUnitOfWorkID, userFromUserModuleID);
         }
@@ -114,7 +114,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         {
             IUserModule userModule = new UserModule(factory, userID);
 
-            var postsFromModele = userModule.GetItselfPosts.Select(x => x.ID);
+            var postsFromModele = userModule.GetMyPosts.Select(x => x.ID);
             var postFromUnit = unitOfWork.UserPosts.Find(x => x.ID == userID).Select(x => x.ID);
 
             Assert.NotNull(postsFromModele);
@@ -129,7 +129,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         {
             IUserModule userModule = new UserModule(factory, followerID);
 
-            userModule.FollowTo(followedToID);
+            userModule.Follow(followedToID);
             var follower = unitOfWork.Followers.Find(x => x.FollowerID == followerID).FirstOrDefault();
 
             Assert.NotNull(follower);
@@ -143,9 +143,9 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
             IUserModule firstSubscriberModule = new UserModule(factory, firstSubscriberID);
             IUserModule secondSubscriberModule = new UserModule(factory, secondSubscriberID);            
 
-            firstSubscriberModule.FollowTo(userID);
-            secondSubscriberModule.FollowTo(userID);
-            var followers = mainUserSubscriberModule.GetItselfFollewers;
+            firstSubscriberModule.Follow(userID);
+            secondSubscriberModule.Follow(userID);
+            var followers = mainUserSubscriberModule.GetMyFollewers;
 
             Assert.NotNull(followers);
             Assert.AreEqual(2, followers.Count());
@@ -157,7 +157,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
         {
             IUserModule userModule = new UserModule(factory, userSubscriberID);
 
-            userModule.FollowTo(userTaret);
+            userModule.Follow(userTaret);
             userModule.Unfollow(userTaret);
             var follower = unitOfWork.Followers
                 .Find(x => x.FollowedToID == userTaret && x.FollowerID == userSubscriberID)
@@ -173,8 +173,8 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
 
             try
             {
-                userModule.FollowTo(1);
-                userModule.FollowTo(1);
+                userModule.Follow(1);
+                userModule.Follow(1);
             }
             catch (Exception ex)
             {
@@ -191,7 +191,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
 
             try
             {
-                userModule.FollowTo(userID);
+                userModule.Follow(userID);
             }
             catch (Exception ex)
             {
@@ -224,7 +224,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
 
             try
             {
-                userModule.FollowTo(-1);
+                userModule.Follow(-1);
             }
             catch (Exception ex)
             {
@@ -274,7 +274,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
             try
             {
                 userModule.AddToBlackList(1);
-                userModule.FollowTo(1);
+                userModule.Follow(1);
             }
             catch (Exception ex)
             {
@@ -496,7 +496,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
             int targetedUserID = 1;
             IUserModule userModule = new UserModule(factory, userID);
 
-            userModule.FollowTo(targetedUserID);
+            userModule.Follow(targetedUserID);
             userModule.AddToBlackList(targetedUserID);
 
             Assert.Null(unitOfWork.Followers.Find(x => x.FollowedToID == targetedUserID && x.FollowerID == userID).FirstOrDefault());
@@ -509,7 +509,7 @@ namespace SocialNetwork.UnitTests.BusinessLayerTests
             int targetedUserID = 1;
             IUserModule userModule = new UserModule(factory, userID);
 
-            userModule.FollowTo(targetedUserID);
+            userModule.Follow(targetedUserID);
             userModule.AddToBlackList(targetedUserID);
 
             Assert.Null(unitOfWork.Followers.Find(x => x.FollowedToID == userID && x.FollowerID == targetedUserID).FirstOrDefault());

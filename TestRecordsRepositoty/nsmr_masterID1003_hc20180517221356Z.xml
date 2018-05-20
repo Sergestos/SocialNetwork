@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dialog firstMasterID="1003">
+  <message userID="1003" sent_at="2018:05:17T22:14:11">
+    <text>First message</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T22:14:32">
+    <text>the second</text>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T22:22:22">
+    <text>hi</text>
+    <contentID>1043</contentID>
+    <contentID>1043</contentID>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T23:37:16">
+    <text>heu</text>
+    <contentID>1062</contentID>
+    <contentID>1062</contentID>
+  </message>
+  <message userID="1003" sent_at="2018:05:17T23:58:15">
+    <text>new msg</text>
+    <contentID>1068</contentID>
+    <contentID>1068</contentID>
+  </message>
+</dialog>
