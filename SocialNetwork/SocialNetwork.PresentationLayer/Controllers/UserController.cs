@@ -361,6 +361,7 @@ namespace SocialNetwork.PresentationLayer.Controllers
             return Redirect("/User/DialogPreviews");
         }
 
+        [HttpGet]
         [Authorize]
         public ActionResult DialogPreviews()
         {
@@ -399,7 +400,9 @@ namespace SocialNetwork.PresentationLayer.Controllers
 
             var dialog = EntityConverter.GetDialog(dialogID, module);
 
-            ViewBag.IsCanSendMessage = !(dialog.MasterID != Convert.ToInt32(cookieUserID.Value) && dialog.IsReadOnly);
+            bool isMaster = dialog.MasterID == Convert.ToInt32(cookieUserID.Value);
+            ViewBag.IsCanSendMessage = !(!isMaster && dialog.IsReadOnly);
+            ViewBag.IsMaster = isMaster;
 
             return PartialView(dialog);
         }
@@ -438,7 +441,7 @@ namespace SocialNetwork.PresentationLayer.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult AddMessageToDialog(int dialogID, string message, HttpPostedFileBase[] upload)
+        public ActionResult AddMessageToDialog(int dialogID, string message, IEnumerable<HttpPostedFileBase> upload)
         {
             var cookie = HttpContext.Request.Cookies["id"];
             if (cookie == null)
@@ -653,6 +656,21 @@ namespace SocialNetwork.PresentationLayer.Controllers
             return RedirectToAction("DialogInfo", "User", new { @dialogID = dialogID });
         }
 
+        [HttpGet]
+        [Authorize]
+        public ActionResult AddToDialog(int userID)
+        {
+            var cookie = HttpContext.Request.Cookies["id"];
+            if (cookie == null)
+                return Redirect("/Account/Logout");
+
+            var module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
+            var dialogs = module.GetDialogs.Where(x => x.MasterID == Convert.ToInt32(cookie.Value)).Select(y => EntityConverter.GetDialogInfo(y.ID, module));
+
+            ViewBag.Pretendent = userID;
+            return View(dialogs);
+        }
+
         [HttpPost]
         [Authorize]
         public ActionResult AddToDialog(int dialogID, int userID)
@@ -674,6 +692,31 @@ namespace SocialNetwork.PresentationLayer.Controllers
             }
 
             HttpContext.Response.Cookies["lastDialogId"].Value = dialogID.ToString();
+            return RedirectToAction("DialogPreviews", "User", null);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult LeaveFromDialog(int dialogID)
+        {
+
+            var cookie = HttpContext.Request.Cookies["id"];
+            if (cookie == null)
+                return Redirect("/Account/Logout");
+
+            IUserModule module = null;
+
+            try
+            {
+                module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
+                module.LeaveFromDialog(dialogID);
+            }
+            catch (BusinessAdmissionException ex)
+            {
+                return RedirectToAction("ErrorMessage", "User", new { @errorMessage = ex.Message });
+            }
+
+            HttpContext.Response.Cookies["lastDialogId"].Value = "none";
             return RedirectToAction("DialogPreviews", "User", null);
         }
 

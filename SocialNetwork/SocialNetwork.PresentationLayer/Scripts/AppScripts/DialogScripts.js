@@ -23,12 +23,12 @@ function IsFileChoosen() {
 }
 
 window.onload = function () {
-    var lastDialogID = $("#hiddenLastPage").val();
-    console.log(lastDialogID);
+    var lastDialogID = $.cookie('lastDialogId');
+    console.log("Last page is: " + lastDialogID);
     if (lastDialogID != "none" && isNumber(lastDialogID)) {
         var url = "/User/Dialog?dialogID=" + Number(lastDialogID);
         $('#dialog-main').load(url);
-    }
+    }  
 }
 
 window.addEventListener("submit", function (e) {

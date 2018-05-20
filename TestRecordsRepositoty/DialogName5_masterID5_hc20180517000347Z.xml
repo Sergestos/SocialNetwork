@@ -25,4 +25,11 @@
   <message userID="5" sent_at="2018:05:17T00:51:07">
     <text>There are a lot of text to test multiline text and i hope it will work because it's late rigth now and i dont want fix it and just go to hit the sack</text>
   </message>
+  <message userID="5" sent_at="2018:05:21T00:14:35">
+    <text></text>
+  </message>
+  <message userID="5" sent_at="2018:05:21T00:58:26">
+    <text></text>
+    <contentID>1095</contentID>
+  </message>
 </dialog>

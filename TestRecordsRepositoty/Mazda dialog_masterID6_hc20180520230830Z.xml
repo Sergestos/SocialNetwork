@@ -3,4 +3,7 @@
   <message userID="6" sent_at="2018:05:20T23:08:42">
     <text>hi</text>
   </message>
+  <message userID="6" sent_at="2018:05:21T01:13:09">
+    <text>hey</text>
+  </message>
 </dialog>

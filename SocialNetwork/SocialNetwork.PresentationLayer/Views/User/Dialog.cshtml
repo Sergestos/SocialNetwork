@@ -2,8 +2,12 @@
 
 <div class="dialog-main-header">
     <p>
-        @Html.ActionLink(Model.Name, "DialogInfo", "User", new { @dialogID = Model.DialogID }, null), @Model.QuantityOfMembers Memeber(s)
-        @Html.ActionLink("leave", "LeaveFromDialog", new { @dialogID = Model.DialogID })
+        @Html.ActionLink(Model.Name, "DialogInfo", "User", new { @dialogID = Model.DialogID }, null), @Model.QuantityOfMembers Memeber(s)        
+        @Html.ActionLink("Leave", "LeaveFromDialog", "User", new { @dialogID = Model.DialogID }, new { @style = "float: right;" })
+        @if (ViewBag.IsMaster != null && ViewBag.IsMaster == true)
+        {
+            @Html.ActionLink("Add", "Search", "User", null, new { @style = "float: right; margin-right: 12px;" })
+        }
     </p>
     <div id="dialog-main-header-horizontalLineUp"></div>
 </div>
@@ -34,10 +38,11 @@
             <input type="submit" value="Send" disabled id="dialog-main-tabfield-send" class="btn btn-primary" />
             <input type="hidden" name="dialogID" value="@Model.DialogID" />
             <input type="text" name="message" placeholder="Tab new message here" id="dialog-main-tabfield-text" onchange="IsTextEmpty()" class="form-control" />
+
+            <div class="dialog-main-tabfield-input">
+                <input type="file" name="upload" id="fileInput1" accept=".jpg, .jpeg, .png" onchange="IsFileChoosen()" />
+            </div>
         }
-        <div class="dialog-main-tabfield-input">
-            <input type="file" name="upload" id="fileInput1" accept=".jpg, .jpeg, .png" onchange="IsFileChoosen()" />
-        </div>   
     }
     else
     {

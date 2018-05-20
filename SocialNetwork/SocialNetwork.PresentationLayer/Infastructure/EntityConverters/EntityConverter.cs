@@ -49,11 +49,15 @@ namespace SocialNetwork.PresentationLayer.Infastructure.EntityConverters
 
         public static DialogPreview GetDialogPreview(DialogBLL dialog, IUserModule userModule)
         {
+            int dialogMasterId = dialog.MasterID > 0 ? 
+                dialogMasterId = userModule.GetAllUsers.FirstOrDefault(x => x.ID == dialog.MasterID.Value).ID :
+                dialogMasterId = -1;
+
             return new DialogPreview()
             {
                 ID = dialog.ID,
                 DialogName = dialog.Name,
-                MasterAvatartID = userModule.GetAllUsers.FirstOrDefault(x => x.ID == dialog.MasterID.Value).ID
+                MasterAvatartID = dialogMasterId
             };
         }
 
@@ -66,7 +70,7 @@ namespace SocialNetwork.PresentationLayer.Infastructure.EntityConverters
             return new DialogInfo()
             {
                 ID = dialogBll.ID,
-                MasterID = dialogBll.MasterID.Value,
+                MasterID = dialogBll.MasterID != null ? dialogBll.MasterID.Value : -1,
                 IsReadOnly = dialogBll.isReadOnly,
                 Name = dialogBll.Name,                
                 UsersInDialog = dialogBll.Members.Select(x => GetUserView(x))
@@ -103,7 +107,7 @@ namespace SocialNetwork.PresentationLayer.Infastructure.EntityConverters
             {
                 DialogID = dialogBll.ID,
                 IsReadOnly = dialogBll.isReadOnly,
-                MasterID = dialogBll.MasterID.Value,
+                MasterID = dialogBll.MasterID != null ? dialogBll.MasterID.Value : -1,
                 Name = dialogBll.Name,
                 QuantityOfMembers = dialogBll.Members.Count(),
                 Messages = messages,                
