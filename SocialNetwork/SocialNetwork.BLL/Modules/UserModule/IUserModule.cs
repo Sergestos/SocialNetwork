@@ -47,7 +47,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
         void AddToBlackList(int userID);
         void RemoveFromBlackList(int userID);
 
-        //void ChangeAvatar()
+        void ChangeAvatar(Stream newAvatar);
         void ChangePrivacy(bool IsOthersCanComment, bool IsOthersCanStartDialog, bool IsShowInfoForAnonymousUsers);
         void ChangePassword(string password);
         void ChangeEmail(string email);

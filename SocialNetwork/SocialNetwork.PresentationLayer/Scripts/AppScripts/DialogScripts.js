@@ -12,7 +12,6 @@ function IsTextEmpty() {
 }
 
 function IsFileChoosen() {
-    console.log('1');
     var fileName = $('#fileInput1').val();
     if (fileName != '') {
         $('#dialog-main-tabfield-send').prop("disabled", false);

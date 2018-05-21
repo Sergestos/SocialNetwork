@@ -1,8 +1,26 @@
-﻿@model SocialNetwork.PresentationLayer.Models.DialogInfo
+﻿@model IEnumerable<SocialNetwork.PresentationLayer.Models.DialogInfo>   
 
 @{
     ViewBag.Title = "AddToDialog";
 }
 
-<h2>AddToDialog</h2>
+<div class="addToDialog">
+    <h3 style="margin-left: 85px; margin-bottom: 40px;">Add user to dialog where you are a master</h3>
+    <hr />
+    @foreach(var item in Model)
+    {
+        <div class="addToDialog-item" >
+            @using (Html.BeginForm("AddToDialog", "User", FormMethod.Post))
+            {
+                <p>Dialog Name: <i style="font-size: 18px;">@item.Name</i></p>
+                <p>Quantity of Members: <i style="font-size: 18px;">@item.UsersInDialog.Count()</i>, Is read only: <i style="font-size: 18px;">@item.IsReadOnly</i></p>                
+                <input type="submit" class="btn btn-primary" value="Add to this dialog" style="float: right; margin-right: 10px; margin-top: -55px;" />
+                <input type="hidden" name="userID" value="@ViewBag.Pretendent" />
+                <input type="hidden" name="dialogID" value="@item.ID" />
+            }            
+        </div>
+        <hr />
+        
+    }
+</div>
 

@@ -588,6 +588,40 @@ namespace SocialNetwork.PresentationLayer.Controllers
 
         [HttpGet]
         [Authorize]
+        public ActionResult ChangeAvatar()
+        {
+            return PartialView("ChangeAvatar");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult ChangeAvatar(HttpPostedFileBase upload)
+        {
+            var cookie = HttpContext.Request.Cookies["id"];
+            if (cookie == null)
+                return Redirect("/Account/Logout");
+
+            IUserModule module = null;
+
+            try
+            {
+                if (upload == null || upload.InputStream == null)
+                    throw new ArgumentNullException("Uploaded stream is null");
+
+                module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
+                module.ChangeAvatar(upload.InputStream);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return RedirectToAction("Home");
+            }
+
+            ViewBag.Result = "Success";
+            return PartialView("ChangeAvatar");
+        }
+
+        [HttpGet]
+        [Authorize]
         public ActionResult ChangePrivacy()
         {
             var cookie = HttpContext.Request.Cookies["id"];

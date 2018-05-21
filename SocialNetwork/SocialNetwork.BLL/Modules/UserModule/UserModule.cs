@@ -479,6 +479,23 @@ namespace SocialNetwork.BLL.Modules.UserModule
             unitOfWork.Dialogs.Update(dialog);
         }
 
+        public void ChangeAvatar(Stream newAvatar)
+        {
+            IContentFileManager fileManager = new ContentFileManager(unitOfWork);
+            fileManager.UploadFile(newAvatar, out string savedPath);
+
+            unitOfWork.Content.Add(new Content()
+            {
+                Category = "Avatar",
+                Path = savedPath,
+                Extension = ".jpg"
+            });
+
+            var user = unitOfWork.Users.Get(currentUserID);
+            user.AvatarContentID = unitOfWork.Content.Find(x => x.Path == savedPath).FirstOrDefault().ID;
+            unitOfWork.Users.Update(user);
+        }
+
         public void ChangeItselfInfo(UserInfoBLL user)
         {            
             var targetedUser = unitOfWork.Users.Get(currentUserID);            

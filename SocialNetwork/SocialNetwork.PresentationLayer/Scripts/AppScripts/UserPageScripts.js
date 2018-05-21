@@ -155,3 +155,7 @@ function StartDialog(id) {
     var url = "/User/CreateDialog?companion=" + id;
     window.open(url, "_self");
 }
+function AddToDialog(id) {
+    var url = "/User/AddToDialog?userID=" + id;
+    window.open(url, "_self");
+}

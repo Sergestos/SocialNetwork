@@ -12,11 +12,12 @@
                 <div>
                     @if (Model.MasterID == item.ID)
                     {
-                        <p>@Html.ActionLink(item.FirstName + " " + item.SurName, "UserPage", "User", new { @id = item.ID }, null) (Dialog Master)</p>
+                        <p><a href="/User/UserPage?id=@item.ID"> @item.FirstName @item.SurName </a>(Dialog Master)</p>
                     }
                     else
                     {
-                        <p>@Html.ActionLink(item.FirstName + " " + item.SurName, "UserPage", "User", new { @id = item.ID }, null)</p>
+                        <p><a href="/User/UserPage?id=@item.ID"> @item.FirstName @item.SurName</a></p>
+
                     }                    
                     <hr />
                 </div>

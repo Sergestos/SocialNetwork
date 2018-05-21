@@ -250,6 +250,7 @@
     <Content Include="Views\User\ChangePrivacy.cshtml" />
     <Content Include="Views\User\ErrorMessage.cshtml" />
     <Content Include="Views\User\AddToDialog.cshtml" />
+    <Content Include="Views\User\ChangeAvatar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -29,11 +29,11 @@
             <div class="dialogInfo-users-UserInfo">
                 @if (Model.MasterID == item.ID)
                 {
-                    <p>@Html.ActionLink(item.FirstName + " " + item.SurName, "UserPage", "User", new { @id = item.ID }, null) (Dialog Master)</p>
+                    <p>@Html.ActionLink(item.FirstName + " " + item.SurName, "Home", "User") (Dialog Master)</p>
                 }
                 else
                 {
-                    @Html.ActionLink(item.FirstName + " " + item.SurName, "UserPage", "User", new { @id = item.ID }, null)
+                    <a href="/User/UserPage?id=@item.ID"> @item.FirstName @item.SurName</a>
                     <div class="dialogInfo-users-UserInfo-buttons">
                         @using (Html.BeginForm("AppointNewMaster", "User", FormMethod.Post))
                         {

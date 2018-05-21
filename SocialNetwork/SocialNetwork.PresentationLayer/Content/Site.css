@@ -503,3 +503,31 @@ body {
     padding: 15px;
     font-size: 15px;
 }
+
+.addToDialog {
+    border-radius: 15px;
+    border: 2px solid;
+    border-color: cornflowerblue;
+    background-color: ghostwhite;
+    padding: 10px;    
+}
+
+.addToDialog-item {
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.setting-avatar {
+    margin-top: 12px;    
+    border-radius: 15px;
+    border: 2px solid;
+    border-color: cornflowerblue;
+    background-color: ghostwhite;
+    padding: 10px;
+    padding-left: 30px;
+}
+
+.setting-avatar-new {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}

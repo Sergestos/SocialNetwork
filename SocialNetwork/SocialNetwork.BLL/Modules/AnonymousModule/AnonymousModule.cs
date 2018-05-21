@@ -32,6 +32,9 @@ namespace SocialNetwork.BLL.Modules.AnonymousModule
 
         public void Registrate(UserInfoBLL user, Stream stream, string fileExtension = ".jpg")
         {
+            if (unitOfWork.Users.GetAll.Where(x => x.Email == user.Email).FirstOrDefault() != null)
+                throw new BusinessLogic.Exceptions.BusinessLogicException("User with current email already exists");
+
             IContentFileManager fileManager = new ContentFileManager(unitOfWork);
             fileManager.UploadFile(stream, out string savedPath);
 

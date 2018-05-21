@@ -9,7 +9,7 @@
         @if (Model.AvatarID != 0)
         {
             <div class="item">
-                <img class="avatar-image" src="@Url.Action("GetAvatar", "User", new { @ownerID = Model.ID})" width="220" height="220" />
+                <img class="avatar-image" src="@Url.Action("GetAvatar", "User", new { @ownerID = Model.ID})" width="220" height="220"/>
             </div>
         }
         @if (Model.AvatarID == 0)
