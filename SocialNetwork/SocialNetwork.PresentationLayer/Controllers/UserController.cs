@@ -532,7 +532,7 @@ namespace SocialNetwork.PresentationLayer.Controllers
 
             IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
 
-            if(module.GetAllUsers.FirstOrDefault(x=>x.Email == model.Email) != null)
+            if (module.GetAllUsers.Where(x=>x.ID != Convert.ToInt32(cookie.Value)).FirstOrDefault(x => x.Email == model.Email) != null) 
             {
                 ViewBag.Result = "This Email is already taken";
                 return PartialView(EntityConverter.GetSettingInfoModel(Convert.ToInt32(cookie.Value), module));
