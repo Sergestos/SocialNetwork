@@ -6,4 +6,8 @@
   <message userID="6" sent_at="2018:05:21T01:13:09">
     <text>hey</text>
   </message>
+  <message userID="6" sent_at="2018:05:21T20:55:52">
+    <text>ky</text>
+    <contentID>1116</contentID>
+  </message>
 </dialog>

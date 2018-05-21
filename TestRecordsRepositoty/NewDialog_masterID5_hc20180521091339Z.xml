@@ -7,4 +7,10 @@
     <text></text>
     <contentID>1101</contentID>
   </message>
+  <message userID="5" sent_at="2018:05:21T16:39:39">
+    <text>hi</text>
+  </message>
+  <message userID="6" sent_at="2018:05:21T20:55:39">
+    <text>hey</text>
+  </message>
 </dialog>

@@ -357,7 +357,7 @@ body {
     margin-bottom: 5px;
 }
 
-.dialog-main-tabfield {
+#dialog-main-tabfield {
     right: 0;
     bottom: 92px;
     left: 42%;

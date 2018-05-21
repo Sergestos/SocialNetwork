@@ -93,4 +93,13 @@
     <text></text>
     <contentID>1094</contentID>
   </message>
+  <message userID="5" sent_at="2018:05:21T20:33:14">
+    <text>hey</text>
+  </message>
+  <message userID="5" sent_at="2018:05:21T20:33:17">
+    <text>hey</text>
+  </message>
+  <message userID="5" sent_at="2018:05:21T20:33:21">
+    <text>hey</text>
+  </message>
 </dialog>

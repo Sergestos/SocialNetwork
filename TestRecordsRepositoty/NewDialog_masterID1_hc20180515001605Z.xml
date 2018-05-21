@@ -26,4 +26,19 @@
   <message userID="1" sent_at="2018:05:21T00:16:59">
     <text></text>
   </message>
+  <message userID="1" sent_at="2018:05:21T20:23:32">
+    <text>d</text>
+  </message>
+  <message userID="1" sent_at="2018:05:21T20:23:36">
+    <text>d</text>
+  </message>
+  <message userID="1" sent_at="2018:05:21T20:28:42">
+    <text>hey</text>
+  </message>
+  <message userID="1" sent_at="2018:05:21T20:28:46">
+    <text>hey</text>
+  </message>
+  <message userID="1" sent_at="2018:05:21T20:46:40">
+    <text>hey</text>
+  </message>
 </dialog>

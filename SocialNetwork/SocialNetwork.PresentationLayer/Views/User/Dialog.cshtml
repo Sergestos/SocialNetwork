@@ -29,25 +29,25 @@
         </div>        
     }
 </div>
-<div class="dialog-main-tabfield">
-    <div id="dialog-main-header-horizontalLineDown"></div>
-    @if (ViewBag.IsCanSendMessage != null && ViewBag.IsCanSendMessage == true)
-    {   
-        using (Ajax.BeginForm("AddMessageToDialog", "User", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "dialog-main" }, new { enctype = "multipart/form-data" }))
-        {
-            <input type="submit" value="Send" disabled id="dialog-main-tabfield-send" class="btn btn-primary" />
-            <input type="hidden" name="dialogID" value="@Model.DialogID" />
-            <input type="text" name="message" placeholder="Tab new message here" id="dialog-main-tabfield-text" onchange="IsTextEmpty()" class="form-control" />
 
-            <div class="dialog-main-tabfield-input">
-                <input type="file" name="upload" id="fileInput1" accept=".jpg, .jpeg, .png" onchange="IsFileChoosen()" />
-            </div>
-        }
+<script type="text/javascript">
+    console.log('@ViewBag.IsCanSendMessage');
+    if ('@ViewBag.IsCanSendMessage' == 'true') {
+        $('#fileInput1').prop('disabled', false);
+        $('#dialog-main-tabfield-submit').prop('disabled', false);
+        $('#dialog-main-tabfield-text').prop('disabled', false);          
+        $('#dialog-main-tabfield-isReadOnly').hide();
+    } else if ('@ViewBag.IsCanSendMessage' == 'false') {
+        $('#fileInput1').prop('disabled', true);
+        $('#dialog-main-tabfield-submit').prop('disabled', true);        
+        $('#dialog-main-tabfield-text').prop('disabled', true);          
+        $('#dialog-main-tabfield-isReadOnly').show();
     }
-    else
-    {
-        <div class="dialog-main-tabfield-isReadOnly">
-            <p>This dialog is read only</p>
-        </div>     
+
+    if ($.cookie('lastDialogId') != "none") {
+        $('#dialog-main-tabfield').show();
+        $('#hiddenDialogIdSender').val($.cookie('lastDialogId'));
     }
-</div>
+
+    var isCanSend = @ViewBag.IsCanSendMessage;
+</script>

@@ -35,4 +35,8 @@
   <message userID="5" sent_at="2018:05:21T09:13:00">
     <text>rerewr</text>
   </message>
+  <message userID="5" sent_at="2018:05:21T20:02:01">
+    <text>hello</text>
+    <contentID>1114</contentID>
+  </message>
 </dialog>

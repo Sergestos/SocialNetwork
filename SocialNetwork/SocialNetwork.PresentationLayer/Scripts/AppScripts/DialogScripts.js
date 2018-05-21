@@ -1,24 +1,28 @@
-﻿function LoadDialog(url) {
+﻿function LoadDialog(url, dialogID) {
     $('#dialog-main').load(url);
 }
 
-function IsTextEmpty() {    
-    if ($.trim($('#dialog-main-tabfield-text').val()) == '') {
-        $('#dialog-main-tabfield-send').prop("disabled", true);
-    }
-    else {
-        $('#dialog-main-tabfield-send').prop("disabled", false);        
+function IsTextEmpty() {
+    if (isCanSend) {
+        if ($.trim($('#dialog-main-tabfield-text').val()) == '') {
+            $('#dialog-main-tabfield-submit').prop("disabled", true);
+        }
+        else {
+            $('#dialog-main-tabfield-submit').prop("disabled", false);
+        }
     }
 }
 
 function IsFileChoosen() {
-    var fileName = $('#fileInput1').val();
-    if (fileName != '') {
-        $('#dialog-main-tabfield-send').prop("disabled", false);
-    }
-    else {
-        $('#dialog-main-tabfield-send').prop("disabled", true);
-    }
+    if (isCanSend) {
+        var fileName = $('#fileInput1').val();
+        if (fileName != '') {
+            $('#dialog-main-tabfield-submit').prop("disabled", false);
+        }
+        else {
+            $('#dialog-main-tabfield-submit').prop("disabled", true);
+        }
+    }    
 }
 
 window.onload = function () {
@@ -27,8 +31,21 @@ window.onload = function () {
     if (lastDialogID != "none" && isNumber(lastDialogID)) {
         var url = "/User/Dialog?dialogID=" + Number(lastDialogID);
         $('#dialog-main').load(url);
+        $('#dialog-main-tabfield').show();
     }  
+
+    if ($.cookie('lastDialogId') != "none" && isNumber(lastDialogID)) {
+        $('#dialog-main-tabfield').show();
+    }
+
+    $('#hiddenDialogIdSender').val($.cookie('lastDialogId'));
 }
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+
 
 window.addEventListener("submit", function (e) {
     var form = e.target;
@@ -53,6 +70,4 @@ window.addEventListener("submit", function (e) {
     }
 }, true);
 
-function isNumber(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-}
+

@@ -18,7 +18,7 @@
                     </div>
                     <div class="dialog-preview-item-open">
                         <input type="button" value="@item.DialogName" id="dialog-preview-item-open-search"
-                               onclick="LoadDialog('@Url.Action("Dialog", "User", new { dialogID = item.ID })')"/>
+                               onclick="LoadDialog('@Url.Action("Dialog", "User", new { dialogID = item.ID })', '@item.ID')"/>
                     </div>
                 </div>
             }
@@ -26,5 +26,22 @@
     <div id="dialog-main">
 
     </div>
-</div>
+    <div id="dialog-main-tabfield" hidden>
+        <div id="dialog-main-header-horizontalLineDown"></div>
+        <div id="dialog-main-tabfield-Send">
+            @using (Ajax.BeginForm("AddMessageToDialog", "User", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "dialog-main" }, new { enctype = "multipart/form-data" }))
+            {
+            <input type="submit" value="Send" disabled id="dialog-main-tabfield-submit" class="btn btn-primary" />
+            <input type="hidden" name="dialogID" value="" id="hiddenDialogIdSender" />
+            <input type="text" name="message" placeholder="Tab new message here" id="dialog-main-tabfield-text" onchange="IsTextEmpty()" class="form-control" />
 
+            <div class="dialog-main-tabfield-file">
+                <p style="margin-bottom: -0px;">
+                    <input type="file" name="upload" id="fileInput1" accept=".jpg, .jpeg, .png" onchange="IsFileChoosen()" />
+                    <i id="dialog-main-tabfield-isReadOnly" style="float: right; margin-right: 60%; margin-top: -20px;"><b>Dialog is Read only</b></i>
+                </p>                
+            </div>
+            }            
+        </div>     
+    </div>
+</div>

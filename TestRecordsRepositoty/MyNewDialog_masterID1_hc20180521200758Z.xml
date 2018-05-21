@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dialog firstMasterID="1">
+  <message userID="1" sent_at="2018:05:21T20:58:45">
+    <text>hey</text>
+  </message>
+  <message userID="1" sent_at="2018:05:21T20:58:48">
+    <text>hey</text>
+    <contentID>1117</contentID>
+  </message>
+</dialog>

@@ -401,7 +401,7 @@ namespace SocialNetwork.PresentationLayer.Controllers
             var dialog = EntityConverter.GetDialog(dialogID, module);
 
             bool isMaster = dialog.MasterID == Convert.ToInt32(cookieUserID.Value);
-            ViewBag.IsCanSendMessage = !(!isMaster && dialog.IsReadOnly);
+            ViewBag.IsCanSendMessage =(!(!isMaster && dialog.IsReadOnly)).ToString().ToLower();
             ViewBag.IsMaster = isMaster;
 
             return PartialView(dialog);
@@ -531,6 +531,12 @@ namespace SocialNetwork.PresentationLayer.Controllers
                 return Redirect("/Account/Logout");
 
             IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
+
+            if(module.GetAllUsers.FirstOrDefault(x=>x.Email == model.Email) != null)
+            {
+                ViewBag.Result = "This Email is already taken";
+                return PartialView(EntityConverter.GetSettingInfoModel(Convert.ToInt32(cookie.Value), module));
+            }
 
             module.ChangeItselfInfo(new UserInfoBLL()
             {
