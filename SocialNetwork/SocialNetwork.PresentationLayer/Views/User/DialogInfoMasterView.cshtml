@@ -1,7 +1,7 @@
 ﻿@model SocialNetwork.PresentationLayer.Models.DialogInfo
 
 <div class="dialogInfo">  
-    <div class="dialogInfo-adminPanel">
+    <div class="dialogInfo-adminPanel border">
         @using (Html.BeginForm("DialogInfoMasterView", "User", FormMethod.Post))
         {
             <input type="hidden" name="dialogID" value="@Model.ID" />
@@ -22,7 +22,7 @@
             <input type="submit" value="Change" class="btn btn-default" style="margin-top: 20px; margin-bottom: 8px; margin-left: 25px;"/>    
         }
     </div>
-    <div class="dialogInfo-users">        
+    <div class="dialogInfo-users border">        
         <button onclick="location.href='@Url.Action("DialogPreviews")'" type="button" class="btn btn-default" id="dialogInfo-users-ButtonBack" >Return to dialog</button>
         @foreach(var item in Model.UsersInDialog)
         {

@@ -8,9 +8,13 @@ namespace SocialNetwork.PresentationLayer.Models
 {
     public class SettingViewModel
     {
+        [Required(ErrorMessage = "First Name is required")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "SurName is required")]
         public string Surname { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
 
         [Display(Name = "Phone")]

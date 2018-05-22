@@ -40,7 +40,7 @@
     </div>   
     @if (User.Identity.IsAuthenticated)
     {
-        <div class="body-sidebar">
+        <div class="body-sidebar border">
             <div class="body-sidebar-area">
                 <p>
                     <img src="~/Content/Icons/house_24.png" />
@@ -72,7 +72,7 @@
                 </p>
                 <p>
                     <img src="~/Content/Icons/settings.png" />
-                    @Html.ActionLink("Setting", "Setting", "User", new { @class = "body-sidebar-item" })
+                    @Html.ActionLink("Setting", "Setting", "Setting", null, new { @class = "body-sidebar-item" })
                 </p>
                 <p>
                     <img src="~/Content/Icons/logout.png" />

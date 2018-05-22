@@ -5,7 +5,7 @@
         }
     </script>
 
-    <div class="search-filter">                    
+    <div class="search-filter border">                    
         <form action="@FilterActionName" method="get" id="form">
             <h3 class="search-filter-pageName" >@PageName</h3>            
             <input type="hidden" name="page" value="0" />
@@ -35,7 +35,7 @@
         @foreach (var item in users)
         {
             <input type="hidden" name="id" value="@item.ID" />
-            <div class="userList-result-group">
+            <div class="userList-result-group border">
                 <div class="userList-result-avatar">
                     <img class="avatar-image" src="/User/GetAvatar?ownerID=@item.ID" width="90" height="90" />
                 </div>
@@ -55,7 +55,7 @@
         }
     </div>
     <div>
-        <div class="pagging">
+        <div class="pagging border">
                 <input type="button" onclick="GoToPage(0)" value="First Page" class="btn btn-primary" style="width: 130px;" id="pagging-firstPage"/>
                 <input type="button" onclick="GoToPage(@currentPage - 1)" value="Previous Page" class="btn btn-primary" style="width: 130px;" id="pagging-previousPage"/>
                 <input type="button" onclick="GoToPage(@currentPage + 1)" value="Next Page" class="btn btn-primary" style="width: 130px;" id="pagging-nextPage"/>

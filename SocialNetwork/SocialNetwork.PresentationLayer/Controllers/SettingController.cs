@@ -6,6 +6,12 @@ using System.Web.Mvc;
 
 namespace SocialNetwork.PresentationLayer.Controllers
 {
+    using SocialNetwork.BLL.Models;
+    using SocialNetwork.BLL.Modules.UserModule;
+    using SocialNetwork.PresentationLayer.Infastructure;
+    using SocialNetwork.PresentationLayer.Infastructure.EntityConverters;
+    using SocialNetwork.PresentationLayer.Models;
+
     public class SettingController : Controller
     {
         [HttpGet]
@@ -32,6 +38,7 @@ namespace SocialNetwork.PresentationLayer.Controllers
         [Authorize]
         public ActionResult ChangePersonalInfo(SettingViewModel model)
         {
+            
             var cookie = HttpContext.Request.Cookies["id"];
             if (cookie == null)
                 return Redirect("/Account/Logout");

@@ -2,7 +2,7 @@
 
 <div class="dialog-main-header">
     <p>
-        @Html.ActionLink(Model.Name, "DialogInfo", "User", new { @dialogID = Model.DialogID }, null), @Model.QuantityOfMembers Memeber(s)        
+        @Html.ActionLink(Model.Name, "DialogInfo", "User", new { @dialogID = Model.DialogID }, null), @Model.QuantityOfMembers Member(s)        
         @Html.ActionLink("Leave", "LeaveFromDialog", "User", new { @dialogID = Model.DialogID }, new { @style = "float: right;" })
         @if (ViewBag.IsMaster != null && ViewBag.IsMaster == true)
         {

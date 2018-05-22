@@ -270,7 +270,7 @@
     <Content Include="Views\User\Dialog.cshtml" />
     <Content Include="Views\User\DialogInfoMasterView.cshtml" />
     <Content Include="Views\User\DialogInfoView.cshtml" />
-    <Content Include="Views\User\Setting.cshtml" />
+    <Content Include="Views\Setting\Setting.cshtml" />
     <Content Include="Views\User\ChangePersonalInfo.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\User\ChangePrivacy.cshtml" />
@@ -280,7 +280,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Setting\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

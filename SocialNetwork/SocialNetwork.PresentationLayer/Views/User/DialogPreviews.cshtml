@@ -5,14 +5,14 @@
 }
 
 <div>
-    <div class="dialog-preview-create">
+    <div class="dialog-preview-create border">
         <img src="~/Content/Icons/blue-plus-sign-hi.png" width="15" height="15" />
         <a href="/User/CreateDialog">Create dialog</a>
     </div>
     <div class="dialog-preview">
             @foreach(var item in Model)
             {
-                <div class="dialog-preview-item">
+                <div class="dialog-preview-item border">
                     <div class="dialog-preview-item-avatar">
                         <img class="avatar-image" src="/User/GetAvatar?ownerID=@item.MasterAvatartID" width="50" height="50" />
                     </div>
@@ -23,7 +23,7 @@
                 </div>
             }
     </div>
-    <div id="dialog-main">
+    <div id="dialog-main border">
 
     </div>
     <div id="dialog-main-tabfield" hidden>

@@ -4,7 +4,7 @@
     ViewBag.Title = "ChangePersonalInfo";
 }
 
-<div class="setting-personalInfo">
+<div class="setting-personalInfo border">
     @using (Ajax.BeginForm("ChangePersonalInfo", "User", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "setting-main" }))
     {
         @Html.AntiForgeryToken()

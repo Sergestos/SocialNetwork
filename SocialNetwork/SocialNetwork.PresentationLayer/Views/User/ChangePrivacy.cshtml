@@ -4,7 +4,7 @@
     ViewBag.Title = "ChangePrivacy";
 }
 
-<div class="setting-privacy">
+<div class="setting-privacy border">
     @using (Ajax.BeginForm("ChangePrivacy", "User", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "setting-main" }))
     {
         @Html.AntiForgeryToken()
