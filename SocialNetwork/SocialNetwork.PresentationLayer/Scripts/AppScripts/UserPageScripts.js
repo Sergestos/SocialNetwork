@@ -152,10 +152,10 @@ function Unblock(id) {
 }
 
 function StartDialog(id) {
-    var url = "/User/CreateDialog?companion=" + id;
+    var url = "/Dialog/CreateDialog?companion=" + id;
     window.open(url, "_self");
 }
 function AddToDialog(id) {
-    var url = "/User/AddToDialog?userID=" + id;
+    var url = "/Dialog/AddToDialog?userID=" + id;
     window.open(url, "_self");
 }
