@@ -1,4 +1,5 @@
-﻿function LoadDialog(url, dialogID) {
+﻿function LoadDialog(url) {
+    console.log(url);
     $('#dialog-main').load(url);
 }
 
@@ -29,14 +30,10 @@ window.onload = function () {
     var lastDialogID = $.cookie('lastDialogId');
     console.log("Last page is: " + lastDialogID);
     if (lastDialogID != "none" && isNumber(lastDialogID)) {
-        var url = "/User/Dialog?dialogID=" + Number(lastDialogID);
+        var url = "/Dialog/Dialog?dialogID=" + Number(lastDialogID);
         $('#dialog-main').load(url);
         $('#dialog-main-tabfield').show();
     }  
-
-    if ($.cookie('lastDialogId') != "none" && isNumber(lastDialogID)) {
-        $('#dialog-main-tabfield').show();
-    }
 
     $('#hiddenDialogIdSender').val($.cookie('lastDialogId'));
 }

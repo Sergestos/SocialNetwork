@@ -171,6 +171,7 @@
     <Compile Include="App_Start\StartupSignalR.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DialogController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\SettingController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -265,21 +266,21 @@
     <Content Include="Views\User\FollowedUsers.cshtml" />
     <Content Include="Views\User\BlockedUsers.cshtml" />
     <Content Include="App_Code\Helper.cshtml" />
-    <Content Include="Views\User\CreateDialog.cshtml" />
-    <Content Include="Views\User\DialogPreviews.cshtml" />
-    <Content Include="Views\User\Dialog.cshtml" />
-    <Content Include="Views\User\DialogInfoMasterView.cshtml" />
-    <Content Include="Views\User\DialogInfoView.cshtml" />
+    <Content Include="Views\Dialog\CreateDialog.cshtml" />
+    <Content Include="Views\Dialog\DialogPreviews.cshtml" />
+    <Content Include="Views\Dialog\Dialog.cshtml" />
+    <Content Include="Views\Dialog\DialogInfoMasterView.cshtml" />
+    <Content Include="Views\Dialog\DialogInfoView.cshtml" />
     <Content Include="Views\Setting\Setting.cshtml" />
-    <Content Include="Views\User\ChangePersonalInfo.cshtml" />
-    <Content Include="Views\User\ChangePassword.cshtml" />
-    <Content Include="Views\User\ChangePrivacy.cshtml" />
-    <Content Include="Views\User\ErrorMessage.cshtml" />
-    <Content Include="Views\User\AddToDialog.cshtml" />
-    <Content Include="Views\User\ChangeAvatar.cshtml" />
+    <Content Include="Views\Setting\ChangePersonalInfo.cshtml" />
+    <Content Include="Views\Setting\ChangePassword.cshtml" />
+    <Content Include="Views\Setting\ChangePrivacy.cshtml" />
+    <Content Include="Views\Dialog\AddToDialog.cshtml" />
+    <Content Include="Views\Setting\ChangeAvatar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

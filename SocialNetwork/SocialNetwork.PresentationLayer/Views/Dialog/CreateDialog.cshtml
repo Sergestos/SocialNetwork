@@ -4,8 +4,9 @@
 }
 
 <div class="createDialog border">
-    @using (Html.BeginForm("CreateDialog", "User", null, FormMethod.Post))
+    @using (Html.BeginForm("CreateDialog", "Dialog", null, FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
         <div>
             <p>
                 Dialog name

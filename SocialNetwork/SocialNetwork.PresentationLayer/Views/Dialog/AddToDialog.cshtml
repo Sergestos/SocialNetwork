@@ -10,7 +10,7 @@
     @foreach(var item in Model)
     {
         <div class="addToDialog-item" >
-            @using (Html.BeginForm("AddToDialog", "User", FormMethod.Post))
+            @using (Html.BeginForm("AddToDialog", "Dialog", FormMethod.Post))
             {
                 <p>Dialog Name: <i style="font-size: 18px;">@item.Name</i></p>
                 <p>Quantity of Members: <i style="font-size: 18px;">@item.UsersInDialog.Count()</i>, Is read only: <i style="font-size: 18px;">@item.IsReadOnly</i></p>                

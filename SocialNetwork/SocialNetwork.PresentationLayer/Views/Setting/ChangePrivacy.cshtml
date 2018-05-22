@@ -5,7 +5,7 @@
 }
 
 <div class="setting-privacy border">
-    @using (Ajax.BeginForm("ChangePrivacy", "User", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "setting-main" }))
+    @using (Ajax.BeginForm("ChangePrivacy", "Setting", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "setting-main" }))
     {
         @Html.AntiForgeryToken()
 

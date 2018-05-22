@@ -2,8 +2,8 @@
 
 <div class="dialog-main-header">
     <p>
-        @Html.ActionLink(Model.Name, "DialogInfo", "User", new { @dialogID = Model.DialogID }, null), @Model.QuantityOfMembers Member(s)        
-        @Html.ActionLink("Leave", "LeaveFromDialog", "User", new { @dialogID = Model.DialogID }, new { @style = "float: right;" })
+        @Html.ActionLink(Model.Name, "DialogInfo", "Dialog", new { @dialogID = Model.DialogID }, null), @Model.QuantityOfMembers Member(s)        
+        @Html.ActionLink("Leave", "LeaveFromDialog", "Dialog", new { @dialogID = Model.DialogID }, new { @style = "float: right;" })
         @if (ViewBag.IsMaster != null && ViewBag.IsMaster == true)
         {
             @Html.ActionLink("Add", "Search", "User", null, new { @style = "float: right; margin-right: 12px;" })
@@ -22,7 +22,7 @@
             {
                 <div>
                     <a href="/User/GetDialogContent?contentID=@content">
-                        <img class="dialog-main-content-message-content-image" src="/User/GetDialogContent?contentID=@content" />
+                        <img class="dialog-main-content-message-content-image" src="/Dialog/GetDialogContent?contentID=@content" />
                     </a>
                 </div>
             }

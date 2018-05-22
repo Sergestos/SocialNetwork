@@ -4,12 +4,7 @@
 }
 
 <div class="setting-avatar border">
-    @*<div class="setting-avatar-current">
-        <h3>This is your current avatar</h3>
-        <img class="avatar-image" src="@Url.Action("GetAvatar", "User", new { @ownerID = ViewBag.OwnerID })" width="220" height="220" />
-        <hr />
-    </div>*@
-   @using (Ajax.BeginForm("ChangeAvatar", "User", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "setting-main" }, new { enctype = "multipart/form-data" }))
+   @using (Ajax.BeginForm("ChangeAvatar", "Setting", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "setting-main" }, new { enctype = "multipart/form-data" }))
    {
         @Html.AntiForgeryToken()
         <div class="setting-avatar-new">
@@ -21,7 +16,7 @@
             }
             else
             {
-                <h3>Choose a picture. It will your avatar</h3>
+                <h3>Choose a picture. It will be your avatar</h3>
             }            
             <div>
                 <input type="file" name="upload" id="setting-avatar-fileInput" accept=".jpg, .jpeg, .png" onchange="IsFileChoosen()" />

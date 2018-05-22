@@ -2,7 +2,7 @@
 
 <div class="dialogInfo">  
     <div class="dialogInfo-adminPanel border">
-        @using (Html.BeginForm("DialogInfoMasterView", "User", FormMethod.Post))
+        @using (Html.BeginForm("DialogInfoMasterView", "Dialog", FormMethod.Post))
         {
             <input type="hidden" name="dialogID" value="@Model.ID" />
             <div class="dialogInfo-adminPanel-dialogName">
@@ -41,7 +41,7 @@
                             <input type="hidden" value="@item.ID" name="userID" />
                             <input type="submit" value="Appoint new Master" class="btn btn-primary" style="float:left; margin-right: 10px;"/>
                         }                        
-                        @using (Html.BeginForm("RemoveFromDialog", "User", FormMethod.Post))
+                        @using (Html.BeginForm("RemoveFromDialog", "Dialog", FormMethod.Post))
                         {
                             <input type="hidden" value="@Model.ID" name="dialogID" />
                             <input type="hidden" value="@item.ID" name="userID" />

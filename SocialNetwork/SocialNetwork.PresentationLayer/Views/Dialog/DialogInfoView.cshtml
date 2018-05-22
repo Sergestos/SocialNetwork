@@ -5,7 +5,7 @@
         
     </div>
     <div class="dialogInfo-users border">
-        <button onclick="location.href='@Url.Action("DialogPreviews")'" type="button" class="btn btn-default" id="dialogInfo-users-ButtonBack">Return to dialog</button>
+        <button onclick="location.href='@Url.Action("DialogPreviews", "Dialog", null)'" type="button" class="btn btn-default" id="dialogInfo-users-ButtonBack">Return to dialog</button>
         @foreach (var item in Model.UsersInDialog)
         {
             <div class="dialogInfo-users-UserInfo">
@@ -17,7 +17,6 @@
                     else
                     {
                         <p><a href="/User/UserPage?id=@item.ID"> @item.FirstName @item.SurName</a></p>
-
                     }                    
                     <hr />
                 </div>

@@ -36,18 +36,24 @@ namespace SocialNetwork.PresentationLayer.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult ChangePersonalInfo(SettingViewModel model)
         {
-            
             var cookie = HttpContext.Request.Cookies["id"];
             if (cookie == null)
                 return Redirect("/Account/Logout");
 
             IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
 
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("ValidationError", "Validation Error");
+                return PartialView(EntityConverter.GetSettingInfoModel(Convert.ToInt32(cookie.Value), module));
+            }          
+
             if (module.GetAllUsers.Where(x => x.ID != Convert.ToInt32(cookie.Value)).FirstOrDefault(x => x.Email == model.Email) != null)
             {
-                ViewBag.Result = "This Email is already taken";
+                ModelState.AddModelError("", "User with this email is already exist");
                 return PartialView(EntityConverter.GetSettingInfoModel(Convert.ToInt32(cookie.Value), module));
             }
 
@@ -84,6 +90,7 @@ namespace SocialNetwork.PresentationLayer.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(string newPass, string repeatedPass)
         {
             var cookie = HttpContext.Request.Cookies["id"];
@@ -114,6 +121,7 @@ namespace SocialNetwork.PresentationLayer.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult ChangeAvatar(HttpPostedFileBase upload)
         {
             var cookie = HttpContext.Request.Cookies["id"];
@@ -155,6 +163,7 @@ namespace SocialNetwork.PresentationLayer.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult ChangePrivacy(bool IsOthersCanComment, bool IsOthersCanStartDialog, bool IsShowInfoForAnonymousUsers)
         {
             var cookie = HttpContext.Request.Cookies["id"];

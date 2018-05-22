@@ -18,9 +18,9 @@
     chat.client.addMessage = function (message) {        
         console.log('New message gotten, target dialogID: ' + message);
         var dialogID = $.cookie('lastDialogId');
-        if (window.location.pathname == '/User/DialogPreviews' && message == dialogID) {
+        if (window.location.pathname == '/Dialog/DialogPreviews' && message == dialogID) {
             console.log('Reloading...');
-            $('#dialog-main').load('/User/Dialog?dialogID=' + dialogID);
+            $('#dialog-main').load('/Dialog/Dialog?dialogID=' + dialogID);
         }
     };
 });

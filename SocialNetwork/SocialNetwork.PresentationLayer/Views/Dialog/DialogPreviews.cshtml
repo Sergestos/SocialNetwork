@@ -7,7 +7,7 @@
 <div>
     <div class="dialog-preview-create border">
         <img src="~/Content/Icons/blue-plus-sign-hi.png" width="15" height="15" />
-        <a href="/User/CreateDialog">Create dialog</a>
+        <a href="/Dialog/CreateDialog">Create dialog</a>
     </div>
     <div class="dialog-preview">
             @foreach(var item in Model)
@@ -18,18 +18,18 @@
                     </div>
                     <div class="dialog-preview-item-open">
                         <input type="button" value="@item.DialogName" class="dialog-preview-item-open-search"
-                               onclick="LoadDialog('@Url.Action("Dialog", "User", new { dialogID = item.ID })', '@item.ID')"/>
+                               onclick="LoadDialog('@Url.Action("Dialog", "Dialog", new { dialogID = item.ID })')"/>
                     </div>
                 </div>
             }
     </div>
-    <div id="dialog-main border">
+    <div id="dialog-main" class="border">
 
     </div>
     <div id="dialog-main-tabfield" hidden>
         <div id="dialog-main-header-horizontalLineDown"></div>
         <div id="dialog-main-tabfield-Send">
-            @using (Ajax.BeginForm("AddMessageToDialog", "User", null, 
+            @using (Ajax.BeginForm("AddMessageToDialog", "Dialog", null, 
                 new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "dialog-main" }, 
                 new { enctype = "multipart/form-data", id = "formSend" }))
             {
