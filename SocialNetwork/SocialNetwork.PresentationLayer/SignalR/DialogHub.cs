@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
+using System.Threading;
 
 namespace SocialNetwork.PresentationLayer.SignalR
 {
@@ -10,30 +11,22 @@ namespace SocialNetwork.PresentationLayer.SignalR
     {
         static List<UserSignalR> Users = new List<UserSignalR>();
 
-        // Отправка сообщений
-        public void Send(string name, string message)
+        public void Send(string dialogID)
         {
-            Clients.All.addMessage(name, message);
+            Thread.Sleep(750);
+            Clients.Others.addMessage(dialogID);
         }
 
-        // Подключение нового пользователя
-        public void Connect(string userName)
+        public void Connect()
         {
             var id = Context.ConnectionId;
 
             if (!Users.Any(x => x.ConnectionId == id))
             {
-                Users.Add(new UserSignalR { ConnectionId = id, Name = userName });
-
-                // Посылаем сообщение текущему пользователю
-                Clients.Caller.onConnected(id, userName, Users);
-
-                // Посылаем сообщение всем пользователям, кроме текущего
-                Clients.AllExcept(id).onNewUserConnected(id, userName);
+                Users.Add(new UserSignalR { ConnectionId = id });
             }
         }
 
-        // Отключение пользователя
         public override System.Threading.Tasks.Task OnDisconnected(bool stopCalled)
         {
             var item = Users.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
@@ -41,7 +34,7 @@ namespace SocialNetwork.PresentationLayer.SignalR
             {
                 Users.Remove(item);
                 var id = Context.ConnectionId;
-                Clients.All.onUserDisconnected(id, item.Name);
+                Clients.All.onUserDisconnected(id);
             }
 
             return base.OnDisconnected(stopCalled);

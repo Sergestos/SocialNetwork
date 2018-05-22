@@ -17,7 +17,7 @@
                         <img class="avatar-image" src="/User/GetAvatar?ownerID=@item.MasterAvatartID" width="50" height="50" />
                     </div>
                     <div class="dialog-preview-item-open">
-                        <input type="button" value="@item.DialogName" id="dialog-preview-item-open-search"
+                        <input type="button" value="@item.DialogName" class="dialog-preview-item-open-search"
                                onclick="LoadDialog('@Url.Action("Dialog", "User", new { dialogID = item.ID })', '@item.ID')"/>
                     </div>
                 </div>
@@ -29,7 +29,9 @@
     <div id="dialog-main-tabfield" hidden>
         <div id="dialog-main-header-horizontalLineDown"></div>
         <div id="dialog-main-tabfield-Send">
-            @using (Ajax.BeginForm("AddMessageToDialog", "User", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "dialog-main" }, new { enctype = "multipart/form-data" }))
+            @using (Ajax.BeginForm("AddMessageToDialog", "User", null, 
+                new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "dialog-main" }, 
+                new { enctype = "multipart/form-data", id = "formSend" }))
             {
             <input type="submit" value="Send" disabled id="dialog-main-tabfield-submit" class="btn btn-primary" />
             <input type="hidden" name="dialogID" value="" id="hiddenDialogIdSender" />

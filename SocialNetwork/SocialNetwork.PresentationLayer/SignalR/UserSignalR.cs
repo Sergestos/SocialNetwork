@@ -8,6 +8,5 @@ namespace SocialNetwork.PresentationLayer.SignalR
     public class UserSignalR
     {
         public string ConnectionId { get; set; }
-        public string Name { get; set; }
     }
 }

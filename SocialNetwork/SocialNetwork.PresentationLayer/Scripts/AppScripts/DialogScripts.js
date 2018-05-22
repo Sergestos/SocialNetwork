@@ -45,6 +45,13 @@ function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
+function ResetInputs() {
+    $('#dialog-main-tabfield-text').val('');
+    $('#fileInput1').val('');
+
+    $('#dialog-main-tabfield-submit').prop("disabled", true);
+    $('#dialog-main-tabfield-submit').prop("disabled", true);
+}
 
 
 window.addEventListener("submit", function (e) {
@@ -62,6 +69,7 @@ window.addEventListener("submit", function (e) {
                         if (updateTarget) {
                             updateTarget.innerHTML = xhr.responseText;
                         }
+                        ResetInputs();
                     }
                 }
             };

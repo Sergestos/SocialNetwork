@@ -155,4 +155,10 @@
   <message userID="5" sent_at="2018:05:21T00:14:14">
     <text></text>
   </message>
+  <message userID="5" sent_at="2018:05:22T14:53:35">
+    <text>hey</text>
+  </message>
+  <message userID="5" sent_at="2018:05:22T20:31:24">
+    <text>h12</text>
+  </message>
 </dialog>

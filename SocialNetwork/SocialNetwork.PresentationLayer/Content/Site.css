@@ -310,7 +310,7 @@ body {
     overflow-y: auto;
 }
 
-#dialog-preview-item-open-search {
+.dialog-preview-item-open-search {
     background: none;
     color: cornflowerblue;    
     border: none;
