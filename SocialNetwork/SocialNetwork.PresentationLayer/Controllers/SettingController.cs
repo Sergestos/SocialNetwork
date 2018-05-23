@@ -77,11 +77,9 @@ namespace SocialNetwork.PresentationLayer.Controllers
         [Authorize]
         public ActionResult ChangePassword()
         {
-            var cookie = HttpContext.Request.Cookies["id"];
-            if (cookie == null)
-                return Redirect("/Account/Logout");
-
-            IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
+            IUserModule module = ApplicationHelper.GetUserModule(HttpContext.Request.Cookies["id"]);
+            if (module == null)
+                return RedirectToAction("Logout", "Account");
 
             string password = module.GetMyInfo.Password;
 
@@ -93,11 +91,9 @@ namespace SocialNetwork.PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(string newPass, string repeatedPass)
         {
-            var cookie = HttpContext.Request.Cookies["id"];
-            if (cookie == null)
-                return Redirect("/Account/Logout");
-
-            IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
+            IUserModule module = ApplicationHelper.GetUserModule(HttpContext.Request.Cookies["id"]);
+            if (module == null)
+                return RedirectToAction("Logout", "Account");
 
             if (newPass != repeatedPass)
             {
@@ -138,7 +134,7 @@ namespace SocialNetwork.PresentationLayer.Controllers
                 module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
                 module.ChangeAvatar(upload.InputStream);
             }
-            catch (ArgumentNullException ex)
+            catch (ArgumentNullException)
             {
                 return RedirectToAction("Home");
             }
@@ -151,11 +147,9 @@ namespace SocialNetwork.PresentationLayer.Controllers
         [Authorize]
         public ActionResult ChangePrivacy()
         {
-            var cookie = HttpContext.Request.Cookies["id"];
-            if (cookie == null)
-                return Redirect("/Account/Logout");
-
-            IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
+            IUserModule module = ApplicationHelper.GetUserModule(HttpContext.Request.Cookies["id"]);
+            if (module == null)
+                return RedirectToAction("Logout", "Account");
 
             var user = module.GetMyInfo;
             return PartialView("ChangePrivacy", GetPrivacySettingAsStrings(user.IsOthersCanComment, user.IsOthersCanStartDialog, user.IsShowInfoForAnonymousUsers));
@@ -166,11 +160,9 @@ namespace SocialNetwork.PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePrivacy(bool IsOthersCanComment, bool IsOthersCanStartDialog, bool IsShowInfoForAnonymousUsers)
         {
-            var cookie = HttpContext.Request.Cookies["id"];
-            if (cookie == null)
-                return Redirect("/Account/Logout");
-
-            IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
+            IUserModule module = ApplicationHelper.GetUserModule(HttpContext.Request.Cookies["id"]);
+            if (module == null)
+                return RedirectToAction("Logout", "Account");
 
             module.ChangePrivacy(IsOthersCanComment, IsOthersCanStartDialog, IsShowInfoForAnonymousUsers);
             ViewBag.Result = "Success";

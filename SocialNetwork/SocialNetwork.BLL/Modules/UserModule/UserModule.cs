@@ -401,7 +401,10 @@ namespace SocialNetwork.BLL.Modules.UserModule
                 throw new BusinessAdmissionException("User can'\t grant others because of he is not a master");
 
             if (!unitOfWork.Users.Get(userID).IsOthersCanStartChat)
-                throw new BusinessAdmissionException("Selected user blocked inviting");            
+                throw new BusinessAdmissionException("Selected user blocked inviting");
+
+            if (unitOfWork.DialogMembers.GetAll.FirstOrDefault(x => x.MemberID == userID && x.DialogID == dialogID) != null)
+                throw new BusinessLogicException("The same user can\'t be added to the dialog twice");
 
             unitOfWork.DialogMembers.Add(new DialogMember()
             {

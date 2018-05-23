@@ -26,3 +26,6 @@ WHERE ID = 24;
 UPDATE Contents
 Set Extension = '.jpg'
 WHERE Extension = '.xml'
+
+DELETE FROM Dialogs
+WHERE ID = 36

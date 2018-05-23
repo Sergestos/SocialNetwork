@@ -35,7 +35,7 @@
                 {
                     <a href="/User/UserPage?id=@item.ID"> @item.FirstName @item.SurName</a>
                     <div class="dialogInfo-users-UserInfo-buttons">
-                        @using (Html.BeginForm("AppointNewMaster", "User", FormMethod.Post))
+                        @using (Html.BeginForm("AppointNewMaster", "Dialog", FormMethod.Post))
                         {
                             <input type="hidden" value="@Model.ID" name="dialogID" />
                             <input type="hidden" value="@item.ID" name="userID" />

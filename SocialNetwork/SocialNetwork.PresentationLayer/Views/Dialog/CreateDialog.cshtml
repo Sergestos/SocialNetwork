@@ -10,7 +10,7 @@
         <div>
             <p>
                 Dialog name
-                <input type="text" name="name" class="form-control" style="width: 500px"/>
+                <input type="text" name="name" class="form-control" style="width: 500px" value="New dialog" id="createDialog-text"/>
             </p>            
         </div>
         <div>
@@ -28,9 +28,20 @@
                 <input type="hidden" name="companion" value="@ViewBag.Companion" />
             }
         </div>        
-        <input type="submit" value="Create" class="btn btn-default" style="margin-top: 15px;"/>
+        <input type="submit" value="Create" class="btn btn-default" style="margin-top: 15px;" id="createDialog-submit"/>
     }
     <div>
         
     </div>
 </div>
+
+<script>    
+    $('#createDialog-text').change(function () {
+        if ($('#createDialog-text').val() == '') {
+            $('#createDialog-submit').prop('disabled', true)
+        }
+        else {
+            $('#createDialog-submit').prop('disabled', false)
+        }
+    })    
+</script>
