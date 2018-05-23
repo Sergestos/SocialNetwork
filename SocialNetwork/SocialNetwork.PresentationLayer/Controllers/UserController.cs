@@ -128,14 +128,11 @@ namespace SocialNetwork.PresentationLayer.Controllers
 
         private IEnumerable<UserView> GetFilteredUsers(IEnumerable<UserInfoBLL> seakingUsers, int page, string order, string filter)
         {
-            IEnumerable<UserView> users = null;    
-              
-            users = seakingUsers
-                .Skip(ApplicationConstants.QuantityOfUsersPerPage * page)
-                .Take(ApplicationConstants.QuantityOfUsersPerPage)
-                .Select(x => EntityConverter.GetUserView(x));
+            IEnumerable<UserView> users = null;
 
+            users = seakingUsers.Select(x => EntityConverter.GetUserView(x));
             users = SortUsers(users, filter, order);
+            users = users.Skip(ApplicationConstants.QuantityOfUsersPerPage * page).Take(ApplicationConstants.QuantityOfUsersPerPage);
 
             return users;
         }

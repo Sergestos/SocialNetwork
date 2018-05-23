@@ -127,7 +127,7 @@ namespace SocialNetwork.PresentationLayer.Controllers
             if (upload != null)
             {
                 var streams = upload
-                    .Where(x => x != null && x.InputStream != null)
+                    .Where(x => x != null && x.InputStream != null && (x.ContentType == "image/png" || x.ContentType == "image/jpeg"))
                     .Select(x => x.InputStream).ToList();
                 module.SendMessage(dialogID, message, streams);
             }

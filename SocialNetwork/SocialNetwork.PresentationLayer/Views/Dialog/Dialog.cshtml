@@ -20,8 +20,8 @@
             <div class="dialog-main-content-message-Content">@item.Message</div>
             @foreach(var content in item.ContentsID)
             {
-                <div>
-                    <a href="/User/GetDialogContent?contentID=@content">
+                <div>                    
+                    <a href="/Dialog/GetDialogContent?contentID=@content">
                         <img class="dialog-main-content-message-content-image" src="/Dialog/GetDialogContent?contentID=@content" />
                     </a>
                 </div>

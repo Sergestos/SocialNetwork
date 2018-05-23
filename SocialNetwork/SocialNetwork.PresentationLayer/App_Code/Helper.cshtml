@@ -8,7 +8,7 @@
     <div class="search-filter border">                    
         <form action="@FilterActionName" method="get" id="form">
             <h3 class="search-filter-pageName" >@PageName</h3>            
-            <input type="hidden" name="page" value="0" />
+            <input type="hidden" name="page" value="@currentPage" />
             <div class="search-filter-radio">
                 <input type="radio" id="search-filter-radio-inAsc"
                        name="order" value="asc" class=".radio-inline" checked>

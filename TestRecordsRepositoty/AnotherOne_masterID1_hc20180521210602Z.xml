@@ -7,4 +7,11 @@
     <text></text>
     <contentID>1147</contentID>
   </message>
+  <message userID="1" sent_at="2018:05:23T19:39:54">
+    <text></text>
+    <contentID>1149</contentID>
+  </message>
+  <message userID="1" sent_at="2018:05:23T19:43:38">
+    <text>not a png/jpeg</text>
+  </message>
 </dialog>
