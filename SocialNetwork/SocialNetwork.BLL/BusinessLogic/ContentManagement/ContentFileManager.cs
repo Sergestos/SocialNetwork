@@ -42,6 +42,9 @@ namespace SocialNetwork.BLL.BusinessLogic.ContentManagement
             xml.Add(rootElement);
             xml.Save(fullpath);
 
+            var content = new Content() { Category = "Dialog", Path = fullpath };
+            unitOfWork.Content.Add(content);
+
             path = fullpath;
         }
 
@@ -61,22 +64,10 @@ namespace SocialNetwork.BLL.BusinessLogic.ContentManagement
                 foreach (var item in contentStream)
                 {
                     string contentFullPathName = GetContentName(userID);
-                    //using (var fileWritter = new StreamWriter(contentFullPathName))
-                    //{
-                    //    var bytes = new byte[item.Length];
-                    //    item.Read(bytes, 0, (int)item.Length);
-                    //    fileWritter.Write(bytes);
-                    //}
                     using (var fileStream = File.Create(contentFullPathName))
                     {
                         item.Seek(0, SeekOrigin.Begin);
                         item.CopyTo(fileStream);
-                        item.Flush();
-                        item.Close();
-
-                        // kostul'
-                        fileStream.Flush();
-                        fileStream.Close();
                     }
 
                     unitOfWork.Content.Add(new Content() { Category = "DialogContent", Path = contentFullPathName, Extension = ".jpg" });
@@ -92,7 +83,7 @@ namespace SocialNetwork.BLL.BusinessLogic.ContentManagement
             xdoc.Save(dialogFullPath);
         }
 
-        public void UploadFile(Stream file, out string savedPath)
+        public void UploadFile(Stream file, string FileCategory, out string savedPath)
         {
             savedPath = GetContentName();
 
@@ -101,6 +92,17 @@ namespace SocialNetwork.BLL.BusinessLogic.ContentManagement
                 file.Seek(0, SeekOrigin.Begin);
                 file.CopyTo(fileStream);
             }
+
+            string fileExtension = FileCategory == "Avatar" ? ".jpg" :
+                                   FileCategory == "Dialog" ? ".xml" :
+                                   throw new InvalidDataException("ContentFileManager doesn\'t support this type of files");
+
+            unitOfWork.Content.Add(new Content()
+            {
+                Category = FileCategory,
+                Path = savedPath,
+                Extension = fileExtension
+            });
         }
         
         public Byte[] GetFile(string fullPath)

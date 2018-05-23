@@ -55,15 +55,17 @@ function Unfollow(id) {
         data: { "id": id },
         contentType: 'application/json',
         success: function (result) {
-            var obj = jQuery.parseJSON('"Result"');
-            if (obj !== null) {
-                IsFollowed = false;
-                $("#buttonFollow").val("Follow");
-            }
-            else {
-                console.log(9);
-                // error message
-            }
+            var json = result['Result'];
+            if (json !== null) {
+                if (json == 'Unfollowed') {
+                    IsFollowed = false;
+                    $("#buttonFollow").val("Follow");
+                }                
+                else {
+                    $("#errorMsg").text(json);
+                    $("#myModalBox").modal('show');
+                }
+            }            
         }
     });
 }
@@ -76,14 +78,17 @@ function Follow(id) {
         data: { "id": id },
         contentType: 'application/json',
         success: function (result) {
-            var obj = jQuery.parseJSON('"Result"');
-            if (obj !== null) {
-                IsFollowed = true;
-                $("#buttonFollow").val("Unfollow");
-            }
-            else {
-                // error message
-            }
+            var json = result['Result'];
+            if (json !== null) {
+                if (json == 'Followed') {
+                    IsFollowed = true;
+                    $("#buttonFollow").val("Unfollow");
+                }
+                else {
+                    $("#errorMsg").text(json);
+                    $("#myModalBox").modal('show');
+                }
+            }            
         }
     });
 }
@@ -107,19 +112,22 @@ function Block(id) {
         data: { "id": id },
         contentType: 'application/json',
         success: function (result) {
-            var obj = jQuery.parseJSON('"Result"');
-            if (obj !== null) {
-                IsUserInBlacklist = true;     
-                IsFollowed = false;
+            var json = result['Result'];
+            if (json !== null) {
+                if (json == 'Blocked') {
+                    IsUserInBlacklist = true;
+                    IsFollowed = false;
 
-                $("#buttonBlacklist").val("Unblock");
-                $("#buttonFollow").prop("disabled", true);    
-                $("#buttonFollow").val("Follow");
-                $("#buttonStartDialog, #buttonAddToDialog").prop("disabled", true);
-            }
-            else {
-                // error message
-            }
+                    $("#buttonBlacklist").val("Unblock");
+                    $("#buttonFollow").prop("disabled", true);
+                    $("#buttonFollow").val("Follow");
+                    $("#buttonStartDialog, #buttonAddToDialog").prop("disabled", true);
+                }
+                else {
+                    $("#errorMsg").text(json);
+                    $("#myModalBox").modal('show');
+                }                
+            }            
         }
     });
 }
@@ -132,21 +140,24 @@ function Unblock(id) {
         data: { "id": id },
         contentType: 'application/json',
         success: function (result) {
-            var obj = jQuery.parseJSON('"Result"');
-            if (obj !== null) {
-                IsUserInBlacklist = false;
-                IsFollowed = false;
+            var json = result['Result'];
+            if (json !== null) {
+                if (json == 'Unblocked') {;
+                    IsUserInBlacklist = false;
+                    IsFollowed = false;
 
-                $("#buttonBlacklist").val("Block");
-                $("#buttonFollow").prop("disabled", false);
-                $("#buttonFollow").val("Follow");
+                    $("#buttonBlacklist").val("Block");
+                    $("#buttonFollow").prop("disabled", false);
+                    $("#buttonFollow").val("Follow");
 
-                if (IsUserAllowsAddToDialog)
-                    $("#buttonStartDialog, #buttonAddToDialog").prop("disabled", false);
-            }
-            else {
-                // error message
-            }
+                    if (IsUserAllowsAddToDialog)
+                        $("#buttonStartDialog, #buttonAddToDialog").prop("disabled", false);
+                }
+                else {
+                    $("#errorMsg").text(json);
+                    $("#myModalBox").modal('show');
+                }
+            }                
         }
     });
 }

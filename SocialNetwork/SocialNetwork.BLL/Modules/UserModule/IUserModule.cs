@@ -52,8 +52,5 @@ namespace SocialNetwork.BLL.Modules.UserModule
         void ChangePassword(string password);
         void ChangeEmail(string email);
         void ChangeItselfInfo(UserInfoBLL user);
-
-        void DeleteAccount();
-        void LogOut();
     }
 }

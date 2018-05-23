@@ -20,7 +20,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
         private int currentUserID;
 
         private UserConverter userConverter;
-        private ContentFileManager fileManager;
+        private IContentFileManager fileContentManager;
 
         private const int passwordMaxLength = 32;
         private const int emailMaxLength = 32;
@@ -36,7 +36,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
             this.currentUserID = userID;
 
             this.userConverter = new UserConverter(unitOfWork);
-            this.fileManager = new ContentFileManager(unitOfWork);
+            this.fileContentManager = new ContentFileManager(unitOfWork);
         }
 
         private void ValidateUser(int userID,
@@ -311,7 +311,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
                 .FirstOrDefault()
                 .DialogContentID.Value).Path;
 
-            fileManager.WriteDialog(dialogPath, currentUserID, text, content);
+            fileContentManager.WriteDialog(dialogPath, currentUserID, text, content);
         }
 
         public void StartDialog(string name, bool isReadOnly, int? userID)
@@ -324,10 +324,7 @@ namespace SocialNetwork.BLL.Modules.UserModule
                     throw new BusinessAdmissionException("Selected user blocked inviting");
             }
 
-            fileManager.CreateDialog(name, currentUserID, out string fullPath);
-
-            var content = new Content() { Category = "Dialog", Path = fullPath };
-            unitOfWork.Content.Add(content);
+            fileContentManager.CreateDialog(name, currentUserID, out string fullPath);
 
             var dialog = new Dialog()
             {
@@ -437,7 +434,10 @@ namespace SocialNetwork.BLL.Modules.UserModule
             var dialog = unitOfWork.Dialogs.Get(dialogID);
 
             if (dialog.MasterID == currentUserID)
+            {
                 dialog.MasterID = null;
+                unitOfWork.Dialogs.Update(dialog);
+            }
 
             var dialogMember = unitOfWork.DialogMembers
                 .Find(x => x.MemberID == currentUserID && x.DialogID == dialogID)
@@ -481,18 +481,11 @@ namespace SocialNetwork.BLL.Modules.UserModule
 
         public void ChangeAvatar(Stream newAvatar)
         {
-            IContentFileManager fileManager = new ContentFileManager(unitOfWork);
-            fileManager.UploadFile(newAvatar, out string savedPath);
-
-            unitOfWork.Content.Add(new Content()
-            {
-                Category = "Avatar",
-                Path = savedPath,
-                Extension = ".jpg"
-            });
+            fileContentManager.UploadFile(newAvatar, "Avatar", out string savedPath);
 
             var user = unitOfWork.Users.Get(currentUserID);
             user.AvatarContentID = unitOfWork.Content.Find(x => x.Path == savedPath).FirstOrDefault().ID;
+
             unitOfWork.Users.Update(user);
         }
 
@@ -539,9 +532,5 @@ namespace SocialNetwork.BLL.Modules.UserModule
         {
             throw new NotImplementedException();
         }        
-
-        public void DeleteAccount() => throw new NotImplementedException();
-
-        public void LogOut() => throw new NotImplementedException();
     }
 }

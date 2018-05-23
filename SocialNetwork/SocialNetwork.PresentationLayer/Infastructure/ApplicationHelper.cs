@@ -5,6 +5,8 @@ using System.Web;
 
 namespace SocialNetwork.PresentationLayer.Infastructure
 {
+    using SocialNetwork.BLL.Modules.UserModule;
+
     public static class ApplicationHelper
     {
         public static string GetMimeType(string extension)
@@ -23,6 +25,15 @@ namespace SocialNetwork.PresentationLayer.Infastructure
                 return extension;
 
             throw new ArgumentException($"Extension \'{extension}\' is not avaibale for this operation");
+        }
+
+        public static IUserModule GetUserModule(HttpCookie userCookie)
+        {
+            var cookie = userCookie.Value;
+            if (cookie == null)
+                return null;
+
+            return new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie));
         }
     }
 }

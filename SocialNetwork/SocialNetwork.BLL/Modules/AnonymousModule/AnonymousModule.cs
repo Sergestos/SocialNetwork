@@ -30,20 +30,14 @@ namespace SocialNetwork.BLL.Modules.AnonymousModule
         public IEnumerable<UserInfoBLL> GetAllUsers =>
              unitOfWork.Users.GetAll.Select(x => converter.ConvertToBLLEntity(x));
 
-        public void Registrate(UserInfoBLL user, Stream stream, string fileExtension = ".jpg")
+        public void Registrate(UserInfoBLL user, Stream stream, string Category)
         {
             if (unitOfWork.Users.GetAll.Where(x => x.Email == user.Email).FirstOrDefault() != null)
                 throw new BusinessLogic.Exceptions.BusinessLogicException("User with current email already exists");
 
             IContentFileManager fileManager = new ContentFileManager(unitOfWork);
-            fileManager.UploadFile(stream, out string savedPath);
 
-            unitOfWork.Content.Add(new Content()
-            {
-                Category = "Avatar",
-                Path = savedPath,
-                Extension = fileExtension
-            });
+            fileManager.UploadFile(stream, "Avatar", out string savedPath);
 
             unitOfWork.Users.Add(converter.ConvertToOriginalEntity(user, unitOfWork.Content.Find(x => x.Path == savedPath).FirstOrDefault().ID));
         }

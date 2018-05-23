@@ -17,15 +17,14 @@ namespace SocialNetwork.PresentationLayer.Controllers
 {  
     [Authorize]
     public class UserController : Controller
-    {
+    {        
         [Authorize]
         public ActionResult Home()
         {
-            var cookie = HttpContext.Request.Cookies["id"];
-            if(cookie == null)
+            IUserModule module = ApplicationHelper.GetUserModule(HttpContext.Request.Cookies["id"]);
+            if(module == null)
                 return RedirectToAction("Logout", "Account");
 
-            var module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
             var userView = EntityConverter.GetUserView(module.GetMyInfo);
 
             return View(userView);
@@ -67,12 +66,12 @@ namespace SocialNetwork.PresentationLayer.Controllers
         [HttpGet]
         [Authorize]
         public ActionResult Search(int page = 0, string order = "asc", string filter = "FirstName")
-        {           
+        {
             var cookie = HttpContext.Request.Cookies["id"];
             if (cookie == null)
                 return RedirectToAction("Logout", "Account");
 
-            IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
+            var module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
 
             var users = GetFilteredUsers(module.GetAllUsers.Where(x => x.ID != Convert.ToInt32(cookie.Value)), page, order, filter);
             ViewBag.IsLastPage = users.Count() < ApplicationConstants.QuantityOfUsersPerPage ? true : false;
@@ -86,11 +85,9 @@ namespace SocialNetwork.PresentationLayer.Controllers
         [Authorize]
         public ActionResult MyFollowers(int page = 0, string order = "asc", string filter = "FirstName")
         {
-            var cookie = HttpContext.Request.Cookies["id"];
-            if (cookie == null)
+            IUserModule module = ApplicationHelper.GetUserModule(HttpContext.Request.Cookies["id"]);
+            if (module == null)
                 return RedirectToAction("Logout", "Account");
-
-            IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
 
             var users = GetFilteredUsers(module.GetMyFollewers, page, order, filter);
             ViewBag.IsLastPage = users.Count() < ApplicationConstants.QuantityOfUsersPerPage ? true : false;
@@ -103,11 +100,9 @@ namespace SocialNetwork.PresentationLayer.Controllers
         [Authorize]
         public ActionResult FollowedUsers(int page = 0, string order = "asc", string filter = "FirstName")
         {
-            var cookie = HttpContext.Request.Cookies["id"];
-            if (cookie == null)
+            IUserModule module = ApplicationHelper.GetUserModule(HttpContext.Request.Cookies["id"]);
+            if (module == null)
                 return RedirectToAction("Logout", "Account");
-
-            IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
 
             var users = GetFilteredUsers(module.GetUsersIFollowing, page, order, filter);
             ViewBag.IsLastPage = users.Count() < ApplicationConstants.QuantityOfUsersPerPage ? true : false;
@@ -120,11 +115,9 @@ namespace SocialNetwork.PresentationLayer.Controllers
         [Authorize]
         public ActionResult BlockedUsers(int page = 0, string order = "asc", string filter = "FirstName")
         {
-            var cookie = HttpContext.Request.Cookies["id"];
-            if (cookie == null)
+            IUserModule module = ApplicationHelper.GetUserModule(HttpContext.Request.Cookies["id"]);
+            if (module == null)
                 return RedirectToAction("Logout", "Account");
-
-            IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
 
             var users = GetFilteredUsers(module.GetUsersAddedToBlackList, page, order, filter);
             ViewBag.IsLastPage = users.Count() < ApplicationConstants.QuantityOfUsersPerPage ? true : false;
@@ -179,11 +172,11 @@ namespace SocialNetwork.PresentationLayer.Controllers
                 return RedirectToAction("Logout", "Account");
 
             int userObserverID = Convert.ToInt32(cookie.Value);
-
             if(id == userObserverID)
                 return RedirectToAction("Home", "User");
 
             UserView userView = null;
+
             try
             {
                 var module = new UserModule(MockResolver.GetUnitOfWorkFactory(), id);
@@ -191,29 +184,15 @@ namespace SocialNetwork.PresentationLayer.Controllers
                 userView = EntityConverter.GetUserView(module.GetMyInfo);
 
                 if (module.GetUsersAddedToBlackList.FirstOrDefault(x => x.ID == userObserverID) != null)
-                {
-                    ViewBag.IsAnotherUserBlockedMe = true;
-                    return RedirectToAction("Search");
-                }
+                    return RedirectToAction("Search", "User");
 
-                if (module.GetMyFollewers.FirstOrDefault(x => x.ID == userObserverID) != null)
-                    ViewBag.IsAnotherUserIsFollowedByMe = true;
-                else
-                    ViewBag.IsAnotherUserIsFollowedByMe = false;
-
-                if (module.GetUsersAddedMeToBlackList.FirstOrDefault(x => x.ID == userObserverID) != null)
-                    ViewBag.IsIBlockedThisUser = true;
-                else
-                    ViewBag.IsIBlockedThisUser = false;
+                ViewBag.IsAnotherUserIsFollowedByMe = module.GetMyFollewers.FirstOrDefault(x => x.ID == userObserverID) != null;
+                ViewBag.IsIBlockedThisUser = module.GetUsersAddedMeToBlackList.FirstOrDefault(x => x.ID == userObserverID) != null;                
             }
             catch (NullReferenceException)
             {
                 return RedirectToAction("Search", "User");
-            }
-            catch (BusinessEntityNullException)
-            {
-                return RedirectToAction("Logout", "Account");
-            }                                                                
+            }                                                              
 
             return View(userView);
         }
@@ -224,26 +203,20 @@ namespace SocialNetwork.PresentationLayer.Controllers
         {
             string result = string.Empty;
 
-            var cookie = HttpContext.Request.Cookies["id"];
-            if (cookie == null)
+            IUserModule module = ApplicationHelper.GetUserModule(HttpContext.Request.Cookies["id"]);
+            if (module == null)
                 return RedirectToAction("Logout", "Account");
 
             try
             {
-                IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
                 module.Follow(id);
-
                 result = "Followed";
-            }
-            catch (BusinessEntityNullException ex)
-            {
-                result = ex.Message;
             }
             catch (BusinessLogicException ex)
             {
-                result = ex.Message;
+                result = ex.Message;                
             }
-
+            
             var anonym = new { Result = result };
             return Json(anonym, JsonRequestBehavior.AllowGet);
         }
@@ -254,25 +227,19 @@ namespace SocialNetwork.PresentationLayer.Controllers
         {
             string result = string.Empty;
 
-            var cookie = HttpContext.Request.Cookies["id"];
-            if (cookie == null)
+            IUserModule module = ApplicationHelper.GetUserModule(HttpContext.Request.Cookies["id"]);
+            if (module == null)
                 return RedirectToAction("Logout", "Account");
 
             try
             {
-                IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
                 module.Unfollow(id);
-
                 result = "Unfollowed";
-            }
-            catch (BusinessEntityNullException ex)
-            {
-                result = ex.Message;
             }
             catch (BusinessLogicException ex)
             {
-                result = ex.Message;
-            }
+                result = ex.Message;                
+            }            
 
             var anonym = new { Result = result };
             return Json(anonym, JsonRequestBehavior.AllowGet);
@@ -284,26 +251,20 @@ namespace SocialNetwork.PresentationLayer.Controllers
         {
             string result = string.Empty;
 
-            var cookie = HttpContext.Request.Cookies["id"];
-            if (cookie == null)
+            IUserModule module = ApplicationHelper.GetUserModule(HttpContext.Request.Cookies["id"]);
+            if (module == null)
                 return RedirectToAction("Logout", "Account");
 
             try
             {
-                IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
                 module.AddToBlackList(id);
-
                 result = "Blocked";
-            }
-            catch (BusinessEntityNullException ex)
-            {
-                result = ex.Message;
             }
             catch (BusinessLogicException ex)
             {
                 result = ex.Message;
             }
-
+            
             var anonym = new { Result = result };
             return Json(anonym, JsonRequestBehavior.AllowGet);
         }
@@ -314,28 +275,22 @@ namespace SocialNetwork.PresentationLayer.Controllers
         {
             string result = string.Empty;
 
-            var cookie = HttpContext.Request.Cookies["id"];
-            if (cookie == null)
+            IUserModule module = ApplicationHelper.GetUserModule(HttpContext.Request.Cookies["id"]);
+            if (module == null)
                 return RedirectToAction("Logout", "Account");
 
             try
             {
-                IUserModule module = new UserModule(MockResolver.GetUnitOfWorkFactory(), Convert.ToInt32(cookie.Value));
                 module.RemoveFromBlackList(id);
-
                 result = "Unblocked";
-            }
-            catch (BusinessEntityNullException ex)
-            {
-                result = ex.Message;
             }
             catch (BusinessLogicException ex)
             {
-                result = ex.Message;
+                result = ex.Message;                
             }
-
+                       
             var anonym = new { Result = result };
             return Json(anonym, JsonRequestBehavior.AllowGet);
-        }
+        }        
     }
 }
